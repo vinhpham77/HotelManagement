@@ -1,0 +1,141 @@
+@use '@angular/material' as mat;
+@use '/src/assets/styles/variables' as *;
+@use '/src/assets/styles/mixins' as *;
+@use '/src/assets/styles/palettes' as *;
+
+.mat-sidenav-container {
+  min-height: 100vh;
+  background-color: white;
+
+  & .mat-sidenav {
+    width: 26rem;
+
+    & .sidenav-header {
+      height: $header-height;
+      display: flex;
+      align-items: center;
+
+      & .logo-link {
+        display: flex;
+        align-items: center;
+        text-decoration: none;
+        color: inherit;
+      }
+
+      & .logo-icon {
+        color: mat.get-color-from-palette($primary-palette, 600);
+        @include set-icon-size(4.2rem);
+        padding-left: $horizontal-content-padding;
+      }
+
+      & .logo-text {
+        font-size: 2rem;
+        text-transform: uppercase;
+        font-weight: 400;
+        letter-spacing: 0.1rem;
+        margin-left: 1rem;
+        margin-bottom: unset;
+        color: $text-color;
+      }
+    }
+
+    & .nav-item {
+      padding: 0.4rem 2.5rem;
+      box-sizing: border-box;
+      height: 5.6rem;
+
+      &.active {
+        $color: mat.get-color-from-palette($primary-palette, 600);
+        color: $color;
+        background-color: unset;
+
+        & .mat-icon, .item-title {
+          color: $color;
+        }
+      }
+
+      & .mat-icon {
+        @include set-icon-size(2.4rem);
+        margin-left: 0;
+        margin-right: 1.5rem;
+      }
+
+      & .item-title {
+        line-height: 3rem;
+        font-size: 1.3rem;
+        padding-top: 1rem;
+        font-weight: 400;
+        text-transform: uppercase;
+      }
+    }
+  }
+
+  & .mat-sidenav-content {
+    & .top-toolbar {
+      display: flex;
+      background-color: inherit;
+      align-items: center;
+      padding-left: $horizontal-content-padding;
+      padding-right: $horizontal-content-padding;
+      height: $header-height;
+
+      & .info {
+        display: flex;
+        margin-left: -$item-gap;
+        align-items: center;
+
+        & .menu-toggle-btn {
+          margin-right: $horizontal-content-padding;
+
+          & .menu-icon {
+            @include set-icon-size(2.4rem);
+          }
+        }
+      }
+
+      & .heading {
+        margin-bottom: unset;
+        font-size: 1.5rem;
+        padding-top: 0.2rem;
+        text-transform: uppercase;
+        font-weight: 400;
+        color: $text-color;
+      }
+    }
+  }
+}
+
+mat-form-field {
+  width: 100%;
+  outline: none;
+  border: none;
+  border-bottom: 1px solid yellow;
+
+  & .mdc-text-field--filled .ndc-floating-label--float-above {
+    transform: unset;
+  }
+
+  & .mdc-text-field--filled:not(.mdc-text-field--disabled) {
+    background-color: transparent;
+  }
+
+  & .mat-mdc-form-field-focus-overlay {
+    background-color: transparent;
+  }
+
+  & .mdc-text-field {
+    padding: 0;
+  }
+
+  .mat-mdc-text-field-wrapper .mat-mdc-form-field-flex .mat-mdc-floating-label {
+    top: unset;
+    bottom: 0;
+
+    &.mdc-floating-label--float-above {
+      top: 28px;
+      bottom: unset;
+    }
+  }
+
+}
+

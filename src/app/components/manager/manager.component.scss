@@ -1,0 +1,14 @@
+@use '/src/assets/styles/variables' as *;
+
+.manager-list {
+  display: flex;
+  flex-wrap: wrap;
+  padding: $horizontal-content-padding;
+  gap: $item-gap;
+  box-sizing: border-box;
+  $items-per-row: 4;
+  $list-width: calc((#{$item-gap} * (#{$items-per-row} - 1)) +
+                    (#{$horizontal-content-padding} * 2) +
+                    (#{$items-per-row} * #{$item-width}));
+  width: min($list-width, 100%);
+}

@@ -1,0 +1,31 @@
+<mat-sidenav-container class='example-container' [hasBackdrop]='false'>
+  <mat-sidenav #sidenav mode='side' [(opened)]='opened'>
+    <header class='sidenav-header'>
+      <a routerLink='/' class='logo-link'>
+        <mat-icon class='logo-icon'>apartment</mat-icon>
+        <h1 class='logo-text'>Starfruit</h1>
+      </a>
+    </header>
+    <mat-divider></mat-divider>
+    <mat-nav-list>
+      <a mat-list-item class='nav-item' *ngFor='let item of sidenavItems; index as i' routerLink='{{item.link}}'
+         routerLinkActive='active'
+      >
+        <mat-icon matListItemIcon>{{item.icon}}</mat-icon>
+        <span matListItemTitle class='item-title'>{{item.title}}</span>
+      </a>
+    </mat-nav-list>
+  </mat-sidenav>
+  <mat-sidenav-content>
+    <mat-toolbar class='top-toolbar'>
+      <div class='info'>
+        <button mat-icon-button class='menu-toggle-btn'>
+          <mat-icon class='menu-icon'>menu</mat-icon>
+        </button>
+        <h2 class='heading'>Quản lý hệ thống</h2>
+      </div>
+    </mat-toolbar>
+    <mat-divider></mat-divider>
+    <router-outlet></router-outlet>
+  </mat-sidenav-content>
+</mat-sidenav-container>

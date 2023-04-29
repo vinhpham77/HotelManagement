@@ -1,4 +1,16 @@
 /* You can add global styles to this file, and also import other style files */
+@use '/src/assets/styles/reset';
 
-html, body { height: 100%; }
+html {
+  font-size: 62.5%;
+}
+
+
+
 body { margin: 0; font-family: Roboto, "Helvetica Neue", sans-serif; }
+
+ul, ol {
+  list-style-type: none;
+  padding: 0;
+  margin: 0;
+}
