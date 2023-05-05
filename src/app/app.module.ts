@@ -6,6 +6,7 @@ import { MatSidenavModule } from '@angular/material/sidenav';
 import { MatButtonModule } from '@angular/material/button';
 import { MatListModule } from '@angular/material/list';
 import { MatIconModule } from '@angular/material/icon';
+import {MatDialogModule} from '@angular/material/dialog';
 import { RouterModule } from '@angular/router';
 import { AppRoutesModule } from './routes/app-routes.module';
 
@@ -24,6 +25,7 @@ import { FormsModule } from '@angular/forms';
 import { MatCheckboxModule } from '@angular/material/checkbox';
 import { MatPaginatorIntl, MatPaginatorModule } from '@angular/material/paginator';
 import { CustomMatPaginatorIntlService } from './services/custom-mat-paginator-intl.service';
+import { DialogComponent } from './components/dialog/dialog.component';
 
 @NgModule({
   declarations: [
@@ -33,7 +35,8 @@ import { CustomMatPaginatorIntlService } from './services/custom-mat-paginator-i
     ManagerItemComponent,
     TwoColsLayoutComponent,
     ThreeColsLayoutComponent,
-    RoomTypeComponent
+    RoomTypeComponent,
+    DialogComponent
   ],
   imports: [
     BrowserModule,
@@ -53,7 +56,8 @@ import { CustomMatPaginatorIntlService } from './services/custom-mat-paginator-i
     MatInputModule,
     FormsModule,
     MatCheckboxModule,
-    MatPaginatorModule
+    MatPaginatorModule,
+    MatDialogModule
   ],
   providers: [{
     provide: MatPaginatorIntl,
