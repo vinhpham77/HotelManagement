@@ -1,0 +1,91 @@
+{
+  "roomTypes": [
+    {
+      "_id": "5e8c2b5a0f4b9a0017d9d0a1",
+      "name": "Phòng đơn",
+      "description": "Phòng đơn dành cho cá nhân hoặc cặp đôi, gia đình nhỏ"
+    },
+    {
+      "_id": "5e8c2b5a0f4b9a0017d9d0a2",
+      "name": "Phòng đôi",
+      "description": "Phòng đôi dành cho cặp đôi, bạn bè, người thân, gia đình nhỏ, ..."
+    },
+    {
+      "_id": "5e8c2b5a0f4b9a0017d9d0a3",
+      "name": "Phòng gia đình",
+      "description": "Phòng gia đình dành cho gia đình có nhiều thành viên"
+    },
+    {
+      "_id": "5e8c2b5a0f4b9a0017d9d0a4",
+      "name": "Phòng hội nghị",
+      "description": "Phòng hội nghị dành cho các cuộc họp, hội nghị, sự kiện, ..."
+    },
+    {
+      "_id": "5e8c2b5a0f4b9a0017d9d0a5",
+      "name": "Phòng VIP",
+      "description": "Phòng VIP dành cho các khách hàng VIP"
+    },
+    {
+      "_id": "5e8c2b5a0f4b9a0017d9d0a6",
+      "name": "Phòng đặc biệt",
+      "description": "Phòng đặc biệt dành cho các khách hàng đặc biệt"
+    },
+    {
+      "_id": "5e8c2b5a0f4b9a0017d9d0a7",
+      "name": "Phòng đặc biệt",
+      "description": "Phòng đặc biệt dành cho các khách hàng đặc biệt"
+    },
+    {
+      "_id": "5e8c2b5a0f4b9a0017d9d0a8",
+      "name": "Phòng đặc biệt",
+      "description": "Phòng đặc biệt dành cho các khách hàng đặc biệt"
+    },
+    {
+      "_id": "5e8c2b5a0f4b9a0017d9d0a9",
+      "name": "Phòng đặc biệt",
+      "description": "Phòng đặc biệt dành cho các khách hàng đặc biệt"
+    },
+    {
+      "_id": "5e8c2b5a0f4b9a0017d9d0aa",
+      "name": "Phòng đặc biệt",
+      "description": "Phòng đặc biệt dành cho các khách hàng đặc biệt"
+    },
+    {
+      "_id": "5e8c2b5a0f4b9a0017d9d0ab",
+      "name": "Phòng đặc biệt",
+      "description": "Phòng đặc biệt dành cho các khách hàng đặc biệt"
+    },
+    {
+      "_id": "5e8c2b5a0f4b9a0017d9d0ac",
+      "name": "Phòng đặc biệt",
+      "description": "Phòng đặc biệt dành cho các khách hàng đặc biệt"
+    }
+  ],
+  "rooms": [
+
+  ],
+  "accounts": [
+
+  ],
+  "customers": [
+
+  ],
+  "employees": [
+
+  ],
+  "menu": [
+
+  ],
+  "orders": [
+
+  ],
+  "receipts": [
+
+  ],
+  "reservations": [
+
+  ],
+  "reservationDetails": [
+
+  ]
+}
