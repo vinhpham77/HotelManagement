@@ -2,6 +2,7 @@ import {Component, ViewEncapsulation} from '@angular/core';
 import {NavigationItem} from "./models/NavigationItem";
 import {AppRoutesModule} from "./routes/app-routes.module";
 import {Router} from "@angular/router";
+import {environment} from '../environments/environment.development';
 
 @Component({
   selector: 'app-root',
