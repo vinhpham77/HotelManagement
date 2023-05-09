@@ -9,14 +9,14 @@ import { NavigationItem } from '../../models/NavigationItem';
 
 export class ManagerComponent {
   managerItems: NavigationItem[] = [
-    { title: 'Loại phòng', link: '/roomtype', icon: 'home' },
-    { title: 'Phòng', link: '/room', icon: 'hotel' },
+    { title: 'Loại phòng', link: '/manager/roomtypes', icon: 'home' },
+    { title: 'Phòng', link: '/rooms', icon: 'hotel' },
     { title: 'Menu', link: '/menu', icon: 'fastfood' },
-    { title: 'Khách hàng', link: '/customer', icon: 'badge' },
+    { title: 'Khách hàng', link: '/customers', icon: 'badge' },
     { title: 'Nhân viên', link: '/staff', icon: 'contacts' },
-    { title: 'Thống kê', link: '/report', icon: 'analytics' },
-    { title: 'Hóa đơn', link: '/receipt', icon: 'receipt' },
-    { title: 'Thiết lập khác', link: '/config', icon: 'room_preferences' }
+    { title: 'Thống kê', link: '/reports', icon: 'analytics' },
+    { title: 'Hóa đơn', link: '/receipts', icon: 'receipt' },
+    { title: 'Thiết lập khác', link: '/configs', icon: 'room_preferences' }
   ];
 
 }

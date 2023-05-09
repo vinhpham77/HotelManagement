@@ -30,6 +30,13 @@ export class TwoColsLayoutComponent implements OnDestroy {
     this.subscriptions = [componentSubscribe];
   }
 
+  toggle() {
+    this.componentService.toggleSidenav().subscribe(toggle => {
+      this.opened = toggle;
+      console.log(this.opened);
+    });
+  }
+
   ngOnDestroy() {
     this.subscriptions.forEach(subscription => subscription.unsubscribe());
   }

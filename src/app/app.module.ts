@@ -18,7 +18,7 @@ import { ManagerItemComponent } from './components/manager/manager-item/manager-
 import { MatCardModule } from '@angular/material/card';
 import { TwoColsLayoutComponent } from './layouts/two-cols-layout/two-cols-layout.component';
 import { ThreeColsLayoutComponent } from './layouts/three-cols-layout/three-cols-layout.component';
-import { RoomTypeComponent } from './components/manager/room-type/room-type.component';
+import { RoomTypesComponent } from './components/manager/room-types/room-types.component';
 import { MatTableModule } from '@angular/material/table';
 import { MatInputModule } from '@angular/material/input';
 import { FormsModule } from '@angular/forms';
@@ -26,6 +26,9 @@ import { MatCheckboxModule } from '@angular/material/checkbox';
 import { MatPaginatorIntl, MatPaginatorModule } from '@angular/material/paginator';
 import { CustomMatPaginatorIntlService } from './services/custom-mat-paginator-intl.service';
 import { DialogComponent } from './components/dialog/dialog.component';
+import { HttpClientModule } from '@angular/common/http';
+import { MatSortModule } from '@angular/material/sort';
+import { MatProgressSpinnerModule } from '@angular/material/progress-spinner';
 
 @NgModule({
   declarations: [
@@ -35,7 +38,7 @@ import { DialogComponent } from './components/dialog/dialog.component';
     ManagerItemComponent,
     TwoColsLayoutComponent,
     ThreeColsLayoutComponent,
-    RoomTypeComponent,
+    RoomTypesComponent,
     DialogComponent
   ],
   imports: [
@@ -57,7 +60,10 @@ import { DialogComponent } from './components/dialog/dialog.component';
     FormsModule,
     MatCheckboxModule,
     MatPaginatorModule,
-    MatDialogModule
+    MatDialogModule,
+    HttpClientModule,
+    MatSortModule,
+    MatProgressSpinnerModule
   ],
   providers: [{
     provide: MatPaginatorIntl,

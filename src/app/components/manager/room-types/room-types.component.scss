@@ -1,0 +1,48 @@
+@use '/src/assets/styles/variables' as *;
+
+.wrapper {
+  $vertical-padding: max(0.8rem, $horizontal-content-padding / 3);
+  padding: $vertical-padding $horizontal-content-padding;
+}
+
+/* Structure */
+.container {
+  position: relative;
+}
+
+.table-container {
+  position: relative;
+  max-height: 70vh;
+  overflow: auto;
+}
+
+table {
+  width: 100%;
+}
+
+.loading-shade {
+  position: absolute;
+  top: 0;
+  left: 0;
+  bottom: 56px;
+  right: 0;
+  background: rgba(0, 0, 0, 0.15);
+  z-index: 1;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.rate-limit-reached {
+  max-width: 360px;
+  text-align: center;
+}
+
+/* Column Widths */
+.mat-column-narrower {
+  max-width: 64px;
+}
+
+.mat-column-narrow {
+  max-width: 124px;
+}

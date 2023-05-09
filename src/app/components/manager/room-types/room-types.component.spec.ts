@@ -1,18 +1,18 @@
 import { ComponentFixture, TestBed } from '@angular/core/testing';
 
-import { RoomTypeComponent } from './room-type.component';
+import { RoomTypesComponent } from './room-types.component';
 
 describe('RoomTypeComponent', () => {
-  let component: RoomTypeComponent;
-  let fixture: ComponentFixture<RoomTypeComponent>;
+  let component: RoomTypesComponent;
+  let fixture: ComponentFixture<RoomTypesComponent>;
 
   beforeEach(async () => {
     await TestBed.configureTestingModule({
-      declarations: [ RoomTypeComponent ]
+      declarations: [ RoomTypesComponent ]
     })
     .compileComponents();
 
-    fixture = TestBed.createComponent(RoomTypeComponent);
+    fixture = TestBed.createComponent(RoomTypesComponent);
     component = fixture.componentInstance;
     fixture.detectChanges();
   });

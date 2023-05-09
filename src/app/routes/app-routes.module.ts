@@ -1,10 +1,10 @@
 import { NgModule } from '@angular/core';
 import { CommonModule } from '@angular/common';
-import {RouterModule, Routes} from "@angular/router";
+import { RouterModule, Routes } from '@angular/router';
 import { ManagerComponent } from '../components/manager/manager.component';
 import { ThreeColsLayoutComponent } from '../layouts/three-cols-layout/three-cols-layout.component';
 import { TwoColsLayoutComponent } from '../layouts/two-cols-layout/two-cols-layout.component';
-import { RoomTypeComponent } from '../components/manager/room-type/room-type.component';
+import { RoomTypesComponent } from '../components/manager/room-types/room-types.component';
 
 const appRoutes: Routes = [
 
@@ -13,7 +13,7 @@ const appRoutes: Routes = [
     path: '',
     component: TwoColsLayoutComponent,
     children: [
-      { path: 'manager', component: ManagerComponent},
+      { path: 'manager', component: ManagerComponent }
     ]
   },
 
@@ -22,9 +22,9 @@ const appRoutes: Routes = [
     path: '',
     component: ThreeColsLayoutComponent,
     children: [
-      { path: 'roomtype', component: RoomTypeComponent},
+      { path: 'manager/roomtypes', component: RoomTypesComponent }
     ]
-  },
+  }
 
   // no layout routes
   // { path: 'login', component: LoginComponent},
@@ -40,4 +40,5 @@ const appRoutes: Routes = [
     RouterModule.forRoot(appRoutes)
   ]
 })
-export class AppRoutesModule { }
+export class AppRoutesModule {
+}

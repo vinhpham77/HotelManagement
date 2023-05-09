@@ -28,6 +28,13 @@ export class ThreeColsLayoutComponent {
     })
   }
 
+  toggle() {
+    this.componentService.toggleSidenav().subscribe(toggle => {
+      this.opened = toggle;
+      console.log(this.opened);
+    });
+  }
+
   ngOnDestroy() {
     this.subscription.unsubscribe();
   }

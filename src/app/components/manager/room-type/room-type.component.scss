@@ -1,6 +1,0 @@
-@use '/src/assets/styles/variables' as *;
-
-.wrapper {
-  $vertical-padding: max(0.8rem, $horizontal-content-padding / 3);
-  padding: $vertical-padding $horizontal-content-padding;
-}
