@@ -7,8 +7,8 @@ import { ReservationDetail } from '../models/reservation-detail';
 })
 export class ReservationDetailService {
   private reservationDetails: ReservationDetail[] = [
-    { id: '1', reservevationId: '1', roomId: '1', checkinAt: new Date("02/05/2023 09:30:00"), checkinOut: new Date("03/05/2023 09:30:00"), customerId: '1', deposits: 0, totalAdults:2, totalChildren:2, roomPricePerDay: 400000 },
-    { id: '2', reservevationId: '1', roomId: '2', checkinAt: new Date("03/05/2023 09:30:00"), checkinOut: new Date(), customerId: '1', deposits: 10000, totalAdults:2, totalChildren:2, roomPricePerDay: 400000 },
+    { id: '1', reservevationId: '1', roomId: '1', checkInAt: new Date("05/02/2023 09:30:00"), checkOutAt: new Date("03/05/2023 09:30:00"), customerId: '1', deposits: 0, totalAdults:2, totalChildren:2, roomPricePerDay: 400000 },
+    { id: '2', reservevationId: '1', roomId: '2', checkInAt: new Date("05/03/2023 09:30:00"), checkOutAt: new Date(), customerId: '1', deposits: 10000, totalAdults:2, totalChildren:2, roomPricePerDay: 400000 },
   ];
 
   reservationDetailsSource = new BehaviorSubject<ReservationDetail[]>(this.reservationDetails);
