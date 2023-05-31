@@ -1,8 +1,8 @@
-<h1 mat-dialog-title>Xác nhận</h1>
+<h1 mat-dialog-title>{{dialogData.title}}</h1>
 <div mat-dialog-content>
-  <p>Bạn có muốn xóa không</p>
+  <p>{{dialogData.message}}</p>
 </div>
-<div mat-dialog-actions>
+<div mat-dialog-actions class='dialog-actions'>
   <button mat-button (click)="onNoClick()">Hủy</button>
-  <button mat-button [mat-dialog-close]="data.field" cdkFocusInitial>Ok</button>
+  <button mat-button [mat-dialog-close]="result" cdkFocusInitial>Ok</button>
 </div>

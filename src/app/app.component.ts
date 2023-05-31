@@ -13,7 +13,6 @@ import {environment} from '../environments/environment.development';
 
 export class AppComponent {
   title = 'HotelManagement';
-  opened: boolean = true;
 
   sidenavItems: NavigationItem[] = [
     {title: 'Đặt phòng', link: '/reservation', icon: 'calendar_month'},
@@ -23,7 +22,4 @@ export class AppComponent {
     {title: 'Đăng xuất', link: '/logout', icon: 'logout'}
   ];
 
-  constructor(private routes: AppRoutesModule, private router: Router) {
-
-  }
 }

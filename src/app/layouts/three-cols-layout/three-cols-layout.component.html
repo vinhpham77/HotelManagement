@@ -1,5 +1,5 @@
 <mat-sidenav-container class='example-container' [hasBackdrop]='false'>
-  <mat-sidenav #sidenav mode='side' [(opened)]='opened'>
+  <mat-sidenav mode='side' [(opened)]='opened'>
     <header class='sidenav-header'>
       <a routerLink='/' class='logo-link'>
         <mat-icon class='logo-icon'>apartment</mat-icon>
@@ -22,7 +22,7 @@
         <button mat-icon-button class='menu-toggle-btn' (click)='toggle()'>
           <mat-icon class='menu-icon'>menu</mat-icon>
         </button>
-        <h2 class='heading'>Quản lý hệ thống</h2>
+        <h2 class='heading'>{{title}}</h2>
       </div>
     </mat-toolbar>
     <mat-divider></mat-divider>
@@ -32,6 +32,7 @@
       </div>
       <mat-divider [vertical]='true'></mat-divider>
       <div class='right-panel'>
+        <ng-template formHost></ng-template>
       </div>
     </div>
   </mat-sidenav-content>

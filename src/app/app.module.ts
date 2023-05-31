@@ -6,12 +6,11 @@ import { MatSidenavModule } from '@angular/material/sidenav';
 import { MatButtonModule } from '@angular/material/button';
 import { MatListModule } from '@angular/material/list';
 import { MatIconModule } from '@angular/material/icon';
-import {MatDialogModule} from '@angular/material/dialog';
-import { RouterModule } from '@angular/router';
+import { MatDialogModule } from '@angular/material/dialog';
+import { RouterModule, TitleStrategy } from '@angular/router';
 import { AppRoutesModule } from './routes/app-routes.module';
 
 import { AppComponent } from './app.component';
-import { InventoryComponent } from './components/inventory/inventory.component';
 import { RouterLink, RouterLinkActive, RouterOutlet } from '@angular/router';
 import { ManagerComponent } from './components/manager/manager.component';
 import { ManagerItemComponent } from './components/manager/manager-item/manager-item.component';
@@ -21,7 +20,7 @@ import { ThreeColsLayoutComponent } from './layouts/three-cols-layout/three-cols
 import { RoomTypesComponent } from './components/manager/room-types/room-types.component';
 import { MatTableModule } from '@angular/material/table';
 import { MatInputModule } from '@angular/material/input';
-import { FormsModule } from '@angular/forms';
+import { FormsModule, ReactiveFormsModule } from '@angular/forms';
 import { MatCheckboxModule } from '@angular/material/checkbox';
 import { MatPaginatorIntl, MatPaginatorModule } from '@angular/material/paginator';
 import { CustomMatPaginatorIntlService } from './services/custom-mat-paginator-intl.service';
@@ -29,17 +28,32 @@ import { DialogComponent } from './components/dialog/dialog.component';
 import { HttpClientModule } from '@angular/common/http';
 import { MatSortModule } from '@angular/material/sort';
 import { MatProgressSpinnerModule } from '@angular/material/progress-spinner';
+import { CuRoomTypeComponent } from './components/manager/cu-room-type/cu-room-type.component';
+import { FormDirective } from './directives/form.directive';
+import { MatSelectModule } from '@angular/material/select';
+import { CommonService } from './services/common.service';
+import { MatSnackBar } from '@angular/material/snack-bar';
+import { RoomsComponent } from './components/manager/rooms/rooms.component';
+import { CuRoomComponent } from './components/manager/cu-room/cu-room.component';
+import { MenuComponent } from './components/manager/menu/menu.component';
+import { CuMenuItemComponent } from './components/manager/cu-menu-item/cu-menu-item.component';
+import { CustomTitleService } from './services/custom-title.service';
 
 @NgModule({
   declarations: [
     AppComponent,
-    InventoryComponent,
     ManagerComponent,
     ManagerItemComponent,
     TwoColsLayoutComponent,
     ThreeColsLayoutComponent,
     RoomTypesComponent,
-    DialogComponent
+    DialogComponent,
+    CuRoomTypeComponent,
+    FormDirective,
+    RoomsComponent,
+    CuRoomComponent,
+    MenuComponent,
+    CuMenuItemComponent
   ],
   imports: [
     BrowserModule,
@@ -63,12 +77,16 @@ import { MatProgressSpinnerModule } from '@angular/material/progress-spinner';
     MatDialogModule,
     HttpClientModule,
     MatSortModule,
-    MatProgressSpinnerModule
+    MatProgressSpinnerModule,
+    ReactiveFormsModule,
+    MatSelectModule
   ],
-  providers: [{
-    provide: MatPaginatorIntl,
-    useClass: CustomMatPaginatorIntlService
-  }],
+  providers: [
+    { provide: MatPaginatorIntl, useClass: CustomMatPaginatorIntlService },
+    { provide: TitleStrategy, useExisting: CustomTitleService },
+    MatSnackBar,
+    CommonService
+  ],
   bootstrap: [AppComponent]
 })
 export class AppModule {

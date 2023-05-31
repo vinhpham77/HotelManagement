@@ -1,18 +1,18 @@
 import { ComponentFixture, TestBed } from '@angular/core/testing';
 
-import { InventoryComponent } from './inventory.component';
+import { CuMenuItemComponent } from './cu-menu-item.component';
 
-describe('InventoryComponent', () => {
-  let component: InventoryComponent;
-  let fixture: ComponentFixture<InventoryComponent>;
+describe('CuMenuItemComponent', () => {
+  let component: CuMenuItemComponent;
+  let fixture: ComponentFixture<CuMenuItemComponent>;
 
   beforeEach(async () => {
     await TestBed.configureTestingModule({
-      declarations: [ InventoryComponent ]
+      declarations: [ CuMenuItemComponent ]
     })
     .compileComponents();
 
-    fixture = TestBed.createComponent(InventoryComponent);
+    fixture = TestBed.createComponent(CuMenuItemComponent);
     component = fixture.componentInstance;
     fixture.detectChanges();
   });

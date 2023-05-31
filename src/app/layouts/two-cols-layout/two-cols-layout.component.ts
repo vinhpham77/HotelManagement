@@ -1,7 +1,8 @@
-import { Component, OnDestroy, ViewChild, ViewContainerRef } from '@angular/core';
-import { componentService } from '../../services/component.service';
-import { Subscription } from 'rxjs';
+import { Component, OnDestroy } from '@angular/core';
+import { CommonService } from '../../services/common.service';
 import { NavigationItem } from '../../models/NavigationItem';
+import { CustomTitleService } from '../../services/custom-title.service';
+import { Subscription } from 'rxjs';
 
 @Component({
   selector: 'app-two-cols-layout',
@@ -9,8 +10,8 @@ import { NavigationItem } from '../../models/NavigationItem';
   styleUrls: ['./two-cols-layout.component.scss']
 })
 export class TwoColsLayoutComponent implements OnDestroy {
-  @ViewChild('target', { read: ViewContainerRef }) target!: ViewContainerRef;
-  subscriptions: Subscription[];
+  subscriptions: Subscription[] = [];
+  title!: string;
   opened: boolean = true;
   sidenavItems: NavigationItem[] = [
     { title: 'Đặt phòng', link: '/reservation', icon: 'calendar_month' },
@@ -20,25 +21,25 @@ export class TwoColsLayoutComponent implements OnDestroy {
     { title: 'Đăng xuất', link: '/logout', icon: 'logout' }
   ];
 
-  constructor(private componentService: componentService) {
-    const componentSubscribe = this.componentService.component$.subscribe(component => {
-      this.target.clear();
-      // @ts-ignore
-      this.target.createComponent(component);
+  constructor(private commonService: CommonService, private customTitleService: CustomTitleService) {
+    // Subscribe to services
+    const titleSubscription = this.customTitleService.title$.subscribe(title => {
+      this.title = title;
+    });
+    const sideNavSubscription = this.commonService.sidenavOpened$.subscribe(opened => {
+      this.opened = opened;
     });
 
-    this.subscriptions = [componentSubscribe];
+    // Push to subscriptions
+    this.subscriptions.push(titleSubscription);
+    this.subscriptions.push(sideNavSubscription);
   }
 
   toggle() {
-    this.componentService.toggleSidenav().subscribe(toggle => {
-      this.opened = toggle;
-      console.log(this.opened);
-    });
+    this.commonService.toggleSidenav(!this.opened);
   }
 
   ngOnDestroy() {
     this.subscriptions.forEach(subscription => subscription.unsubscribe());
   }
-
 }

@@ -5,6 +5,8 @@ import { ManagerComponent } from '../components/manager/manager.component';
 import { ThreeColsLayoutComponent } from '../layouts/three-cols-layout/three-cols-layout.component';
 import { TwoColsLayoutComponent } from '../layouts/two-cols-layout/two-cols-layout.component';
 import { RoomTypesComponent } from '../components/manager/room-types/room-types.component';
+import { RoomsComponent } from '../components/manager/rooms/rooms.component';
+import { MenuComponent } from '../components/manager/menu/menu.component';
 
 const appRoutes: Routes = [
 
@@ -13,7 +15,7 @@ const appRoutes: Routes = [
     path: '',
     component: TwoColsLayoutComponent,
     children: [
-      { path: 'manager', component: ManagerComponent }
+      { path: 'manager', component: ManagerComponent, title: 'Quản lý hệ thống' }
     ]
   },
 
@@ -22,15 +24,11 @@ const appRoutes: Routes = [
     path: '',
     component: ThreeColsLayoutComponent,
     children: [
-      { path: 'manager/roomtypes', component: RoomTypesComponent }
+      { path: 'manager/roomtypes', component: RoomTypesComponent, title: 'Loại phòng' },
+      { path: 'manager/rooms', component: RoomsComponent, title: 'Phòng' },
+      { path: 'manager/menu', component: MenuComponent, title: 'Menu' },
     ]
   }
-
-  // no layout routes
-  // { path: 'login', component: LoginComponent},
-
-  // otherwise redirect to home
-  // { path: '**', redirectTo: '' }
 ];
 
 @NgModule({
@@ -38,7 +36,8 @@ const appRoutes: Routes = [
   imports: [
     CommonModule,
     RouterModule.forRoot(appRoutes)
-  ]
+  ],
+  exports: [RouterModule]
 })
 export class AppRoutesModule {
 }

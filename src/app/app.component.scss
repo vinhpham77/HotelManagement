@@ -3,6 +3,15 @@
 @use '/src/assets/styles/mixins' as *;
 @use '/src/assets/styles/palettes' as *;
 
+.nowrap {
+  white-space: nowrap;
+}
+
+.right-panel-main {
+  $vertical-padding: max(0.8rem, $horizontal-content-padding / 3);
+  padding: $vertical-padding $horizontal-content-padding;
+}
+
 // Sidenav
 .mat-sidenav-container {
   min-height: 100vh;
@@ -106,44 +115,26 @@
   }
 }
 
-// Form field
-mat-form-field {
-  width: 100%;
-  outline: none;
-  border: none;
-
-  & .mdc-text-field--filled .ndc-floating-label--float-above {
-    transform: unset;
-  }
-
-  & .mdc-text-field--filled:not(.mdc-text-field--disabled) {
-    background-color: transparent;
-  }
-
-  & .mat-mdc-form-field-focus-overlay {
-    background-color: transparent;
-  }
-
-  & .mdc-text-field {
-    padding: 0;
-  }
-
-  .mat-mdc-text-field-wrapper .mat-mdc-form-field-flex .mat-mdc-floating-label {
-    top: unset;
-    bottom: 0;
-
-    &.mdc-floating-label--float-above {
-      top: 28px;
-      bottom: unset;
-    }
-  }
-}
-
 // Table
 table {
   & .mdc-data-table__header-cell, .mdc-data-table__cell {
     font-size: 1.4rem;
   }
+}
+
+// Table
+.table-container {
+  max-height: 70vh;
+  overflow: overlay;
+}
+
+/* Column Widths */
+.mat-column-narrower {
+  max-width: 64px;
+}
+
+.mat-column-narrow {
+  max-width: 124px;
 }
 
 // Paginator
@@ -190,5 +181,159 @@ mat-paginator .mat-mdc-paginator-container {
     -webkit-border-radius: 0;
     -moz-border-radius: 0;
     border-radius: 0;
+  }
+}
+
+// Button
+.action-row {
+  margin-bottom: 1rem;
+
+  & button {
+    font-weight: 400;
+    font-size: 1.4rem;
+
+    & + button {
+      margin-left: 0.8rem;
+    }
+
+    & .mat-icon {
+      @include set-icon-size(1.7rem);
+    }
+  }
+}
+
+.action-cell {
+  & button {
+    min-width: 3.2rem;
+
+    & + button {
+      margin-left: 0.4rem;
+    }
+
+    & .mat-icon {
+      @include set-icon-size(1.7rem);
+      margin: 0;
+    }
+  }
+}
+
+button.secondary {
+  &.mat-mdc-raised-button:not(:disabled) {
+    background-color: mat.get-color-from-palette(mat.$green-palette, 500);
+    color: white;
+  }
+
+  &.mat-mdc-button:not(:disabled), &.mat-mdc-outlined-button:not(:disabled) {
+    color: mat.get-color-from-palette(mat.$green-palette, 500);
+    &:hover {
+      background-color: mat.get-color-from-palette(mat.$green-palette, 50);
+    }
+  }
+}
+
+
+// Form
+.form-wrapper {
+  $form-padding: 1.6rem;
+
+  & .form-header {
+    height: 6.3rem;
+    padding-left: $form-padding;
+    padding-right: $form-padding;
+    display: flex;
+    align-items: center;
+
+    & .form-heading {
+      margin-bottom: unset;
+      margin-right: 1rem;
+      flex: 1;
+      font-size: 1.5rem;
+      padding-top: 0.2rem;
+      text-transform: uppercase;
+      font-weight: 400;
+      color: $text-color;
+    }
+
+    & .form-actions {
+      display: flex;
+      align-items: center;
+      justify-content: flex-end;
+
+      & button {
+        font-weight: 400;
+        font-size: 1.5rem;
+
+        & + button {
+          margin-left: 0.6rem;
+        }
+
+        & .mat-icon {
+          @include set-icon-size(1.8rem);
+        }
+      }
+    }
+  }
+
+  & .form-content {
+    padding: $form-padding;
+  }
+}
+
+// Form field
+mat-form-field {
+  width: 100%;
+  outline: none;
+  border: none;
+
+  &.half {
+    $half-pad: 0.8rem;
+    width: calc(50% - #{$half-pad});
+
+    &.half + .half:nth-of-type(2n + 1) {
+      margin-left: $half-pad * 2;
+    }
+  }
+
+  & input.text-right {
+    text-align: right;
+    -moz-appearance: textfield;
+
+    &::-webkit-outer-spin-button, &::-webkit-inner-spin-button {
+      display: none;
+      -webkit-appearance: none;
+    }
+  }
+
+  & .mdc-text-field--filled .ndc-floating-label--float-above {
+    transform: unset;
+  }
+
+  & .mdc-text-field--filled:not(.mdc-text-field--disabled) {
+    background-color: transparent;
+  }
+
+  & .mat-mdc-form-field-focus-overlay {
+    background-color: transparent;
+  }
+
+  & .mdc-text-field {
+    padding: 0;
+  }
+
+  .mat-mdc-text-field-wrapper .mat-mdc-form-field-flex .mat-mdc-floating-label {
+    top: unset;
+    bottom: 0;
+
+    &.mdc-floating-label--float-above {
+      top: 2.8rem;
+      bottom: unset;
+    }
+  }
+}
+
+.mat-mdc-form-field-subscript-wrapper {
+  & .mat-mdc-form-field-hint-wrapper, .mat-mdc-form-field-error-wrapper {
+    padding-left: 0;
+    padding-right: 0;
   }
 }

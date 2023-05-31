@@ -9,10 +9,16 @@ import { DialogConfirm } from 'src/app/models/dialog-confirm';
   styleUrls: ['./dialog.component.scss']
 })
 export class DialogComponent {
+  result;
   constructor(
     public dialogRef: MatDialogRef<DialogComponent>,
-    @Inject(MAT_DIALOG_DATA) public data: DialogConfirm,
-  ) {}
+    @Inject(MAT_DIALOG_DATA) public dialogData: DialogConfirm,
+  ) {
+    this.result = {
+      action: dialogData.action,
+      data: dialogData.data
+    }
+  }
 
   onNoClick(): void {
     this.dialogRef.close();

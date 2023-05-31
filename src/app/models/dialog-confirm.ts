@@ -1,6 +1,6 @@
 export interface DialogConfirm {
-    content: string;
-    field: string;
-    id: string;
-    setting: string;
+    title: string;
+    message: string;
+    data: any;
+    action: 'delete' | 'deleteMany';
 }

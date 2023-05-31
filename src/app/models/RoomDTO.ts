@@ -1,12 +1,13 @@
-export interface Room {
-    id: string;
+export interface RoomDTO {
+    _id: string;
     name: string;
-    roomType: string;
+    roomTypeId: string;
+    roomTypeName: string;
     pricePerDay: number;
     status: boolean;
     cleanRoom: boolean;
     cleanRoomAt: Date;
     description: string;
-    maxAdults: number;
-    maxChildren: number; 
+    maxAdult: number;
+    maxChild: number;
 }

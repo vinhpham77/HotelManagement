@@ -12,12 +12,10 @@ export class CustomMatPaginatorIntlService extends MatPaginatorIntl {
   }
 
   getAndInitTranslations() {
-
     this.itemsPerPageLabel = 'Số dòng mỗi trang';
     this.nextPageLabel = 'Trang sau';
     this.previousPageLabel = 'Trang trước';
     this.changes.next();
-
   }
 
   override getRangeLabel = (page: number, pageSize: number, length: number) => {
@@ -25,10 +23,8 @@ export class CustomMatPaginatorIntlService extends MatPaginatorIntl {
       return `0 / ${length}`;
     }
     length = Math.max(length, 0);
-    const startIndex = page * pageSize;
-    const endIndex = startIndex < length
-      ? Math.min(startIndex + pageSize, length)
-      : startIndex + pageSize;
-    return `${startIndex + 1} - ${endIndex} trong ${length}`;
+    const totalPages = Math.ceil(length / pageSize);
+    const currentPage = page + 1;
+    return `${currentPage} / ${totalPages}`;
   };
 }
