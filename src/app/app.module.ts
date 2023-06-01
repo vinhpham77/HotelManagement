@@ -41,6 +41,8 @@ import { CustomTitleService } from './services/custom-title.service';
 import { CurrencyFormatterDirective } from './directives/currency-formatter.directive';
 import { CurrencyPipe } from '@angular/common';
 import { MenuItemNamePipe } from './pipes/menu-item-name.pipe';
+import { CuCustomerComponent } from './components/manager/cu-customer/cu-customer.component';
+import { CustomersComponent } from './components/manager/customers/customers.component';
 
 @NgModule({
   declarations: [
@@ -58,7 +60,9 @@ import { MenuItemNamePipe } from './pipes/menu-item-name.pipe';
     CuRoomComponent,
     MenuComponent,
     CuMenuItemComponent,
-    MenuItemNamePipe
+    MenuItemNamePipe,
+    CuCustomerComponent,
+    CustomersComponent
   ],
   imports: [
     BrowserModule,
