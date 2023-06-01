@@ -279,20 +279,23 @@ button.secondary {
   }
 }
 
+.half-form-field {
+  $half-pad: 0.8rem;
+  display: inline-block;
+  width: calc(50% - #{$half-pad});
+
+  &:nth-of-type(even) {
+    margin-left: $half-pad * 2;
+  }
+}
+
 // Form field
 mat-form-field {
   width: 100%;
   outline: none;
   border: none;
 
-  &.half {
-    $half-pad: 0.8rem;
-    width: calc(50% - #{$half-pad});
 
-    &.half + .half:nth-of-type(2n + 1) {
-      margin-left: $half-pad * 2;
-    }
-  }
 
   & input.text-right {
     text-align: right;

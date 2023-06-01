@@ -1,1 +1,54 @@
-<p>cu-menu-item works!</p>
+<div class='form-wrapper' [hidden]='isHidden'>
+  <header class='form-header'>
+    <p class='form-heading'>{{data?.title}}</p>
+    <div class='form-actions'>
+      <button mat-button class='secondary' (click)='onSave()'>
+        <mat-icon>save</mat-icon>
+        Lưu
+      </button>
+      <button mat-button (click)='onCancel()'>
+        <mat-icon>close</mat-icon>
+        Huỷ
+      </button>
+    </div>
+  </header>
+  <mat-divider></mat-divider>
+  <form class='form-content' [formGroup]='menuItemForm'>
+    <mat-form-field appearance='fill'>
+      <mat-label>Tên dịch vụ</mat-label>
+      <input matInput formControlName='name' required>
+      <mat-error *ngIf='Name?.invalid'>Bạn phải nhập tên dịch vụ</mat-error>
+    </mat-form-field>
+    <mat-form-field appearance='fill'>
+      <mat-label>Loại dịch vụ</mat-label>
+      <mat-select formControlName='type'>
+        <mat-option [value]='true'>{{true | menuItemName}}</mat-option>
+        <mat-option [value]='false'>{{false | menuItemName}}</mat-option>
+        <mat-option [value]='"null"'>{{null | menuItemName}}</mat-option>
+      </mat-select>
+    </mat-form-field>
+
+    <div class='half-form-field'>
+      <mat-form-field appearance='fill'>
+        <mat-label>Giá nhập (chi phí)</mat-label>
+        <input matInput type='text' class='text-right' formControlName='importPrice' appCurrencyFormatter>
+        <span matTextSuffix class='nowrap'> &nbsp;₫</span>
+        <mat-error *ngIf='ImportPrice?.errors?.["required"]'>Bạn phải nhập giá nhập</mat-error>
+        <mat-error *ngIf='ImportPrice?.errors?.["min"]'>Bạn phải nhập giá nhập không âm</mat-error>
+        <mat-error *ngIf='ImportPrice?.errors?.["maxLength"]'>Bạn phải nhập không quá 9 chữ số</mat-error>
+      </mat-form-field>
+    </div>
+
+    <div class='half-form-field'>
+      <mat-form-field appearance='fill'>
+        <mat-label>Giá bán</mat-label>
+        <input matInput type='text' class='text-right' formControlName='exportPrice' appCurrencyFormatter>
+        <span matTextSuffix class='nowrap'> &nbsp;₫</span>
+        <mat-error *ngIf='ExportPrice?.errors?.["required"]'>Bạn phải nhập giá bán</mat-error>
+        <mat-error *ngIf='ExportPrice?.errors?.["min"]'>Bạn phải nhập giá bán không âm</mat-error>
+        <mat-error *ngIf='ImportPrice?.errors?.["maxLength"]'>Bạn phải nhập không quá 9 chữ số</mat-error>
+      </mat-form-field>
+    </div>
+
+  </form>
+</div>

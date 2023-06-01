@@ -19,32 +19,40 @@
       <input matInput formControlName='name'>
       <mat-error *ngIf='Name?.invalid'>Bạn phải nhập tên phòng</mat-error>
     </mat-form-field>
-    <mat-form-field appearance='fill' class='half'>
-      <mat-label>Loại phòng</mat-label>
-      <mat-select required formControlName='roomTypeName'>
-        <mat-option [value]='roomType.id' *ngFor='let roomType of roomTypes'>{{roomType.name}}</mat-option>
-      </mat-select>
-      <mat-error *ngIf='RoomTypeId?.invalid'>Bạn phải chọn loại phòng</mat-error>
-    </mat-form-field>
-    <mat-form-field appearance='fill' class='half'>
-      <mat-label>Giá ngày</mat-label>
-      <input matInput type='number' class='text-right' formControlName='pricePerDay'>
-      <span matTextSuffix class='nowrap' >.000 ₫</span>
-      <mat-error *ngIf='PricePerDay?.errors?.["required"]'>Bạn phải nhập giá ngày</mat-error>
-      <mat-error *ngIf='PricePerDay?.errors?.["min"]'>Bạn phải nhập giá ngày không âm</mat-error>
-    </mat-form-field>
-    <mat-form-field appearance='fill' class='half'>
-      <mat-label>Số người lớn tối đa</mat-label>
-      <input matInput type='number' class='text-right' formControlName='maxAdult'>
-      <mat-error *ngIf='MaxAdult?.errors?.["required"]'>Bạn phải nhập số người lớn tối đa</mat-error>
-      <mat-error *ngIf='MaxAdult?.errors?.["min"]'>Bạn phải nhập số người lớn tối đa không âm</mat-error>
-    </mat-form-field>
-    <mat-form-field appearance='fill' class='half'>
-      <mat-label>Số trẻ em tối đa</mat-label>
-      <input matInput type='number' class='text-right' formControlName='maxChild'>
-      <mat-error *ngIf='MaxChild?.errors?.["required"]'>Bạn phải nhập số trẻ em tối đa</mat-error>
-      <mat-error *ngIf='MaxChild?.errors?.["min"]'>Bạn phải nhập số trẻ em tối đa không âm</mat-error>
-    </mat-form-field>
+    <div class='half-form-field'>
+      <mat-form-field appearance='fill'>
+        <mat-label>Loại phòng</mat-label>
+        <mat-select required formControlName='roomTypeName'>
+          <mat-option [value]='roomType.id' *ngFor='let roomType of roomTypes'>{{roomType.name}}</mat-option>
+        </mat-select>
+        <mat-error *ngIf='RoomTypeId?.invalid'>Bạn phải chọn loại phòng</mat-error>
+      </mat-form-field>
+    </div>
+    <div class='half-form-field'>
+      <mat-form-field appearance='fill'>
+        <mat-label>Giá ngày</mat-label>
+        <input matInput type='number' class='text-right' formControlName='pricePerDay'>
+        <span matTextSuffix class='nowrap' >.000 ₫</span>
+        <mat-error *ngIf='PricePerDay?.errors?.["required"]'>Bạn phải nhập giá ngày</mat-error>
+        <mat-error *ngIf='PricePerDay?.errors?.["min"]'>Bạn phải nhập giá ngày không âm</mat-error>
+      </mat-form-field>
+    </div>
+    <div class='half-form-field'>
+      <mat-form-field appearance='fill'>
+        <mat-label>Số người lớn tối đa</mat-label>
+        <input matInput type='number' class='text-right' formControlName='maxAdult'>
+        <mat-error *ngIf='MaxAdult?.errors?.["required"]'>Bạn phải nhập số người lớn tối đa</mat-error>
+        <mat-error *ngIf='MaxAdult?.errors?.["min"]'>Bạn phải nhập số người lớn tối đa không âm</mat-error>
+      </mat-form-field>
+    </div>
+    <div class='half-form-field'>
+      <mat-form-field appearance='fill'>
+        <mat-label>Số trẻ em tối đa</mat-label>
+        <input matInput type='number' class='text-right' formControlName='maxChild'>
+        <mat-error *ngIf='MaxChild?.errors?.["required"]'>Bạn phải nhập số trẻ em tối đa</mat-error>
+        <mat-error *ngIf='MaxChild?.errors?.["min"]'>Bạn phải nhập số trẻ em tối đa không âm</mat-error>
+      </mat-form-field>
+    </div>
     <mat-form-field appearance='fill'>
       <mat-label>Mô tả</mat-label>
       <textarea matInput formControlName='description'></textarea>

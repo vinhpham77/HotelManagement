@@ -38,6 +38,9 @@ import { CuRoomComponent } from './components/manager/cu-room/cu-room.component'
 import { MenuComponent } from './components/manager/menu/menu.component';
 import { CuMenuItemComponent } from './components/manager/cu-menu-item/cu-menu-item.component';
 import { CustomTitleService } from './services/custom-title.service';
+import { CurrencyFormatterDirective } from './directives/currency-formatter.directive';
+import { CurrencyPipe } from '@angular/common';
+import { MenuItemNamePipe } from './pipes/menu-item-name.pipe';
 
 @NgModule({
   declarations: [
@@ -50,10 +53,12 @@ import { CustomTitleService } from './services/custom-title.service';
     DialogComponent,
     CuRoomTypeComponent,
     FormDirective,
+    CurrencyFormatterDirective,
     RoomsComponent,
     CuRoomComponent,
     MenuComponent,
-    CuMenuItemComponent
+    CuMenuItemComponent,
+    MenuItemNamePipe
   ],
   imports: [
     BrowserModule,
@@ -85,7 +90,8 @@ import { CustomTitleService } from './services/custom-title.service';
     { provide: MatPaginatorIntl, useClass: CustomMatPaginatorIntlService },
     { provide: TitleStrategy, useExisting: CustomTitleService },
     MatSnackBar,
-    CommonService
+    CommonService,
+    CurrencyPipe
   ],
   bootstrap: [AppComponent]
 })

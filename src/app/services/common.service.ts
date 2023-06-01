@@ -44,4 +44,12 @@ export class CommonService {
       duration: 1500
     });
   }
+
+  convertToNumber(value: any) {
+    return Number(value.replace(/,/g, ''));
+  }
+
+  convertToCurrency(value: any) {
+    return value.toString().replace(/\B(?=(\d{3})+(?!\d))/g, ',');
+  }
 }

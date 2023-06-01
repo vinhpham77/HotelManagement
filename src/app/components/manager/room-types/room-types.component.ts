@@ -1,5 +1,5 @@
 import { AfterViewInit, Component, OnDestroy, OnInit, ViewChild } from '@angular/core';
-import { catchError, map, merge, of, pipe, startWith, Subscription, switchMap } from 'rxjs';
+import { catchError, map, merge, of, startWith, Subscription, switchMap } from 'rxjs';
 import { RoomType } from '../../../models/RoomType';
 import { MatTableDataSource } from '@angular/material/table';
 import { SelectionModel } from '@angular/cdk/collections';
@@ -43,9 +43,8 @@ export class RoomTypesComponent implements OnInit, OnDestroy, AfterViewInit {
   }
 
   ngAfterViewInit() {
+    this.sort.sortChange.subscribe(() => this.paginator.pageIndex = 0);
     this.loadRoomTypes();
-    // this.dataSource.paginator = this.paginator;
-    this.sort.sortChange.subscribe(() => (this.paginator.pageIndex = 0));
   }
 
   loadRoomTypes() {
@@ -91,7 +90,7 @@ export class RoomTypesComponent implements OnInit, OnDestroy, AfterViewInit {
 
   applyFilter(event: Event) {
     clearTimeout(this.timer);
-    
+
     this.timer = setTimeout(() => {
       this.paginator.pageIndex = 0;
       this.loadRoomTypes();
