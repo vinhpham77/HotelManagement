@@ -66,7 +66,7 @@ export class RoomTypesComponent implements OnInit, OnDestroy, AfterViewInit {
           }
 
           this.resultsLength = data.total;
-          return data.roomTypes;
+          return data.items;
         })
       )
       .subscribe(data => this.dataSource.data = data);

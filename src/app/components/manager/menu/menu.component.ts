@@ -155,6 +155,4 @@ export class MenuComponent implements AfterViewInit, OnDestroy {
       data: menuItem
     });
   }
-
-
 }

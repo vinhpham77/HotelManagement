@@ -30,7 +30,7 @@ export class RoomTypesService {
   load() {
     let { keyword, sort, order, page, size } = this.commonService.tableData;
     this.getRoomTypes(keyword, sort, order, page, size).subscribe(result => {
-      this.roomTypesSource.next(result.roomTypes);
+      this.roomTypesSource.next(result.items);
     });
   }
 

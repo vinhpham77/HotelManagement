@@ -45,7 +45,7 @@
 
       <!-- Description Column -->
       <ng-container matColumnDef='description'>
-        <th mat-header-cell *matHeaderCellDef>Mô tả</th>
+        <th mat-header-cell *matHeaderCellDef mat-sort-header sortActionDescription='Sắp theo mô tả'>Mô tả</th>
         <td mat-cell *matCellDef='let element'>{{element.description}}</td>
       </ng-container>
 
