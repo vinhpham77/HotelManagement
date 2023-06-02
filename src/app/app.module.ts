@@ -59,6 +59,7 @@ import { FullNamePipe } from './pipes/full-name.pipe';
 import { MatDatepicker, MatDatepickerModule } from '@angular/material/datepicker';
 import { MAT_DATE_LOCALE, MatNativeDateModule } from '@angular/material/core';
 import { MatButtonToggleModule } from '@angular/material/button-toggle';
+import { MenuBottomComponent } from './components/rent/menu-bottom/menu-bottom.component';
 
 @NgModule({
   declarations: [
@@ -87,7 +88,8 @@ import { MatButtonToggleModule } from '@angular/material/button-toggle';
     RentCheckOutComponent,
     RentHistoryUpdateComponent,
     RentMenuComponent,
-    RentUpdateComponent
+    RentUpdateComponent,
+    MenuBottomComponent
   ],
   imports: [
     BrowserModule,

@@ -7,17 +7,17 @@ import { Order } from 'src/app/models/order';
 
 @Component({
   selector: 'app-menu',
-  templateUrl: './menu.component.html',
-  styleUrls: ['./menu.component.scss']
+  templateUrl: './menu-bottom.component.html',
+  styleUrls: ['./menu-bottom.component.scss']
 })
-export class MenuComponent {
+export class MenuBottomComponent {
   public menus!: MenuItem[];
-  constructor(private _bottomSheetRef: MatBottomSheetRef<MenuComponent>,
+  constructor(private _bottomSheetRef: MatBottomSheetRef<MenuBottomComponent>,
     @Inject(MAT_BOTTOM_SHEET_DATA) public data: Order,
     private menuService: MenuService,
     ) {
       this.menuService.menu$.subscribe(result => this.menus = result);
-      this.menuService.uploadMenuAll;
+      this.menuService.uploadMenuAll();
   }
 
   selectItem(event: MouseEvent, item: MenuItem): void {

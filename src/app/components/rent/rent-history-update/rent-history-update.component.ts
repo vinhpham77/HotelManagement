@@ -13,7 +13,7 @@ import { OrderService } from 'src/app/services/order.service';
 import { ReceiptService } from 'src/app/services/receipt.service';
 import { ReservationDetailService } from 'src/app/services/reservation-detail.service';
 import { RoomsService } from 'src/app/services/rooms.service';
-import { MenuComponent } from '../menu/menu.component';
+import { MenuBottomComponent } from '../menu-bottom/menu-bottom.component';
 import { MenuItem } from 'src/app/models/MenuItem';
 
 @Component({
@@ -249,7 +249,7 @@ export class RentHistoryUpdateComponent implements OnInit, OnChanges {
   }
 
   openBottomSheet(): void {
-    this._bottomSheet.open(MenuComponent,{
+    this._bottomSheet.open(MenuBottomComponent,{
       data: this.order,
     }).afterDismissed().subscribe(result => {
       let t = new Date();
