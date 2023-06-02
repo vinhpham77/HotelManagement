@@ -1,10 +1,9 @@
 import { Injectable } from '@angular/core';
 import { RoomType } from '../models/RoomType';
-import { BehaviorSubject, of, tap, throwError } from 'rxjs';
+import { BehaviorSubject } from 'rxjs';
 import { environment } from 'src/environments/environment';
 import { HttpClient, HttpHeaders } from '@angular/common/http';
 import { SortDirection } from '@angular/material/sort';
-import { TableData } from '../models/TableData';
 import { CommonService } from './common.service';
 
 @Injectable({
@@ -62,6 +61,6 @@ export class RoomTypesService {
 
   deleteMany(roomTypeIds: string[]) {
     const options = { ...this.httpOptions, body: roomTypeIds };
-    return this.httpClient.delete<any>(this.roomTypesAPI + '/DeleteMany', options);
+    return this.httpClient.delete<any>(this.roomTypesAPI, options);
   }
 }

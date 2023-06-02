@@ -1,7 +1,6 @@
 import { AfterViewInit, Component, OnDestroy, OnInit, ViewChild } from '@angular/core';
 import { catchError, map, merge, of, startWith, Subscription, switchMap } from 'rxjs';
 import { RoomType } from '../../../models/RoomType';
-import { MatTableDataSource } from '@angular/material/table';
 import { SelectionModel } from '@angular/cdk/collections';
 import { RoomTypesService } from '../../../services/room-types.service';
 import { MatPaginator } from '@angular/material/paginator';
@@ -19,7 +18,7 @@ import { DialogConfirm } from '../../../models/dialog-confirm';
 })
 export class RoomTypesComponent implements OnInit, OnDestroy, AfterViewInit {
   timer: any;
-  dataSource = new MatTableDataSource<RoomType>([]);
+  dataSource: RoomType[] = [];
   displayedColumns: string[] = ['select', 'name', 'description', 'actions'];
   subscription = new Subscription();
   selections = new SelectionModel<RoomType>(true, []);
@@ -34,7 +33,7 @@ export class RoomTypesComponent implements OnInit, OnDestroy, AfterViewInit {
     this.paginatorSizeOptions = this.commonService.PaginatorOptions;
 
     this.subscription = this.roomTypesService.roomTypes$.subscribe(data => {
-      this.dataSource.data = data;
+      this.dataSource = data;
     });
   }
 
@@ -69,13 +68,13 @@ export class RoomTypesComponent implements OnInit, OnDestroy, AfterViewInit {
           return data.items;
         })
       )
-      .subscribe(data => this.dataSource.data = data);
+      .subscribe(data => this.dataSource = data);
     this.selections.clear();
   }
 
   isAllSelected() {
     const numSelected = this.selections.selected.length;
-    const numRows = this.dataSource.data.length;
+    const numRows = this.dataSource.length;
     return numSelected === numRows;
   }
 
@@ -85,10 +84,10 @@ export class RoomTypesComponent implements OnInit, OnDestroy, AfterViewInit {
       return;
     }
 
-    this.selections.select(...this.dataSource.data);
+    this.selections.select(...this.dataSource);
   }
 
-  applyFilter(event: Event) {
+  applyFilter() {
     clearTimeout(this.timer);
 
     this.timer = setTimeout(() => {
@@ -111,16 +110,14 @@ export class RoomTypesComponent implements OnInit, OnDestroy, AfterViewInit {
 
   onDelete(roomType: RoomType) {
     this.roomTypesService.delete(roomType.id).subscribe(() => {
-      this.commonService.openSnackBar('Xoá thành công loại phòng ' + roomType.name);
-      this.loadRoomTypes();
+      this.refreshOnSuccess('Xoá thành công loại phòng ' + roomType.name);
     });
   }
 
   onDeleteMany() {
     const roomTypeIds = this.selections.selected.map(roomType => roomType.id);
     this.roomTypesService.deleteMany(roomTypeIds).subscribe(() => {
-      this.commonService.openSnackBar('Xoá thành công ' + roomTypeIds.length + ' loại phòng');
-      this.loadRoomTypes();
+      this.refreshOnSuccess('Xoá thành công ' + roomTypeIds.length + ' loại phòng');
     });
   }
 
@@ -154,5 +151,10 @@ export class RoomTypesComponent implements OnInit, OnDestroy, AfterViewInit {
       action: 'delete',
       data: roomType
     });
+  }
+
+  refreshOnSuccess(msg: string) {
+    this.loadRoomTypes();
+    this.commonService.openSnackBar(msg);
   }
 }

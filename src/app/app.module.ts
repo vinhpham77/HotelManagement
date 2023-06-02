@@ -43,6 +43,7 @@ import { CurrencyPipe } from '@angular/common';
 import { MenuItemNamePipe } from './pipes/menu-item-name.pipe';
 import { CuCustomerComponent } from './components/manager/cu-customer/cu-customer.component';
 import { CustomersComponent } from './components/manager/customers/customers.component';
+<<<<<<< HEAD
 import { RentComponent } from './components/rent/rent.component';
 import {MatTabsModule} from '@angular/material/tabs';
 import { CardHistoryComponent } from './components/rent/card-history/card-history.component';
@@ -57,6 +58,12 @@ import { RentMenuComponent } from './components/rent/rent-menu/rent-menu.compone
 import {MatBadgeModule} from '@angular/material/badge';
 import { RentUpdateComponent } from './components/rent/rent-update/rent-update.component';
 
+=======
+import { FullNamePipe } from './pipes/full-name.pipe';
+import { MatDatepicker, MatDatepickerModule } from '@angular/material/datepicker';
+import { MAT_DATE_LOCALE, MatNativeDateModule } from '@angular/material/core';
+import { MatButtonToggleModule } from '@angular/material/button-toggle';
+>>>>>>> 6737e23e912e54568f3c49cf6c12c110ba0a04e7
 
 @NgModule({
   declarations: [
@@ -75,6 +82,7 @@ import { RentUpdateComponent } from './components/rent/rent-update/rent-update.c
     MenuComponent,
     CuMenuItemComponent,
     MenuItemNamePipe,
+    FullNamePipe,
     CuCustomerComponent,
     CustomersComponent,
     RentComponent,
@@ -111,18 +119,26 @@ import { RentUpdateComponent } from './components/rent/rent-update/rent-update.c
     MatProgressSpinnerModule,
     ReactiveFormsModule,
     MatSelectModule,
+<<<<<<< HEAD
     MatTabsModule,
     MatMenuModule,
     MatExpansionModule,
     MatDatepickerModule,
     MatBadgeModule
+=======
+    MatDatepickerModule,
+    MatNativeDateModule,
+    MatButtonToggleModule
+>>>>>>> 6737e23e912e54568f3c49cf6c12c110ba0a04e7
   ],
   providers: [
     { provide: MatPaginatorIntl, useClass: CustomMatPaginatorIntlService },
     { provide: TitleStrategy, useExisting: CustomTitleService },
+    { provide: MAT_DATE_LOCALE, useValue: 'vi-VN' },
     MatSnackBar,
     CommonService,
-    CurrencyPipe
+    CurrencyPipe,
+    MatDatepicker,
   ],
   bootstrap: [AppComponent]
 })

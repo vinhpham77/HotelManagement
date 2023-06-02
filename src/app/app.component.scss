@@ -7,6 +7,34 @@
   white-space: nowrap;
 }
 
+.mat-button-toggle-appearance-standard .mat-button-toggle-label-content {
+  line-height: 3.8rem;
+}
+
+
+table.small-font {
+  & .mdc-data-table__header-cell, & .mdc-data-table__cell {
+    font-size: 1.2rem;
+    padding: 0 0.4rem;
+    line-height: var(--mdc-typography-body2-line-height, 1.6rem);
+  }
+
+  & .mat-mdc-checkbox .mdc-checkbox .mdc-checkbox__native-control {
+    $small-checkbox: 3.2rem;
+    top: calc((var(--mdc-checkbox-state-layer-size, $small-checkbox) - var(--mdc-checkbox-state-layer-size, $small-checkbox)) / 2);
+    right: calc((var(--mdc-checkbox-state-layer-size, $small-checkbox) - var(--mdc-checkbox-state-layer-size, $small-checkbox)) / 2);
+    left: calc((var(--mdc-checkbox-state-layer-size, $small-checkbox) - var(--mdc-checkbox-state-layer-size, $small-checkbox)) / 2);
+    width: var(--mdc-checkbox-state-layer-size, $small-checkbox);
+    height: var(--mdc-checkbox-state-layer-size, $small-checkbox);
+  }
+
+  & .action-cell {
+    & button + button {
+      margin-left: unset;
+    }
+  }
+}
+
 .right-panel-main {
   $vertical-padding: max(0.8rem, $horizontal-content-padding / 3);
   padding: $vertical-padding $horizontal-content-padding;
@@ -130,11 +158,11 @@ table {
 
 /* Column Widths */
 .mat-column-narrower {
-  max-width: 64px;
+  max-width: 3.2rem;
 }
 
 .mat-column-narrow {
-  max-width: 124px;
+  max-width: 12.4rem;
 }
 
 // Paginator
@@ -152,7 +180,7 @@ mat-paginator .mat-mdc-paginator-container {
   width: 5.6rem;
 
   & mat-select {
-    border-bottom: 1px solid;
+    border-bottom: 0.1rem solid;
   }
 
   & .mdc-text-field {
