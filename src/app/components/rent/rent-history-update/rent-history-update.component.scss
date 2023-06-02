@@ -1,0 +1,71 @@
+.topbar-sub {
+    height: 63px;
+    border-bottom: 1px solid rgba(1,1,1,.1);
+}
+
+.topbar-sub .container {
+    padding: 0 1rem!important;
+    height: 100%;
+}
+
+.icon-bar-sub {
+    margin-right: 1rem;
+}
+
+.topbar-sub-title {
+    font-size: 15px;
+    margin-right: 1rem;
+    text-transform: uppercase;
+    display: flex;
+    align-items: center;
+}
+
+.form-sub {
+    padding: 1rem;
+}
+
+.container-use-menu {
+    margin: 0 -1rem;
+}
+
+.container-use-menu .toolbar {
+    height: 45px;
+    border-top: 1px solid #dee2e6!important;
+    border-bottom: 1px solid #dee2e6!important;
+    background-color: #ffffff;
+    justify-content: space-between;
+}
+
+.container-use-menu .toolbar .title-toolbar {
+    font-weight: 400;
+    font-size: 14px;
+    color: grey;
+}
+
+.container-total {
+    justify-content: space-around;
+    border-bottom: 1px solid rgba(1,1,1,.1);
+    font-size: 1.2em;
+    height: 50px;
+}
+
+input[type="number"] {
+    -webkit-appearance: textfield;
+    -moz-appearance: textfield;
+    appearance: textfield;
+}
+
+input[type=number]::-webkit-inner-spin-button,
+input[type=number]::-webkit-outer-spin-button {
+    -webkit-appearance: none;
+}
+
+input[type=number] {
+    text-align: center;
+}
+
+.quantity-input {
+    width: 36px;
+    padding: 5px 0;
+    outline: none;
+}

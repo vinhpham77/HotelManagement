@@ -1,0 +1,172 @@
+<div class="rent-update">
+    <div class="topbar-sub">
+        <div class="container d_flex-center">
+            <div class="d_flex-center w-100">
+                <mat-icon class="mat-list-icon text-warning icon-bar-sub">meeting_room</mat-icon>
+                <div class="topbar-sub-title">{{room.name}}</div>
+                <div class="flex-grow-1"></div>
+                <button mat-button class="text-warning" (click)="check()">
+                    <i class="fas fa-undo"></i>Trả phòng
+                </button>
+            </div>
+        </div>
+    </div>
+    <div class="form-sub">
+        <form [formGroup]="formCheckIn">
+            <div class="w-50 d-inline-block">
+                <mat-form-field appearance="fill" class="formField w-100 pr-2">
+                    <mat-label>Ngày nhận phòng</mat-label>
+                    <input formControlName="dayCheckIn" matInput [matDatepicker]="receivedDateCheckIn" readonly>
+                    <mat-datepicker-toggle class="none-event" matIconSuffix [for]="receivedDateCheckIn"></mat-datepicker-toggle>
+                    <mat-datepicker #receivedDateCheckIn></mat-datepicker>
+                </mat-form-field>
+            </div>
+            <div class="w-50 d-inline-block">
+                <mat-form-field appearance="fill" class="formField w-100 pl-2">
+                    <mat-label>Giờ nhận phòng*</mat-label>
+                    <input formControlName="hourseCheckIn" matInput readonly>
+                </mat-form-field>
+            </div>
+            <div class="w-50 d-inline-block">
+                <mat-form-field appearance="fill" class="formField w-100 pr-2">
+                    <mat-label>Ngày trả phòng</mat-label>
+                    <input formControlName="dayCheckOut" matInput [matDatepicker]="receivedDateCheckOut" readonly>
+                    <mat-datepicker-toggle class="none-event" matIconSuffix [for]="receivedDateCheckOut"></mat-datepicker-toggle>
+                    <mat-datepicker #receivedDateCheckOut></mat-datepicker>
+                </mat-form-field>
+            </div>
+            <div class="w-50 d-inline-block">
+                <mat-form-field appearance="fill" class="formField w-100 pl-2">
+                    <mat-label>Giờ trả phòng*</mat-label>
+                    <input formControlName="hourseCheckOut" matInput readonly>
+                </mat-form-field>
+            </div>
+            <div *ngIf="isSurchargeCheckIn()" class="w-50 d-inline-block">
+                <span class="pr-2">Nhận phòng sớm {{hourseSurchargeCheckIn()}}</span>
+            </div>
+            <div *ngIf="isSurchargeCheckOut()" class="w-50 d-inline-block">
+                <span class="pl-2">Trả phòng muộn {{hourseSurchargeCheckOut()}}</span>
+            </div>
+            <div class="w-50 d-inline-block">
+                <mat-form-field appearance="fill" class="formField w-100 pr-2">
+                    <mat-label>Tiền phòng</mat-label>
+                    <div class="d_flex-center">
+                        <span>
+                        <input matInput class="text-right" formControlName="roomPrice" readonly></span>
+                        <div matsuffix>.000&nbsp;₫</div>
+                    </div>
+                </mat-form-field>
+            </div>
+            <div class="w-50 d-inline-block">
+                <span class="pl-2">Tiền phòng trong {{daysIn()}} ngày</span>
+            </div>
+            <div class="w-50 d-inline-block">
+                <mat-form-field appearance="fill" class="formField w-100 pr-2">
+                    <mat-label>Tiền phụ thu</mat-label>
+                    <div class="d_flex-center">
+                        <span>
+                        <input matInput class="text-right" formControlName="roomExceed" readonly></span>
+                        <div matsuffix>.000&nbsp;₫</div>
+                    </div>
+                </mat-form-field>
+            </div>
+            <div class="w-50 d-inline-block">
+                <mat-form-field appearance="fill" class="formField w-100 pl-2">
+                    <mat-label>Tiền trả trước</mat-label>
+                    <div class="d_flex-center">
+                        <span>
+                        <input matInput class="text-right" formControlName="prepayment" readonly></span>
+                        <div matsuffix>.000&nbsp;₫</div>
+                    </div>
+                </mat-form-field>
+            </div>
+            <div class="w-50 d-inline-block">
+                <mat-form-field appearance="fill" class="formField w-100 pr-2">
+                    <mat-label>Tiền menu</mat-label>
+                    <div class="d_flex-center">
+                        <span>
+                        <input matInput class="text-right" formControlName="priceMenu" readonly></span>
+                        <div matsuffix>.000&nbsp;₫</div>
+                    </div>
+                </mat-form-field>
+            </div>
+            <div class="w-50 d-inline-block">
+                <mat-form-field appearance="fill" class="formField w-100 pl-2">
+                    <mat-label>Tổng tiền</mat-label>
+                    <div class="d_flex-center">
+                        <span>
+                        <input matInput class="text-right" formControlName="totalPrice" readonly></span>
+                        <div matsuffix>.000&nbsp;₫</div>
+                    </div>
+                </mat-form-field>
+            </div>
+            <div class="w-50 d-inline-block">
+                <mat-form-field appearance="fill" class="formField w-100 pr-2">
+                    <mat-label>Tiền cần thanh toán</mat-label>
+                    <div class="d_flex-center">
+                        <span>
+                        <input matInput class="text-right" formControlName="intoMoney" readonly></span>
+                        <div matsuffix>.000&nbsp;₫</div>
+                    </div>
+                </mat-form-field>
+            </div>
+            <div class="container-use-menu">
+                <mat-toolbar class="toolbar">
+                    <span class="title-toolbar">Menu sử dụng</span>
+                    <mat-icon class="mat-list-icon" (click)="openBottomSheet()" style="color: #c2c2c2;">add_box</mat-icon>
+                </mat-toolbar>
+                <table mat-table [dataSource]="dataSource" class="mat-elevation-z8">
+                  
+                    <!-- Name Column -->
+                    <ng-container matColumnDef="nameItem">
+                      <th mat-header-cell *matHeaderCellDef class="hearder-cell"> Tên menu </th>
+                      <td mat-cell *matCellDef="let element"> {{getNameMenu(element.itemId)}} </td>
+                    </ng-container>
+                  
+                    <!-- Quantity Column -->
+                    <ng-container matColumnDef="quantity">
+                      <th mat-header-cell *matHeaderCellDef class="hearder-cell"> Số lượng </th>
+                      <td mat-cell *matCellDef="let element">
+                        <button mat-icon-button (click)="remove(element)">
+                            <mat-icon class="mat-list-icon">remove</mat-icon>
+                        </button>
+                        <input (focusout)="updateQuantity($event, element)" (focus)="mousedownInputQuantity($event)" type="number" class="quantity-input border" [value]="element.quantity" min="1">
+                        <button mat-icon-button (click)="add(element)">
+                            <mat-icon class="mat-list-icon">add</mat-icon>
+                        </button>
+                      </td>
+                    </ng-container>
+                  
+                    <!-- Price Column -->
+                    <ng-container matColumnDef="price">
+                      <th mat-header-cell *matHeaderCellDef class="hearder-cell"> Thành tiền </th>
+                      <td mat-cell *matCellDef="let element"> {{element.quantity * element.price}} </td>
+                    </ng-container>
+                  
+                    <!-- Operation Column -->
+                    <ng-container matColumnDef="operation">
+                      <th mat-header-cell *matHeaderCellDef class="hearder-cell"> Thao tác </th>
+                      <td mat-cell *matCellDef="let element"> 
+                        <button mat-icon-button [matMenuTriggerFor]="menu">
+                            <mat-icon class="mat-list-icon text-muted">more_vert</mat-icon>
+                        </button>
+                        <mat-menu #menu="matMenu">
+                            <button mat-menu-item (click)="deleteOrderDetail(element)">
+                                <mat-icon class="mat-list-icon">delete</mat-icon>
+                                <span>Xóa</span>
+                            </button>
+                        </mat-menu>
+                      </td>
+                    </ng-container>
+                  
+                    <tr mat-header-row *matHeaderRowDef="displayedColumns"></tr>
+                    <tr mat-row *matRowDef="let row; columns: displayedColumns;"></tr>
+                  </table>
+                  <div class="d_flex-center container-total">
+                    <div>Tổng tiền</div>
+                    <div>{{total/1000}}.000&nbsp;₫</div>
+                  </div>
+            </div>
+        </form>
+    </div>
+</div>

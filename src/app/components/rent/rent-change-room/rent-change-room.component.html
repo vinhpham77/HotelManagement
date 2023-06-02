@@ -1,0 +1,56 @@
+<div class="rent-update">
+    <div class="topbar-sub">
+        <div class="container d_flex-center">
+            <div class="d_flex-center w-100">
+                <mat-icon class="mat-list-icon text-warning icon-bar-sub">sync</mat-icon>
+                <div class="topbar-sub-title">{{roomChange.name}}</div>
+                <div class="flex-grow-1"></div>
+            </div>
+        </div>
+    </div>
+    <div class="form-sub">
+        <mat-expansion-panel [expanded]="true" class="box-s-none" *ngFor="let roomType of roomTypes;">
+            <mat-expansion-panel-header>
+              <mat-panel-title>
+                {{roomType.name}}
+              </mat-panel-title>
+            </mat-expansion-panel-header>
+            <div class="d_flex flex-wrap">
+                <div *ngFor="let room of rooms;">
+                    <mat-card *ngIf="!room.status && room.roomTypeId == roomType.id">
+                        <div class="d_flex flex-row border-bottom ">
+                            <div class="flex-grow-1 room-name text-primary ellipsis title-card">{{room.name}}</div>
+                            <div>
+                                <button mat-icon-button [matMenuTriggerFor]="menuWaitingMoom">
+                                    <mat-icon class="mat-list-icon">more_vert</mat-icon>
+                                </button>
+                                <mat-menu #menuWaitingMoom="matMenu">
+                                    <button mat-menu-item (click)="changeRoom(room)">
+                                        <mat-icon class="mat-list-icon">sync</mat-icon>
+                                        <span>Đổi phòng</span>
+                                    </button>
+                                    <button mat-menu-item (click)="changeAndCleanRoom(room)">
+                                        <mat-icon class="mat-list-icon">loyalty</mat-icon>
+                                        <span>Đổi phòng và yêu cầu dọn phòng</span>
+                                    </button>
+                                </mat-menu>
+                            </div>
+                        </div>
+                        <div class="px-2 py-2 d_flex flex-row" *ngIf="!room.cleanRoom">
+                            <div><mat-icon class="mat-list-icon text-success">check</mat-icon></div>
+                            <div class="flex-grow-1 icon-text align-self-center">
+                                <span class="pl-2">Đã dọn</span>
+                            </div>
+                        </div>
+                        <div class="px-2 py-2 d_flex flex-row" *ngIf="room.cleanRoom">
+                            <div><mat-icon class="mat-list-icon text-danger">close</mat-icon></div>
+                            <div class="flex-grow-1 icon-text text-danger align-self-center">
+                                <span class="pl-2">Chưa dọn</span>
+                            </div>
+                        </div>
+                    </mat-card>
+                </div>
+            </div>
+        </mat-expansion-panel>
+    </div>
+</div>

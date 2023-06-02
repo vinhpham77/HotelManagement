@@ -40,6 +40,14 @@ export class RoomTypesService {
     return this.httpClient.get<any>(url);
   }
 
+  uploadRoomTypeAll() {
+    this.httpClient.get<any>(this.roomTypesAPI, this.httpOptions).subscribe({
+      next: data => {
+        this.roomTypesSource.next(data);
+      }
+    })
+  }
+
   create(roomType: RoomType) {
     return this.httpClient.post<RoomType>(this.roomTypesAPI, roomType, this.httpOptions);
   }

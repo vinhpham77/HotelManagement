@@ -19,8 +19,10 @@ export class RoomsService {
 
   private roomsSource = new BehaviorSubject<RoomDTO[]>([]);
   private notifySource = new BehaviorSubject<any>(null);
+  private rooms = new BehaviorSubject<Room[]>([]);
 
   rooms$ = this.roomsSource.asObservable();
+  rooms$$ = this.rooms.asObservable();
   notify$ = this.notifySource.asObservable();
 
   constructor(private httpClient: HttpClient) {
@@ -40,17 +42,22 @@ export class RoomsService {
     return this.httpClient.get<RoomDTO[]>(this.roomAPI, this.httpOptions);
   }
 
+  getRoomById(_id: string) {
+    let url = `${this.roomAPI}/${_id}`;
+    return this.httpClient.get<any>(url, this.httpOptions);
+  }
+
   uploadRoomAll() {
     let url = `${this.roomAPI}`;
-    this.httpClient.get<RoomDTO[]>(url, this.httpOptions).subscribe({
+    this.httpClient.get<Room[]>(url, this.httpOptions).subscribe({
       next: data => {
         this.convert(data);
-        this.roomsSource.next(data);
+        this.rooms.next(data);
       }
     })
   }
 
-  convert(data: RoomDTO[]) {
+  convert(data: Room[]) {
     data.forEach(room => {
       room.cleanRoomAt = new Date(room.cleanRoomAt);
     })

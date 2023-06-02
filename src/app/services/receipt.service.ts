@@ -32,6 +32,11 @@ export class ReceiptService {
     });
   }
 
+  getReceiptById(id: string) {
+    let url = `${this.receiptAPI}/${id}`;
+    return this.httpClient.get<any>(url, this.httpOptions);
+  }
+
   create(receiptItem: Receipt) {
     return this.httpClient.post<Receipt>(this.receiptAPI, receiptItem, this.httpOptions);
   }

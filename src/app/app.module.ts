@@ -43,6 +43,20 @@ import { CurrencyPipe } from '@angular/common';
 import { MenuItemNamePipe } from './pipes/menu-item-name.pipe';
 import { CuCustomerComponent } from './components/manager/cu-customer/cu-customer.component';
 import { CustomersComponent } from './components/manager/customers/customers.component';
+import { RentComponent } from './components/rent/rent.component';
+import {MatTabsModule} from '@angular/material/tabs';
+import { CardHistoryComponent } from './components/rent/card-history/card-history.component';
+import {MatMenuModule} from '@angular/material/menu';
+import { CardRoomReceivedComponent } from './components/rent/card-room-received/card-room-received.component';
+import { RentChangeRoomComponent } from './components/rent/rent-change-room/rent-change-room.component';
+import {MatExpansionModule} from '@angular/material/expansion';
+import { RentCheckOutComponent } from './components/rent/rent-check-out/rent-check-out.component';
+import {MatDatepickerModule} from '@angular/material/datepicker';
+import { RentHistoryUpdateComponent } from './components/rent/rent-history-update/rent-history-update.component';
+import { RentMenuComponent } from './components/rent/rent-menu/rent-menu.component';
+import {MatBadgeModule} from '@angular/material/badge';
+import { RentUpdateComponent } from './components/rent/rent-update/rent-update.component';
+
 
 @NgModule({
   declarations: [
@@ -62,7 +76,15 @@ import { CustomersComponent } from './components/manager/customers/customers.com
     CuMenuItemComponent,
     MenuItemNamePipe,
     CuCustomerComponent,
-    CustomersComponent
+    CustomersComponent,
+    RentComponent,
+    CardHistoryComponent,
+    CardRoomReceivedComponent,
+    RentChangeRoomComponent,
+    RentCheckOutComponent,
+    RentHistoryUpdateComponent,
+    RentMenuComponent,
+    RentUpdateComponent
   ],
   imports: [
     BrowserModule,
@@ -88,7 +110,12 @@ import { CustomersComponent } from './components/manager/customers/customers.com
     MatSortModule,
     MatProgressSpinnerModule,
     ReactiveFormsModule,
-    MatSelectModule
+    MatSelectModule,
+    MatTabsModule,
+    MatMenuModule,
+    MatExpansionModule,
+    MatDatepickerModule,
+    MatBadgeModule
   ],
   providers: [
     { provide: MatPaginatorIntl, useClass: CustomMatPaginatorIntlService },

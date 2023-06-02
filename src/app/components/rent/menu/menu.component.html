@@ -1,0 +1,50 @@
+<mat-tab-group>
+    <mat-tab label="First">
+        <ng-template mat-tab-label>Tất cả</ng-template>
+        <div class="d_flex flex-wrap p-2">
+            <div *ngFor="let item of menus">
+                <div class="item border" *ngIf="!hadItem(item.id)">
+                    <div class="d_flex" (click)="selectItem($event, item)">
+                        <div class="item-name text-warning">{{item.name}}</div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </mat-tab>
+    <mat-tab label="Second">
+        <ng-template mat-tab-label>Đồ ăn</ng-template>
+        <div class="d_flex flex-wrap p-2">
+            <div *ngFor="let item of menus">
+                <div class="item border" *ngIf="!hadItem(item.id) && item.type === 'food'">
+                    <div class="d_flex">
+                        <div class="item-name text-warning">{{item.name}}</div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </mat-tab>
+    <mat-tab label="Third">
+        <ng-template mat-tab-label>Đồ uống</ng-template>
+        <div class="d_flex flex-wrap p-2">
+            <div *ngFor="let item of menus">
+                <div class="item border" *ngIf="!hadItem(item.id) && item.type === 'drinks'">
+                    <div class="d_flex">
+                        <div class="item-name text-warning">{{item.name}}</div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </mat-tab>
+    <mat-tab label="Third">
+        <ng-template mat-tab-label>Loại khác</ng-template>
+        <div class="d_flex flex-wrap p-2">
+            <div *ngFor="let item of menus">
+                <div class="item border" *ngIf="!hadItem(item.id) && item.type === 'others'">
+                    <div class="d_flex">
+                        <div class="item-name text-warning">{{item.name}}</div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </mat-tab>
+  </mat-tab-group>

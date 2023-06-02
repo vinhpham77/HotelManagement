@@ -3,6 +3,7 @@ import { BehaviorSubject } from 'rxjs';
 import { ReservationDetail } from '../models/reservation-detail';
 import { environment } from 'src/environments/environment';
 import { HttpClient, HttpHeaders } from '@angular/common/http';
+import { Room } from '../models/Room';
 
 @Injectable({
   providedIn: 'root'
@@ -42,12 +43,12 @@ export class ReservationDetailService {
     })
   }
 
-  get ReservationDetail(roomId: string) {
+  getReservationDetail(roomId: string) {
     let url = `${this.reservationDetailAPI}?roomId=${roomId}&checkedOut=false`;
     return this.httpClient.get<any>(url);
   }
 
-  get ReservationDetailById(_id: string) {
+  getReservationDetailById(_id: string) {
     let url = `${this.reservationDetailAPI}/${_id}`;
     return this.httpClient.get<any>(url);
   }
@@ -104,14 +105,14 @@ export class ReservationDetailService {
   }
 
   adultsExceed(reservationdetail: ReservationDetail, room: Room): number {
-    if(reservationdetail.totalAdults > room.maxAdults)
-      return reservationdetail.totalAdults - room.maxAdults;
+    if(reservationdetail.totalAdults > room.maxAdult)
+      return reservationdetail.totalAdults - room.maxAdult;
     return 0;
   }
 
   childrenExceed(reservationdetail: ReservationDetail, room: Room): number {
-    if(reservationdetail.totalChildren > room.maxChildren)
-      return reservationdetail.totalChildren - room.maxChildren;
+    if(reservationdetail.totalChildren > room.maxChild)
+      return reservationdetail.totalChildren - room.maxChild;
     return 0;
   }
 }
