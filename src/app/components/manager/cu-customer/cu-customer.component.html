@@ -1,1 +1,80 @@
-<p>cu-customer works!</p>
+<div class='form-wrapper' [hidden]='isHidden'>
+  <header class='form-header'>
+    <p class='form-heading'>{{data?.title}}</p>
+    <div class='form-actions'>
+      <button mat-button class='secondary' (click)='onSave()'>
+        <mat-icon>save</mat-icon>Lưu
+      </button>
+      <button mat-button (click)='onCancel()'>
+        <mat-icon>close</mat-icon>Huỷ
+      </button>
+    </div>
+  </header>
+  <mat-divider></mat-divider>
+  <form class='form-content' [formGroup]='customerForm'>
+    <div class='half-form-field'>
+      <mat-form-field appearance='fill'>
+        <mat-label>Họ</mat-label>
+        <input matInput formControlName='lastName' required>
+        <mat-error *ngIf='LastName?.invalid'>Bạn phải nhập họ</mat-error>
+      </mat-form-field>
+    </div>
+    <div class='half-form-field'>
+      <mat-form-field appearance='fill'>
+        <mat-label>Tên</mat-label>
+        <input matInput formControlName='firstName' required>
+        <mat-error *ngIf='FirstName?.invalid'>Bạn phải nhập tên</mat-error>
+      </mat-form-field>
+    </div>
+
+    <div class='half-form-field'>
+      <mat-form-field>
+        <mat-label>Ngày sinh</mat-label>
+        <input matInput [matDatepicker]='birthdateDP'
+               formControlName='birthdate'>
+        <mat-datepicker-toggle matIconSuffix [for]='birthdateDP'></mat-datepicker-toggle>
+        <mat-datepicker #birthdateDP></mat-datepicker>
+      </mat-form-field>
+    </div>
+
+    <div class='half-form-field'>
+      <mat-button-toggle-group formControlName='sex'>
+        <mat-button-toggle [value]='true'>
+          <mat-icon>man</mat-icon>Nam
+        </mat-button-toggle>
+        <mat-button-toggle [value]='false'>
+          <mat-icon>woman</mat-icon>Nữ
+        </mat-button-toggle>
+      </mat-button-toggle-group>
+      <mat-error *ngIf='Sex?.invalid'>Bạn phải chọn giới tính</mat-error>
+    </div>
+
+    <div class='half-form-field'>
+      <mat-form-field appearance='fill'>
+        <mat-label>CMT/Hộ chiếu</mat-label>
+        <input matInput formControlName='idNo' required>
+        <mat-error *ngIf='IdNo?.invalid'>Bạn phải nhập CMT/Hộ chiếu</mat-error>
+      </mat-form-field>
+    </div>
+
+    <div class='half-form-field'>
+      <mat-form-field appearance='fill'>
+        <mat-label>Quốc tịch</mat-label>
+        <input matInput formControlName='nationality' required>
+        <mat-error *ngIf='Nationality?.invalid'>Bạn phải nhập quốc tịch</mat-error>
+      </mat-form-field>
+    </div>
+
+    <mat-form-field appearance='fill'>
+      <mat-label>Số điện thoại</mat-label>
+      <input matInput formControlName='phoneNumber'>
+      <mat-error *ngIf='PhoneNumber?.errors?.["pattern"]'>Số điện thoại gồm 10 chữ số</mat-error>
+    </mat-form-field>
+
+    <mat-form-field appearance='fill'>
+      <mat-label>Địa chỉ</mat-label>
+      <textarea matInput formControlName='address' required></textarea>
+      <mat-error *ngIf='Address?.invalid'>Bạn phải nhập địa chỉ</mat-error>
+    </mat-form-field>
+  </form>
+</div>

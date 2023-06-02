@@ -10,6 +10,7 @@ import { SortDirection } from '@angular/material/sort';
   providedIn: 'root'
 })
 export class MenuService {
+  private menuSource = new BehaviorSubject<MenuItem[]>([]);
   private menuAPI = environment.apiUrl + '/Menu';
   private httpOptions = {
     headers: new HttpHeaders({
@@ -17,12 +18,9 @@ export class MenuService {
     })
   };
 
-  private menuSource = new BehaviorSubject<MenuItem[]>([]);
-
   menu$ = this.menuSource.asObservable();
 
   constructor(private httpClient: HttpClient, private commonService: CommonService) {
-
   }
 
   load() {
@@ -61,6 +59,6 @@ export class MenuService {
 
   deleteMany(menuItemId: string[]) {
     const options = { ...this.httpOptions, body: menuItemId };
-    return this.httpClient.delete<any>(this.menuAPI + '/DeleteMany', options);
+    return this.httpClient.delete<any>(this.menuAPI, options);
   }
 }

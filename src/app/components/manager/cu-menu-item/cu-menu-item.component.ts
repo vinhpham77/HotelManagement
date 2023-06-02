@@ -44,7 +44,7 @@ export class CuMenuItemComponent implements OnDestroy {
       this.menuItemForm.reset();
 
       if (this.data.action === 'update') {
-        let type = this.data?.object.type ?? "null";
+        let type = this.data?.object.type ?? 'null';
         let importPrice = this.commonService.convertToCurrency(this.data?.object.importPrice);
         let exportPrice = this.commonService.convertToCurrency(this.data?.object.exportPrice);
 
@@ -65,18 +65,17 @@ export class CuMenuItemComponent implements OnDestroy {
       let importPrice = this.commonService.convertToNumber(this.ImportPrice?.value);
       let exportPrice = this.commonService.convertToNumber(this.ExportPrice?.value);
       let type = typeof this.Type?.value === 'boolean' ? this.Type?.value : null;
+      let menuItem = <MenuItem>{
+        name: this.Name?.value,
+        type,
+        importPrice,
+        exportPrice
+      };
       if (this.data.action === 'create') {
-        this.menuService.create(<MenuItem>{
-          name: this.Name?.value,
-          type,
-          importPrice,
-          exportPrice
-        }).subscribe(
+        this.menuService.create(menuItem).subscribe(
           {
             next: () => {
-              this.isHidden = true;
-              this.menuService.load();
-              this.commonService.openSnackBar('Thêm mới thành công');
+              this.refreshOnSuccess('Thêm mới thành công');
             },
             error: () => {
               this.commonService.openSnackBar('Có lỗi xảy ra. Vui lòng thử lại sau');
@@ -84,18 +83,11 @@ export class CuMenuItemComponent implements OnDestroy {
           }
         );
       } else if (this.data.action === 'update') {
-        this.menuService.update(<MenuItem>{
-          id: this.data.object.id,
-          name: this.Name?.value,
-          type,
-          importPrice,
-          exportPrice
-        }).subscribe(
+        menuItem.id = this.data.object.id;
+        this.menuService.update(menuItem).subscribe(
           {
             next: () => {
-              this.isHidden = true;
-              this.menuService.load();
-              this.commonService.openSnackBar('Cập nhật thành công');
+              this.refreshOnSuccess('Cập nhật thành công');
             },
             error: () => {
               this.commonService.openSnackBar('Có lỗi xảy ra. Vui lòng thử lại sau');
@@ -114,5 +106,11 @@ export class CuMenuItemComponent implements OnDestroy {
 
   ngOnDestroy() {
     this.subscription.unsubscribe();
+  }
+
+  refreshOnSuccess(msg: string) {
+    this.isHidden = true;
+    this.menuService.load();
+    this.commonService.openSnackBar(msg);
   }
 }

@@ -19,7 +19,7 @@ import { MenuService } from '../../../services/menu.service';
 })
 export class MenuComponent implements AfterViewInit, OnDestroy {
   timer: any;
-  dataSource = new MatTableDataSource<MenuItem>([]);
+  dataSource : MenuItem[] = [];
   displayedColumns: string[] = ['select', 'name', 'type', 'importPrice', 'exportPrice', 'actions'];
   subscription = new Subscription();
   selections = new SelectionModel<MenuItem>(true, []);
@@ -34,7 +34,7 @@ export class MenuComponent implements AfterViewInit, OnDestroy {
     this.paginatorSizeOptions = this.commonService.PaginatorOptions;
 
     this.subscription = this.menuService.menu$.subscribe(data => {
-      this.dataSource.data = data;
+      this.dataSource = data;
     });
   }
 
@@ -69,13 +69,13 @@ export class MenuComponent implements AfterViewInit, OnDestroy {
           return data.items;
         })
       )
-      .subscribe(data => this.dataSource.data = data);
+      .subscribe(data => this.dataSource = data);
     this.selections.clear();
   }
 
   isAllSelected() {
     const numSelected = this.selections.selected.length;
-    const numRows = this.dataSource.data.length;
+    const numRows = this.dataSource.length;
     return numSelected === numRows;
   }
 
@@ -85,10 +85,10 @@ export class MenuComponent implements AfterViewInit, OnDestroy {
       return;
     }
 
-    this.selections.select(...this.dataSource.data);
+    this.selections.select(...this.dataSource);
   }
 
-  applyFilter(event: Event) {
+  applyFilter() {
     clearTimeout(this.timer);
 
     this.timer = setTimeout(() => {
@@ -111,16 +111,14 @@ export class MenuComponent implements AfterViewInit, OnDestroy {
 
   onDelete(menuItem: MenuItem) {
     this.menuService.delete(menuItem.id).subscribe(() => {
-      this.commonService.openSnackBar('Xoá thành công loại phòng ' + menuItem.name);
-      this.loadMenu();
+      this.refreshOnSuccess('Xoá thành công loại phòng ' + menuItem.name);
     });
   }
 
   onDeleteMany() {
     const menuItemIds = this.selections.selected.map(menuItem => menuItem.id);
     this.menuService.deleteMany(menuItemIds).subscribe(() => {
-      this.commonService.openSnackBar('Xoá thành công ' + menuItemIds.length + ' loại phòng');
-      this.loadMenu();
+      this.refreshOnSuccess('Xoá thành công ' + menuItemIds.length + ' loại phòng');
     });
   }
 
@@ -154,5 +152,10 @@ export class MenuComponent implements AfterViewInit, OnDestroy {
       action: 'delete',
       data: menuItem
     });
+  }
+
+  refreshOnSuccess(msg: string) {
+    this.loadMenu();
+    this.commonService.openSnackBar(msg);
   }
 }

@@ -43,6 +43,10 @@ import { CurrencyPipe } from '@angular/common';
 import { MenuItemNamePipe } from './pipes/menu-item-name.pipe';
 import { CuCustomerComponent } from './components/manager/cu-customer/cu-customer.component';
 import { CustomersComponent } from './components/manager/customers/customers.component';
+import { FullNamePipe } from './pipes/full-name.pipe';
+import { MatDatepicker, MatDatepickerModule } from '@angular/material/datepicker';
+import { MAT_DATE_LOCALE, MatNativeDateModule } from '@angular/material/core';
+import { MatButtonToggleModule } from '@angular/material/button-toggle';
 
 @NgModule({
   declarations: [
@@ -61,6 +65,7 @@ import { CustomersComponent } from './components/manager/customers/customers.com
     MenuComponent,
     CuMenuItemComponent,
     MenuItemNamePipe,
+    FullNamePipe,
     CuCustomerComponent,
     CustomersComponent
   ],
@@ -88,14 +93,19 @@ import { CustomersComponent } from './components/manager/customers/customers.com
     MatSortModule,
     MatProgressSpinnerModule,
     ReactiveFormsModule,
-    MatSelectModule
+    MatSelectModule,
+    MatDatepickerModule,
+    MatNativeDateModule,
+    MatButtonToggleModule
   ],
   providers: [
     { provide: MatPaginatorIntl, useClass: CustomMatPaginatorIntlService },
     { provide: TitleStrategy, useExisting: CustomTitleService },
+    { provide: MAT_DATE_LOCALE, useValue: 'vi-VN' },
     MatSnackBar,
     CommonService,
-    CurrencyPipe
+    CurrencyPipe,
+    MatDatepicker,
   ],
   bootstrap: [AppComponent]
 })

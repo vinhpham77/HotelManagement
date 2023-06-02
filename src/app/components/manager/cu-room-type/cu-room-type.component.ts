@@ -46,16 +46,15 @@ export class CuRoomTypeComponent implements OnDestroy {
 
   onSave() {
     if (this.roomTypeForm.valid) {
+      let roomType = <RoomType>{
+        name: this.Name?.value,
+        description: this.Description?.value
+      };
       if (this.data.action === 'create') {
-        this.roomTypeService.create(<RoomType>{
-          name: this.Name?.value,
-          description: this.Description?.value
-        }).subscribe(
+        this.roomTypeService.create(roomType).subscribe(
           {
             next: () => {
-              this.isHidden = true;
-              this.roomTypeService.load();
-              this.commonService.openSnackBar('Thêm mới thành công');
+              this.refreshOnSuccess('Thêm mới thành công');
             },
             error: () => {
               this.commonService.openSnackBar('Có lỗi xảy ra. Vui lòng thử lại sau');
@@ -63,16 +62,11 @@ export class CuRoomTypeComponent implements OnDestroy {
           }
         );
       } else if (this.data.action === 'update') {
-        this.roomTypeService.update(<RoomType>{
-          id: this.data.object.id,
-          name: this.Name?.value,
-          description: this.Description?.value
-        }).subscribe(
+        roomType.id = this.data.object.id;
+        this.roomTypeService.update(roomType).subscribe(
           {
             next: () => {
-              this.isHidden = true;
-              this.roomTypeService.load();
-              this.commonService.openSnackBar('Cập nhật thành công');
+              this.refreshOnSuccess('Cập nhật thành công');
             },
             error: () => {
               this.commonService.openSnackBar('Có lỗi xảy ra. Vui lòng thử lại sau');
@@ -91,5 +85,11 @@ export class CuRoomTypeComponent implements OnDestroy {
 
   ngOnDestroy() {
     this.subscription.unsubscribe();
+  }
+
+  refreshOnSuccess(msg: string) {
+    this.isHidden = true;
+    this.roomTypeService.load();
+    this.commonService.openSnackBar(msg);
   }
 }

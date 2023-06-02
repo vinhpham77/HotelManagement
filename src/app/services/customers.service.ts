@@ -11,18 +11,16 @@ import { SortDirection } from '@angular/material/sort';
 })
 export class CustomersService {
   private customersAPI = environment.apiUrl + '/Customers';
+  private customersSource = new BehaviorSubject<Customer[]>([]);
   private httpOptions = {
     headers: new HttpHeaders({
       'Content-Type': 'application/json'
     })
   };
 
-  private customersSource = new BehaviorSubject<Customer[]>([]);
-
   customers$ = this.customersSource.asObservable();
 
   constructor(private httpClient: HttpClient, private commonService: CommonService) {
-
   }
 
   load() {
@@ -52,6 +50,6 @@ export class CustomersService {
 
   deleteMany(customerId: string[]) {
     const options = { ...this.httpOptions, body: customerId };
-    return this.httpClient.delete<any>(this.customersAPI + '/DeleteMany', options);
+    return this.httpClient.delete<any>(this.customersAPI, options);
   }
 }
