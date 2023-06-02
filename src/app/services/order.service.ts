@@ -1,3 +1,4 @@
+import { ReservationDetail } from './../models/reservation-detail';
 import { Injectable } from '@angular/core';
 import { BehaviorSubject } from 'rxjs';
 import { Order } from '../models/order';
@@ -22,9 +23,18 @@ export class OrderService {
   constructor(private httpClient: HttpClient) {
 
   }
-  get OrderAll() {
+  uploadOrderAll() {
     let url = `${this.orderAPI}`;
-    return this.httpClient.get<any>(url);
+    this.httpClient.get<any>(url).subscribe({
+      next: data => {
+        this.ordersSource.next(data);
+      }
+    });
+  }
+
+  getOrderByReservationDetail(reservationDetail: ReservationDetail) {
+    let url = `${this.orderAPI}?reservationDetailId=${reservationDetail.id}`;
+    return this.httpClient.get<any>(url, this.httpOptions);
   }
 
   public totalOrder(order: Order): number{

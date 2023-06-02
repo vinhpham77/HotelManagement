@@ -23,9 +23,13 @@ export class ReceiptService {
   constructor(private httpClient: HttpClient) {
 
   }
-  get ReceiptAll() {
+  uploadReceiptAll() {
     let url = `${this.receiptAPI}`;
-    return this.httpClient.get<any>(url);
+    this.httpClient.get<any>(url).subscribe({
+      next: data => {
+        this.receiptSource.next(data);
+      }
+    });
   }
 
   create(receiptItem: Receipt) {

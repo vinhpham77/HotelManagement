@@ -32,9 +32,13 @@ export class MenuService {
     });
   }
 
-  getMenuAll() {
+  uploadMenuAll() {
     let url = `${this.menuAPI}`;
-    return this.httpClient.get<any>(url);
+    this.httpClient.get<any>(url).subscribe({
+      next: data => {
+        this.menuSource.next(data);
+      }
+    });
   }
 
   getMenu(keyword: string, sort: string, order: SortDirection, page: number, size: number) {

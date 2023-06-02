@@ -22,9 +22,24 @@ export class ReservationDetailService {
   constructor(private httpClient: HttpClient) {
 
   }
-  get ReservationDetailAll() {
+  uploadReservationDetailAll() {
     let url = `${this.reservationDetailAPI}`;
-    return this.httpClient.get<any>(url);
+    this.httpClient.get<any>(url).subscribe({
+      next: data => {
+        this.convert(data);
+        this.reservationDetailSource.next(data);
+      }
+    });
+  }
+
+  convert(data: ReservationDetail[]) {
+    data.forEach(item => {
+      item.checkInAt = new Date(item.checkInAt);
+      if(item.checkOutAt)
+        item.checkOutAt = new Date(item.checkOutAt);
+      else
+        item.checkOutAt = null;
+    })
   }
 
   get ReservationDetail(roomId: string) {

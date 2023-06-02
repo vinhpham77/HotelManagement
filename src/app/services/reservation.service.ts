@@ -22,9 +22,20 @@ export class ReservationService {
   constructor(private httpClient: HttpClient) {
 
   }
-  get ReservationAll() {
+  uploadReservationAll() {
     let url = `${this.reservationAPI}`;
-    return this.httpClient.get<any>(url);
+    this.httpClient.get<any>(url).subscribe({
+      next: data => {
+        this.convert(data);
+        this.reservationSource.next(data);
+      }
+    });
+  }
+
+  convert(data: Reservation[]) {
+    data.forEach(item => {
+      item.reservedAt = new Date(item.reservedAt);
+    })
   }
 
   create(reservationItem: Reservation) {

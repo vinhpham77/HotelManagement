@@ -40,6 +40,22 @@ export class RoomsService {
     return this.httpClient.get<RoomDTO[]>(this.roomAPI, this.httpOptions);
   }
 
+  uploadRoomAll() {
+    let url = `${this.roomAPI}`;
+    this.httpClient.get<RoomDTO[]>(url, this.httpOptions).subscribe({
+      next: data => {
+        this.convert(data);
+        this.roomsSource.next(data);
+      }
+    })
+  }
+
+  convert(data: RoomDTO[]) {
+    data.forEach(room => {
+      room.cleanRoomAt = new Date(room.cleanRoomAt);
+    })
+  }
+
   create(room: Room) {
     return this.httpClient.post<Room>(this.roomAPI, room, this.httpOptions);
   }
