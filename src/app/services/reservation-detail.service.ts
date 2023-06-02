@@ -1,33 +1,102 @@
 import { Injectable } from '@angular/core';
 import { BehaviorSubject } from 'rxjs';
 import { ReservationDetail } from '../models/reservation-detail';
+import { environment } from 'src/environments/environment';
+import { HttpClient, HttpHeaders } from '@angular/common/http';
 
 @Injectable({
   providedIn: 'root'
 })
 export class ReservationDetailService {
-  private reservationDetails: ReservationDetail[] = [
-    { id: '1', reservevationId: '1', roomId: '1', checkInAt: new Date("05/02/2023 09:30:00"), checkOutAt: new Date("03/05/2023 09:30:00"), customerId: '1', deposits: 0, totalAdults:2, totalChildren:2, roomPricePerDay: 400000 },
-    { id: '2', reservevationId: '1', roomId: '2', checkInAt: new Date("05/03/2023 09:30:00"), checkOutAt: new Date(), customerId: '1', deposits: 10000, totalAdults:2, totalChildren:2, roomPricePerDay: 400000 },
-  ];
+  private reservationDetailAPI = environment.apiUrl + '/reservationdetails';
+  private httpOptions = {
+    headers: new HttpHeaders({
+      'Content-Type': 'application/json'
+    })
+  };
 
-  reservationDetailsSource = new BehaviorSubject<ReservationDetail[]>(this.reservationDetails);
+  reservationDetailSource = new BehaviorSubject<ReservationDetail[]>([]);
 
-  reservationDetailsSource$ = this.reservationDetailsSource.asObservable();
+  reservationDetail$ = this.reservationDetailSource.asObservable();
 
-  get ReservationDetails() {
-    return this.reservationDetailsSource.next(this.reservationDetails);
+  constructor(private httpClient: HttpClient) {
+
+  }
+  get ReservationDetailAll() {
+    let url = `${this.reservationDetailAPI}`;
+    return this.httpClient.get<any>(url);
   }
 
-  getId(roomId: string): string {
-    let id = this.reservationDetails.find(each => each.roomId === roomId)?.id;
-    if(id){
-      return id;
-    }
-    return '';
+  get ReservationDetail(roomId: string) {
+    let url = `${this.reservationDetailAPI}?roomId=${roomId}&checkedOut=false`;
+    return this.httpClient.get<any>(url);
   }
 
-  getDeposits(roomId: string): number | undefined {
-    return this.reservationDetails.find(each => each.roomId === roomId)?.deposits;
+  get ReservationDetailById(_id: string) {
+    let url = `${this.reservationDetailAPI}/${_id}`;
+    return this.httpClient.get<any>(url);
+  }
+
+  create(reservationDetailItem: ReservationDetail) {
+    return this.httpClient.post<ReservationDetail>(this.reservationDetailAPI, reservationDetailItem, this.httpOptions);
+  }
+
+  update(reservationDetailItem: ReservationDetail) {
+    return this.httpClient.put<ReservationDetail>(`${this.reservationDetailAPI}/${reservationDetailItem.id}`, reservationDetailItem, this.httpOptions);
+  }
+
+  delete(_id: string) {
+    return this.httpClient.delete<ReservationDetail>(this.reservationDetailAPI + `/${_id}`);
+  }
+
+  daysIn(checkIn: Date, checkOut: Date) {
+    var t2 = new Date(checkOut);
+    t2.setHours(12);
+    t2.setMinutes(0);
+    var t1 = new Date(checkIn);
+    t1.setHours(12);
+    t1.setMinutes(0);
+    return Math.floor((t2.getTime() - t1.getTime()) / (24*60*60*1000));
+  }
+
+  roomPriceDay(reservationdetail: ReservationDetail, checkIn: Date, checkOut: Date): number {
+    return reservationdetail.roomPricePerDay * this.daysIn(checkIn, checkOut);
+  }
+
+  roomSurcharge(reservationdetail: ReservationDetail, room: Room, checkIn: Date, checkOut: Date): number {
+    let p = reservationdetail.roomPricePerDay;
+    return p * this.surchargeCheckIn(checkIn) + p * this.surchargeCheckOut(checkOut) + 200000 * this.adultsExceed(reservationdetail, room) + 100000 * this.childrenExceed(reservationdetail, room);
+  }
+
+  surchargeCheckIn(checkIn: Date): number {
+    var h = checkIn.getHours();
+    if(h >= 14)
+      return 0;
+    if(h >= 9)
+      return 0.3;
+    return  0.5;
+  }
+
+  surchargeCheckOut(checkOut: Date): number {
+    var t = checkOut.getHours();
+    if(t >= 18)
+      return 1;
+    if(t >= 15)
+      return 0.5;
+    if(t >= 12)
+      return  0.3;
+    return 0;
+  }
+
+  adultsExceed(reservationdetail: ReservationDetail, room: Room): number {
+    if(reservationdetail.totalAdults > room.maxAdults)
+      return reservationdetail.totalAdults - room.maxAdults;
+    return 0;
+  }
+
+  childrenExceed(reservationdetail: ReservationDetail, room: Room): number {
+    if(reservationdetail.totalChildren > room.maxChildren)
+      return reservationdetail.totalChildren - room.maxChildren;
+    return 0;
   }
 }

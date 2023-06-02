@@ -1,26 +1,42 @@
+import { Receipt } from './../models/receipt';
 import { Injectable } from '@angular/core';
 import { BehaviorSubject } from 'rxjs';
 import { Receipt } from '../models/receipt';
+import { environment } from 'src/environments/environment';
+import { HttpClient, HttpHeaders } from '@angular/common/http';
 
 @Injectable({
   providedIn: 'root'
 })
 export class ReceiptService {
-  private receipts: Receipt[] = [
-    { id: '1', 
-      employeeId: '1', 
-      reservationDetailId: '1',
-      createdAt: new Date("02/05/2023 09:30:00"),
-      orderPrice: 0,
-      roomPrice: 100000,
-    },
-  ];
+  private receiptAPI = environment.apiUrl + '/receipts';
+  private httpOptions = {
+    headers: new HttpHeaders({
+      'Content-Type': 'application/json'
+    })
+  };
 
-  receiptsSource = new BehaviorSubject<Receipt[]>(this.receipts);
+  receiptSource = new BehaviorSubject<Receipt[]>([]);
 
-  receiptsSource$ = this.receiptsSource.asObservable();
+  receipt$ = this.receiptSource.asObservable();
 
-  get Receipts() {
-    return this.receiptsSource.next(this.receipts);
+  constructor(private httpClient: HttpClient) {
+
+  }
+  get ReceiptAll() {
+    let url = `${this.receiptAPI}`;
+    return this.httpClient.get<any>(url);
+  }
+
+  create(receiptItem: Receipt) {
+    return this.httpClient.post<Receipt>(this.receiptAPI, receiptItem, this.httpOptions);
+  }
+
+  update(receiptItem: Receipt) {
+    return this.httpClient.put<Receipt>(`${this.receiptAPI}/${receiptItem.id}`, receiptItem, this.httpOptions);
+  }
+
+  delete(_id: string) {
+    return this.httpClient.delete<Receipt>(this.receiptAPI + `/${_id}`);
   }
 }

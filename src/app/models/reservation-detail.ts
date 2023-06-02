@@ -3,7 +3,7 @@ export interface ReservationDetail {
     reservevationId: string;
     roomId: string;
     checkInAt: Date;
-    checkOutAt: Date;
+    checkOutAt: Date | null;
     customerId: string;
     deposits: number;
     totalAdults: number;

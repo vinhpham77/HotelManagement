@@ -1,25 +1,41 @@
 import { Injectable } from '@angular/core';
 import { BehaviorSubject } from 'rxjs';
 import { Reservation } from '../models/reservation';
+import { environment } from 'src/environments/environment';
+import { HttpClient, HttpHeaders } from '@angular/common/http';
 
 @Injectable({
   providedIn: 'root'
 })
 export class ReservationService {
-  private reservations: Reservation[] = [
-    { id: '1', 
-      roomIds: ['2'], 
-      customerId: '1',
-      employeeId: '1',
-      reservedAt: new Date("02/05/2023 09:30:00"),
-    },
-  ];
+  private reservationAPI = environment.apiUrl + '/reservations';
+  private httpOptions = {
+    headers: new HttpHeaders({
+      'Content-Type': 'application/json'
+    })
+  };
 
-  reservationsSource = new BehaviorSubject<Reservation[]>(this.reservations);
+  reservationSource = new BehaviorSubject<Reservation[]>([]);
 
-  reservationsSource$ = this.reservationsSource.asObservable();
+  reservartion$ = this.reservationSource.asObservable();
 
-  get Reservations() {
-    return this.reservationsSource.next(this.reservations);
+  constructor(private httpClient: HttpClient) {
+
+  }
+  get ReservationAll() {
+    let url = `${this.reservationAPI}`;
+    return this.httpClient.get<any>(url);
+  }
+
+  create(reservationItem: Reservation) {
+    return this.httpClient.post<Reservation>(this.reservationAPI, reservationItem, this.httpOptions);
+  }
+
+  update(reservationItem: Reservation) {
+    return this.httpClient.put<Reservation>(`${this.reservationAPI}/${reservationItem.id}`, reservationItem, this.httpOptions);
+  }
+
+  delete(_id: string) {
+    return this.httpClient.delete<Reservation>(this.reservationAPI + `/${_id}`);
   }
 }

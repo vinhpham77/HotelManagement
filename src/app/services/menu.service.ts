@@ -32,6 +32,11 @@ export class MenuService {
     });
   }
 
+  getMenuAll() {
+    let url = `${this.menuAPI}`;
+    return this.httpClient.get<any>(url);
+  }
+
   getMenu(keyword: string, sort: string, order: SortDirection, page: number, size: number) {
     this.commonService.tableData = { keyword, sort, order, page, size };
     let url = `${this.menuAPI}?keyword=${keyword}&sort=${sort}&order=${order}&page=${page + 1}&size=${size}`;

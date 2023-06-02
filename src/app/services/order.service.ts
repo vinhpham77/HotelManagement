@@ -1,37 +1,49 @@
 import { Injectable } from '@angular/core';
 import { BehaviorSubject } from 'rxjs';
 import { Order } from '../models/order';
+import { environment } from 'src/environments/environment';
+import { HttpClient, HttpHeaders } from '@angular/common/http';
 
 @Injectable({
   providedIn: 'root'
 })
 export class OrderService {
-  private orders: Order[] = [
-    { id: '1', 
-      reservationDetailId: '1', 
-      details: []
-    },
-    { id: '2', 
-      reservationDetailId: '2', 
-      details: []
-    },
-  ];
+  private orderAPI = environment.apiUrl + '/Orders';
+  private httpOptions = {
+    headers: new HttpHeaders({
+      'Content-Type': 'application/json'
+    })
+  };
 
-  ordersSource = new BehaviorSubject<Order[]>(this.orders);
+  ordersSource = new BehaviorSubject<Order[]>([]);
 
-  ordersSource$ = this.ordersSource.asObservable();
+  orders$ = this.ordersSource.asObservable();
 
-  get Orders() {
-    return this.ordersSource.next(this.orders);
+  constructor(private httpClient: HttpClient) {
+
+  }
+  get OrderAll() {
+    let url = `${this.orderAPI}`;
+    return this.httpClient.get<any>(url);
   }
 
-  public totalOrder(reservationDetailId: string): number{
-    let order = this.orders.find(each => each.reservationDetailId === reservationDetailId)
+  public totalOrder(order: Order): number{
     let result = 0;
     order?.details.forEach(element => {
       result += element.price * element.quantity;
     });
-
     return result;
+  }
+
+  create(orderItem: Order) {
+    return this.httpClient.post<Order>(this.orderAPI, orderItem, this.httpOptions);
+  }
+
+  update(orderItem: Order) {
+    return this.httpClient.put<Order>(`${this.orderAPI}/${orderItem.id}`, orderItem, this.httpOptions);
+  }
+
+  delete(_id: string) {
+    return this.httpClient.delete<Order>(this.orderAPI + `/${_id}`);
   }
 }
