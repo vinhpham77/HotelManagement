@@ -1,0 +1,27 @@
+<div class='form-wrapper' [hidden]='isHidden'>
+  <header class='form-header'>
+    <p class='form-heading'>{{data?.title}}</p>
+    <div class='form-actions'>
+      <button mat-button class='secondary' (click)='onSave()'>
+        <mat-icon>save</mat-icon>
+        Lưu
+      </button>
+      <button mat-button (click)='onCancel()'>
+        <mat-icon>close</mat-icon>
+        Huỷ
+      </button>
+    </div>
+  </header>
+  <mat-divider></mat-divider>
+  <form class='form-content' [formGroup]='roomTypeForm'>
+    <mat-form-field appearance='fill'>
+      <mat-label>Tên loại phòng</mat-label>
+      <input matInput formControlName='name' required>
+      <mat-error *ngIf='Name?.invalid'>Bạn phải nhập tên loại phòng</mat-error>
+    </mat-form-field>
+    <mat-form-field appearance='fill'>
+      <mat-label>Mô tả</mat-label>
+      <textarea matInput formControlName='description'></textarea>
+    </mat-form-field>
+  </form>
+</div>
