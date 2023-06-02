@@ -18,17 +18,10 @@ export class RoomsService {
   };
 
   private roomsSource = new BehaviorSubject<RoomDTO[]>([]);
-<<<<<<< HEAD
-  private notifySource = new BehaviorSubject<any>(null);
   private rooms = new BehaviorSubject<Room[]>([]);
 
   rooms$ = this.roomsSource.asObservable();
   rooms$$ = this.rooms.asObservable();
-  notify$ = this.notifySource.asObservable();
-=======
-
-  rooms$ = this.roomsSource.asObservable();
->>>>>>> 6737e23e912e54568f3c49cf6c12c110ba0a04e7
 
   constructor(private httpClient: HttpClient) {
 

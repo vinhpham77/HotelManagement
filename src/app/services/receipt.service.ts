@@ -1,4 +1,3 @@
-import { Receipt } from './../models/receipt';
 import { Injectable } from '@angular/core';
 import { BehaviorSubject } from 'rxjs';
 import { Receipt } from '../models/receipt';
