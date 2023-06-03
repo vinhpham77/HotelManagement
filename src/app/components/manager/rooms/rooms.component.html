@@ -8,7 +8,7 @@
       <mat-icon>add</mat-icon>
       Thêm
     </button>
-    <button mat-raised-button [color]="'warn'" [disabled]='selections.isEmpty()'>
+    <button mat-raised-button [color]="'warn'" [disabled]='selections.isEmpty()' (click)='openDeleteManyDialog()'>
       <mat-icon>delete_outline</mat-icon>
       Xoá
     </button>
@@ -35,14 +35,14 @@
         </td>
       </ng-container>
 
-      <ng-container matColumnDef='roomName'>
+      <ng-container matColumnDef='name'>
         <th mat-header-cell *matHeaderCellDef mat-sort-header sortActionDescription='Sắp theo tên phòng'>
           Tên phòng
         </th>
         <td mat-cell *matCellDef='let element'>{{element.name}}</td>
       </ng-container>
 
-      <ng-container matColumnDef='roomTypeName'>
+      <ng-container matColumnDef='roomType.name'>
         <th mat-header-cell *matHeaderCellDef mat-sort-header sortActionDescription='Sắp theo loại phòng'>Loại phòng</th>
         <td mat-cell *matCellDef='let element'>{{element.roomType.name}}</td>
       </ng-container>

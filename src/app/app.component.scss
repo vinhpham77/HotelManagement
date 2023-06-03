@@ -11,7 +11,6 @@
   line-height: 3.8rem;
 }
 
-
 table.small-font {
   & .mdc-data-table__header-cell, & .mdc-data-table__cell {
     font-size: 1.2rem;
@@ -127,6 +126,7 @@ table.small-font {
 
           & .menu-icon {
             @include set-icon-size(2.4rem);
+            vertical-align: unset;
           }
         }
       }
@@ -367,4 +367,10 @@ mat-form-field {
     padding-left: 0;
     padding-right: 0;
   }
+}
+
+.mat-mdc-snack-bar-container {
+  --mat-mdc-snack-bar-button-color: rgba(229, 57, 53);
+  --mdc-snackbar-container-color: mat.$white-6-opacity;
+  --mdc-snackbar-supporting-text-color: $text-color;
 }

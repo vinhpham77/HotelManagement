@@ -30,8 +30,8 @@ export class RoomsService {
 
   load() {
     let { keyword, sort, order, page, size } = this.commonService.tableData;
-    this.getRoomDtos(keyword, sort, order, page, size).subscribe(rooms => {
-      this.roomDtosSource.next(rooms);
+    this.getRoomDtos(keyword, sort, order, page, size).subscribe(data => {
+      this.roomDtosSource.next(data.items);
     });
   }
 
@@ -39,7 +39,7 @@ export class RoomsService {
     this.commonService.tableData = { keyword, sort, order, page, size };
     let url = `${this.roomDtoAPI}?keyword=${keyword}&sort=${sort}&order=${order}&page=${page + 1}&size=${size}`;
 
-    return this.httpClient.get<any>(this.roomDtoAPI, this.httpOptions);
+    return this.httpClient.get<any>(url, this.httpOptions);
   }
 
   getRoomById(_id: string) {
@@ -54,13 +54,13 @@ export class RoomsService {
         this.convert(data);
         this.rooms.next(data);
       }
-    })
+    });
   }
 
   convert(data: Room[]) {
     data.forEach(room => {
       room.lastCleanedAt = new Date(room.lastCleanedAt);
-    })
+    });
   }
 
   create(room: Room) {
@@ -68,7 +68,20 @@ export class RoomsService {
   }
 
   update(room: Room) {
-    return this.httpClient.put<Room>(this.roomAPI + `/${room.id}`, room, this.httpOptions);
+    const formatRoom = { ...room, lastCleanedAt: room.lastCleanedAt.toISOString() };
+    return this.httpClient.put<Room>(this.roomAPI + `/${room.id}`, formatRoom, this.httpOptions);
+  }
+
+  patch(room: Room) {
+    const patchDoc = [
+      { op: 'replace', path: '/name', value: room.name },
+      { op: 'replace', path: '/roomTypeId', value: room.roomTypeId },
+      { op: 'replace', path: '/pricePerDay', value: room.pricePerDay },
+      { op: 'replace', path: '/maxAdult', value: room.maxAdult },
+      { op: 'replace', path: '/maxChild', value: room.maxChild },
+      { op: 'replace', path: '/description', value: room.description }
+    ];
+    return this.httpClient.patch<Room>(this.roomAPI + `/${room.id}`, patchDoc);
   }
 
   delete(_id: string) {
@@ -77,6 +90,6 @@ export class RoomsService {
 
   deleteMany(_ids: string[]) {
     const options = { ...this.httpOptions, body: _ids };
-    return this.httpClient.delete<Room>(this.roomAPI + options);
+    return this.httpClient.delete<Room>(this.roomAPI, options);
   }
 }

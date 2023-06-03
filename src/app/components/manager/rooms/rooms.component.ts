@@ -20,7 +20,7 @@ import { DialogComponent } from '../../dialog/dialog.component';
 export class RoomsComponent implements OnInit, AfterViewInit, OnDestroy {
   timer: any;
   dataSource: RoomDto[] = [];
-  displayedColumns: string[] = ['select', 'roomName', 'roomTypeName', 'pricePerDay', 'isEmpty', 'isCleaned', 'lastCleanedAt', 'roomDescription', 'maxAdult', 'maxChild', 'actions'];
+  displayedColumns: string[] = ['select', 'name', 'roomType.name', 'pricePerDay', 'isEmpty', 'isCleaned', 'lastCleanedAt', 'roomDescription', 'maxAdult', 'maxChild', 'actions'];
   subscription = new Subscription();
   selections = new SelectionModel<RoomDto>(true, []);
   searchValue = '';
@@ -128,7 +128,7 @@ export class RoomsComponent implements OnInit, AfterViewInit, OnDestroy {
   }
 
   onDeleteMany() {
-    const roomDtoIds = this.selections.selected.map(menuItem => menuItem.id);
+    const roomDtoIds = this.selections.selected.map(roomDto => roomDto.id);
     this.roomsService.deleteMany(roomDtoIds).subscribe(() => {
       this.refreshOnSuccess('Xoá thành công ' + roomDtoIds.length + ' phòng');
     });
