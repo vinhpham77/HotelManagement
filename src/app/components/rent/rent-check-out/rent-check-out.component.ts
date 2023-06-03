@@ -38,7 +38,7 @@ export class RentCheckOutComponent implements OnInit, OnChanges {
 
   constructor(private orderService: OrderService,
     private fb: FormBuilder,
-    public menuService: MenuService, 
+    public menuService: MenuService,
     private _bottomSheet: MatBottomSheet,
     private roomService: RoomsService,
     private receiptSerice: ReceiptService,
@@ -60,7 +60,7 @@ export class RentCheckOutComponent implements OnInit, OnChanges {
   }
 
   ngOnInit(): void {
-    
+
   }
 
   ngOnChanges(changes: SimpleChanges): void {
@@ -126,7 +126,7 @@ export class RentCheckOutComponent implements OnInit, OnChanges {
       }
       this.reservationdetail.checkOutAt = this.checkOut;
       this.order.details = this.dataSource;
-      this.room.status = !this.room.status;
+      this.room.isEmpty = !this.room.isEmpty;
       this.receiptSerice.create(receipt).subscribe({
         next: next => {
           this.reservationDetailService.update(this.reservationdetail).subscribe({

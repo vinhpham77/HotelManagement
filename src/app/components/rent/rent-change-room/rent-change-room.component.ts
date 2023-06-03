@@ -39,7 +39,7 @@ export class RentChangeRoomComponent implements OnInit, OnChanges {
       error: err => {}
     });
     this.roomTypeService.uploadRoomTypeAll();
-    this.roomService.rooms$$.subscribe({next: data => this.rooms = data,
+    this.roomService.rooms$.subscribe({next: data => this.rooms = data,
       error: err => {}
     });
     this.roomService.uploadRoomAll();
@@ -58,9 +58,9 @@ export class RentChangeRoomComponent implements OnInit, OnChanges {
   }
 
   changeRoom(room: Room) {
-    this.reservationdetail.roomId = room._id;
-    room.status = !room.status;
-    this.roomChange.status = !this.roomChange.status;
+    this.reservationdetail.roomId = room.id;
+    room.isEmpty = !room.isEmpty;
+    this.roomChange.isEmpty = !this.roomChange.isEmpty;
     this.reservationDetailService.update(this.reservationdetail).subscribe({
       next: next => {
         this.roomService.update(room).subscribe({
@@ -83,11 +83,11 @@ export class RentChangeRoomComponent implements OnInit, OnChanges {
   }
 
   changeAndCleanRoom(room: Room) {
-    this.reservationdetail.roomId = room._id;
-    room.status = !room.status;
-    this.roomChange.status = !this.roomChange.status;
-    this.roomChange.cleanRoom = !this.roomChange.cleanRoom;
-    this.roomChange.cleanRoomAt = new Date();
+    this.reservationdetail.roomId = room.id;
+    room.isEmpty = !room.isEmpty;
+    this.roomChange.isEmpty = !this.roomChange.isEmpty;
+    this.roomChange.isCleaned = !this.roomChange.isCleaned;
+    this.roomChange.lastCleanedAt = new Date();
     this.reservationDetailService.update(this.reservationdetail).subscribe({
       next: next => {
         this.roomService.update(room).subscribe({

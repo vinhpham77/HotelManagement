@@ -1,5 +1,4 @@
 import { AfterViewInit, Component, OnDestroy, OnInit, ViewChild } from '@angular/core';
-import { MatTableDataSource } from '@angular/material/table';
 import { catchError, map, merge, of, startWith, Subscription, switchMap } from 'rxjs';
 import { SelectionModel } from '@angular/cdk/collections';
 import { MatPaginator } from '@angular/material/paginator';
@@ -7,8 +6,11 @@ import { MatSort } from '@angular/material/sort';
 import { CommonService } from '../../../services/common.service';
 import { CuRoomComponent } from '../cu-room/cu-room.component';
 import { RoomsService } from '../../../services/rooms.service';
-import { RoomDTO } from '../../../models/RoomDTO';
+import { RoomDto } from '../../../models/RoomDto';
 import { Room } from '../../../models/Room';
+import { MatDialog } from '@angular/material/dialog';
+import { DialogConfirm } from '../../../models/dialog-confirm';
+import { DialogComponent } from '../../dialog/dialog.component';
 
 @Component({
   selector: 'app-rooms',
@@ -16,10 +18,11 @@ import { Room } from '../../../models/Room';
   styleUrls: ['./rooms.component.scss']
 })
 export class RoomsComponent implements OnInit, AfterViewInit, OnDestroy {
-  dataSource = new MatTableDataSource<RoomDTO>([]);
-  displayedColumns: string[] = ['select', 'name', 'description', 'actions'];
+  timer: any;
+  dataSource: RoomDto[] = [];
+  displayedColumns: string[] = ['select', 'roomName', 'roomTypeName', 'pricePerDay', 'isEmpty', 'isCleaned', 'lastCleanedAt', 'roomDescription', 'maxAdult', 'maxChild', 'actions'];
   subscription = new Subscription();
-  selections = new SelectionModel<RoomDTO>(true, []);
+  selections = new SelectionModel<RoomDto>(true, []);
   searchValue = '';
   paginatorSizeOptions: number[];
 
@@ -27,12 +30,11 @@ export class RoomsComponent implements OnInit, AfterViewInit, OnDestroy {
   @ViewChild(MatSort) sort!: MatSort;
   resultsLength = 0;
 
-  constructor(private roomService: RoomsService, private commonService: CommonService) {
+  constructor(public dialog: MatDialog, private roomsService: RoomsService, private commonService: CommonService) {
     this.paginatorSizeOptions = this.commonService.PaginatorOptions;
 
-    this.subscription = this.roomService.rooms$.subscribe(data => {
-      this.dataSource.data = data;
-      console.log(data);
+    this.subscription = this.roomsService.roomsDtos$.subscribe(data => {
+      this.dataSource = data;
     });
   }
 
@@ -41,18 +43,17 @@ export class RoomsComponent implements OnInit, AfterViewInit, OnDestroy {
   }
 
   ngAfterViewInit() {
-    this.loadRoomTypes();
-    this.dataSource.sort = this.sort;
-    this.dataSource.paginator = this.paginator;
-    this.dataSource.sort.sortChange.subscribe(() => (this.paginator.pageIndex = 0));
+    this.sort.sortChange.subscribe(() => this.paginator.pageIndex = 0);
+    this.loadRoomDtos();
   }
 
-  loadRoomTypes() {
+  loadRoomDtos() {
     merge(this.sort.sortChange, this.paginator.page)
       .pipe(
         startWith({}),
         switchMap(() => {
-          return this.roomService.getRooms(
+          return this.roomsService.getRoomDtos(
+            this.searchValue,
             this.sort.active,
             this.sort.direction,
             this.paginator.pageIndex,
@@ -64,21 +65,17 @@ export class RoomsComponent implements OnInit, AfterViewInit, OnDestroy {
             return [];
           }
 
-          // Only refresh the result length if there is new data. In case of rate
-          // limit errors, we do not want to reset the paginator to zero, as that
-          // would prevent users from re-triggering requests.
-          this.resultsLength = data.length;
-          return data;
+          this.resultsLength = data.total;
+          return data.items;
         })
       )
-      .subscribe(data => {
-        return this.dataSource.data = data;
-      });
+      .subscribe(data => this.dataSource = data);
+    this.selections.clear();
   }
 
   isAllSelected() {
     const numSelected = this.selections.selected.length;
-    const numRows = this.dataSource.data.length;
+    const numRows = this.dataSource.length;
     return numSelected === numRows;
   }
 
@@ -88,12 +85,16 @@ export class RoomsComponent implements OnInit, AfterViewInit, OnDestroy {
       return;
     }
 
-    this.selections.select(...this.dataSource.data);
+    this.selections.select(...this.dataSource);
   }
 
-  applyFilter(event: Event) {
-    const filterValue = (event.target as HTMLInputElement).value;
-    this.dataSource.filter = filterValue.trim().toLowerCase();
+  applyFilter() {
+    clearTimeout(this.timer);
+
+    this.timer = setTimeout(() => {
+      this.paginator.pageIndex = 0;
+      this.loadRoomDtos();
+    }, 500);
   }
 
   ngOnDestroy() {
@@ -104,13 +105,69 @@ export class RoomsComponent implements OnInit, AfterViewInit, OnDestroy {
     this.commonService.FormData = { title: 'Thêm mới', action: 'create' };
   }
 
-  showEditingForm(room: Room) {
+  showEditingForm(roomDto: RoomDto) {
+    const room = <Room> {
+      id: roomDto.id,
+      name: roomDto.name,
+      roomTypeId: roomDto.roomTypeId,
+      pricePerDay: roomDto.pricePerDay,
+      isEmpty: roomDto.isEmpty,
+      isCleaned: roomDto.isCleaned,
+      lastCleanedAt: roomDto.lastCleanedAt,
+      description: roomDto.description,
+      maxAdult: roomDto.maxAdult,
+      maxChild: roomDto.maxChild
+    }
     this.commonService.FormData = { title: 'Cập nhật', action: 'update', object: room };
   }
 
-  onDelete(room: Room) {
-    this.roomService.delete(room._id).subscribe(() => {
-      this.loadRoomTypes();
+  onDelete(roomDto: RoomDto) {
+    this.roomsService.delete(roomDto.id).subscribe(() => {
+      this.refreshOnSuccess('Xoá thành công phòng ' + roomDto.name);
     });
+  }
+
+  onDeleteMany() {
+    const roomDtoIds = this.selections.selected.map(menuItem => menuItem.id);
+    this.roomsService.deleteMany(roomDtoIds).subscribe(() => {
+      this.refreshOnSuccess('Xoá thành công ' + roomDtoIds.length + ' phòng');
+    });
+  }
+
+  openDialog(data: DialogConfirm): void {
+    const dialogRef = this.dialog.open(DialogComponent, {
+      data
+    });
+
+    dialogRef.afterClosed().subscribe(result => {
+      if (result.action === 'delete') {
+        this.onDelete(result.data);
+      } else if (result.action === 'deleteMany') {
+        this.onDeleteMany();
+      }
+    });
+  }
+
+  openDeleteManyDialog() {
+    this.openDialog({
+      title: 'Xác nhận xoá',
+      message: 'Bạn có chắc chắn muốn xoá ' + this.selections.selected.length + ' phòng đã chọn?',
+      action: 'deleteMany',
+      data: null
+    });
+  }
+
+  openDeleteDialog(roomDto: RoomDto) {
+    this.openDialog({
+      title: 'Xác nhận xoá',
+      message: 'Bạn có chắc chắn muốn xoá ' + roomDto.name + '?',
+      action: 'delete',
+      data: roomDto
+    });
+  }
+
+  refreshOnSuccess(msg: string) {
+    this.loadRoomDtos();
+    this.commonService.openSnackBar(msg);
   }
 }

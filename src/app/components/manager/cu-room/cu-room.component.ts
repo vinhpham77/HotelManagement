@@ -85,7 +85,7 @@ export class CuRoomComponent implements OnDestroy {
     if (this.roomForm.valid) {
       if (this.data.action === 'create') {
         // @ts-ignore
-        this.roomsService.create(<Room>{
+        this.roomsService.create(<RoomDto>{
           name: this.Name?.value,
           roomTypeId: this.RoomTypeId?.value,
           pricePerDay: this.PricePerDay?.value,
@@ -106,7 +106,7 @@ export class CuRoomComponent implements OnDestroy {
         );
       } else if (this.data.action === 'update') {
         // @ts-ignore
-        this.roomsService.update(<Room>{
+        this.roomsService.update(<RoomDto>{
           _id: this.data.object._id,
           name: this.Name?.value,
           roomTypeId: this.RoomTypeId?.value,
