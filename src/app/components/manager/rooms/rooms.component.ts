@@ -20,7 +20,7 @@ import { DialogComponent } from '../../dialog/dialog.component';
 export class RoomsComponent implements OnInit, AfterViewInit, OnDestroy {
   timer: any;
   dataSource: RoomDto[] = [];
-  displayedColumns: string[] = ['select', 'name', 'roomType.name', 'pricePerDay', 'isEmpty', 'isCleaned', 'lastCleanedAt', 'roomDescription', 'maxAdult', 'maxChild', 'actions'];
+  displayedColumns: string[] = ['select', 'name', 'roomType.name', 'pricePerDay', 'roomDescription', 'maxAdult', 'maxChild', 'actions'];
   subscription = new Subscription();
   selections = new SelectionModel<RoomDto>(true, []);
   searchValue = '';

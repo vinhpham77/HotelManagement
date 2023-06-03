@@ -34,6 +34,29 @@ table.small-font {
   }
 }
 
+table.medium-font {
+  & .mdc-data-table__header-cell, & .mdc-data-table__cell {
+    font-size: 1.3rem;
+    padding: 0 0.6rem;
+    line-height: var(--mdc-typography-body2-line-height, 1.6rem);
+  }
+
+  & .mat-mdc-checkbox .mdc-checkbox .mdc-checkbox__native-control {
+    $medium-checkbox: 3.8rem;
+    top: calc((var(--mdc-checkbox-state-layer-size, $medium-checkbox) - var(--mdc-checkbox-state-layer-size, $medium-checkbox)) / 2);
+    right: calc((var(--mdc-checkbox-state-layer-size, $medium-checkbox) - var(--mdc-checkbox-state-layer-size, $medium-checkbox)) / 2);
+    left: calc((var(--mdc-checkbox-state-layer-size, $medium-checkbox) - var(--mdc-checkbox-state-layer-size, $medium-checkbox)) / 2);
+    width: var(--mdc-checkbox-state-layer-size, $medium-checkbox);
+    height: var(--mdc-checkbox-state-layer-size, $medium-checkbox);
+  }
+
+  & .action-cell {
+    & button + button {
+      margin-left: unset;
+    }
+  }
+}
+
 .right-panel-main {
   $vertical-padding: max(0.8rem, $horizontal-content-padding / 3);
   padding: $vertical-padding $horizontal-content-padding;
