@@ -2,6 +2,7 @@ export interface Customer {
     id: string;
     firstName: string;
     lastName: string;
+    fullName: string;
     birthdate: string;
     sex: true;
     idNo: string;

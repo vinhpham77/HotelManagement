@@ -122,8 +122,8 @@ export class CustomersComponent implements OnDestroy, OnInit, AfterViewInit {
   }
 
   refreshOnSuccess(msg: string) {
-    this.commonService.openSnackBar(msg);
     this.loadCustomers();
+    this.commonService.openSnackBar(msg);
   }
 
   openDialog(data: DialogConfirm): void {

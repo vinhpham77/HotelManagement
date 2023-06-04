@@ -39,11 +39,11 @@
         <th mat-header-cell *matHeaderCellDef mat-sort-header sortActionDescription='Sắp theo họ tên'>
           Họ tên
         </th>
-        <td mat-cell *matCellDef='let e'>{{e.firstName | fullName:e.lastName:e.nationality}}</td>
+        <td mat-cell *matCellDef='let element'>{{element.fullName}}</td>
       </ng-container>
 
       <ng-container matColumnDef='birthdate'>
-        <th mat-header-cell *matHeaderCellDef>Ngày sinh</th>
+        <th mat-header-cell *matHeaderCellDef mat-sort-header sortActionDescription='Sắp theo ngày sinh'>Ngày sinh</th>
         <td mat-cell *matCellDef='let element'>{{element.birthdate | date:'dd/MM/yyyy'}}</td>
       </ng-container>
 
