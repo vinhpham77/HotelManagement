@@ -1,27 +1,27 @@
 import { AfterViewInit, Component, OnDestroy, OnInit, ViewChild } from '@angular/core';
-import { Customer } from '../../../models/Customer';
 import { catchError, map, merge, of, startWith, Subscription, switchMap } from 'rxjs';
 import { SelectionModel } from '@angular/cdk/collections';
 import { MatPaginator } from '@angular/material/paginator';
 import { MatSort } from '@angular/material/sort';
 import { MatDialog } from '@angular/material/dialog';
-import { CustomersService } from '../../../services/customers.service';
 import { CommonService } from '../../../services/common.service';
-import { CuCustomerComponent } from '../cu-customer/cu-customer.component';
 import { DialogConfirm } from '../../../models/dialog-confirm';
 import { DialogComponent } from '../../dialog/dialog.component';
+import { Personnel } from '../../../models/Personnel';
+import { CuPersonnelComponent } from '../cu-personnel/cu-personnel.component';
+import { StaffService } from '../../../services/staff.service';
 
 @Component({
-  selector: 'app-customers',
-  templateUrl: './customers.component.html',
-  styleUrls: ['./customers.component.scss']
+  selector: 'app-staff',
+  templateUrl: './staff.component.html',
+  styleUrls: ['./staff.component.scss']
 })
-export class CustomersComponent implements OnDestroy, OnInit, AfterViewInit {
+export class StaffComponent implements OnInit, AfterViewInit, OnDestroy {
   timer: any;
-  dataSource: Customer[] = [];
-  displayedColumns: string[] = ['select', 'fullName', 'birthdate', 'sex', 'idNo', 'phoneNumber', 'address', 'nationality', 'actions'];
+  dataSource: Personnel[] = [];
+  displayedColumns: string[] = ['select', 'fullName', 'username', 'birthdate', 'sex', 'idNo', 'phoneNumber', 'address', 'nationality', 'actions'];
   subscription = new Subscription();
-  selections = new SelectionModel<Customer>(true, []);
+  selections = new SelectionModel<Personnel>(true, []);
   searchValue = '';
   paginatorSizeOptions: number[];
 
@@ -29,29 +29,29 @@ export class CustomersComponent implements OnDestroy, OnInit, AfterViewInit {
   @ViewChild(MatSort) sort!: MatSort;
   resultsLength = 0;
 
-  constructor(public dialog: MatDialog, private customersService: CustomersService, private commonService: CommonService) {
+  constructor(public dialog: MatDialog, private staffService: StaffService, private commonService: CommonService) {
     this.paginatorSizeOptions = this.commonService.PaginatorOptions;
 
-    this.subscription = this.customersService.customers$.subscribe(data => {
+    this.subscription = this.staffService.staff$.subscribe(data => {
       this.dataSource = data;
     });
   }
 
   ngOnInit() {
-    this.commonService.Form = CuCustomerComponent;
+    this.commonService.Form = CuPersonnelComponent;
   }
 
   ngAfterViewInit() {
     this.sort.sortChange.subscribe(() => this.paginator.pageIndex = 0);
-    this.loadCustomers();
+    this.loadStaff();
   }
 
-  loadCustomers() {
+  loadStaff() {
     merge(this.sort.sortChange, this.paginator.page)
       .pipe(
         startWith({}),
         switchMap(() => {
-          return this.customersService.getCustomers(
+          return this.staffService.getStaff(
             this.searchValue,
             this.sort.active,
             this.sort.direction,
@@ -92,7 +92,7 @@ export class CustomersComponent implements OnDestroy, OnInit, AfterViewInit {
 
     this.timer = setTimeout(() => {
       this.paginator.pageIndex = 0;
-      this.loadCustomers();
+      this.loadStaff();
     }, 500);
   }
 
@@ -104,25 +104,25 @@ export class CustomersComponent implements OnDestroy, OnInit, AfterViewInit {
     this.commonService.FormData = { title: 'Thêm mới', action: 'create' };
   }
 
-  showEditingForm(customer: Customer) {
-    this.commonService.FormData = { title: 'Cập nhật', action: 'update', object: customer };
+  showEditingForm(personnel: Personnel) {
+    this.commonService.FormData = { title: 'Cập nhật', action: 'update', object: personnel };
   }
 
-  onDelete(customer: Customer) {
-    this.customersService.delete(customer.id).subscribe(() => {
-      this.refreshOnSuccess('Xoá thành công khách hàng ' + customer.fullName);
+  onDelete(personnel: Personnel) {
+    this.staffService.delete(personnel.id).subscribe(() => {
+      this.refreshOnSuccess('Xoá thành công nhân sự ' + personnel.fullName);
     });
   }
 
   onDeleteMany() {
-    const customerIds = this.selections.selected.map(customer => customer.id);
-    this.customersService.deleteMany(customerIds).subscribe(() => {
-      this.refreshOnSuccess('Xoá thành công ' + customerIds.length + ' khách hàng');
+    const personnelIds = this.selections.selected.map(personnel => personnel.id);
+    this.staffService.deleteMany(personnelIds).subscribe(() => {
+      this.refreshOnSuccess('Xoá thành công ' + personnelIds.length + ' nhân sự');
     });
   }
 
   refreshOnSuccess(msg: string) {
-    this.loadCustomers();
+    this.loadStaff();
     this.commonService.openSnackBar(msg);
   }
 
@@ -143,18 +143,18 @@ export class CustomersComponent implements OnDestroy, OnInit, AfterViewInit {
   openDeleteManyDialog() {
     this.openDialog({
       title: 'Xác nhận xoá',
-      message: 'Bạn có chắc chắn muốn xoá ' + this.selections.selected.length + ' khách hàng đã chọn?',
+      message: 'Bạn có chắc chắn muốn xoá ' + this.selections.selected.length + ' nhân sự đã chọn?',
       action: 'deleteMany',
       data: null
     });
   }
 
-  openDeleteDialog(customer: Customer) {
+  openDeleteDialog(personnel: Personnel) {
     this.openDialog({
       title: 'Xác nhận xoá',
-      message: 'Bạn có chắc chắn muốn xoá khách hàng ' + customer.fullName + '?',
+      message: 'Bạn có chắc chắn muốn xoá nhân sự ' + personnel.fullName + '?',
       action: 'delete',
-      data: customer
+      data: personnel
     });
   }
 }

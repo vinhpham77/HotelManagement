@@ -4,7 +4,7 @@ export interface Customer {
     lastName: string;
     fullName: string;
     birthdate: string;
-    sex: true;
+    sex: boolean;
     idNo: string;
     phoneNumber: string | null;
     address: string;

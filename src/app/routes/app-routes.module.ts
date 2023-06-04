@@ -8,6 +8,7 @@ import { RoomTypesComponent } from '../components/manager/room-types/room-types.
 import { RoomsComponent } from '../components/manager/rooms/rooms.component';
 import { MenuComponent } from '../components/manager/menu/menu.component';
 import { CustomersComponent } from '../components/manager/customers/customers.component';
+import { StaffComponent } from '../components/manager/staff/staff.component';
 
 const appRoutes: Routes = [
 
@@ -29,6 +30,7 @@ const appRoutes: Routes = [
       { path: 'manager/rooms', component: RoomsComponent, title: 'Phòng' },
       { path: 'manager/menu', component: MenuComponent, title: 'Menu' },
       { path: 'manager/customers', component: CustomersComponent, title: 'Khách hàng' },
+      { path: 'manager/staff', component: StaffComponent, title: 'Nhân sự' },
     ]
   }
 ];

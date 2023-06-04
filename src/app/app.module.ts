@@ -60,6 +60,8 @@ import { MatDatepicker, MatDatepickerModule } from '@angular/material/datepicker
 import { MAT_DATE_LOCALE, MatNativeDateModule } from '@angular/material/core';
 import { MatButtonToggleModule } from '@angular/material/button-toggle';
 import { MenuBottomComponent } from './components/rent/menu-bottom/menu-bottom.component';
+import { StaffComponent } from './components/manager/staff/staff.component';
+import { CuPersonnelComponent } from './components/manager/cu-personnel/cu-personnel.component';
 
 @NgModule({
   declarations: [
@@ -89,7 +91,9 @@ import { MenuBottomComponent } from './components/rent/menu-bottom/menu-bottom.c
     RentHistoryUpdateComponent,
     RentMenuComponent,
     RentUpdateComponent,
-    MenuBottomComponent
+    MenuBottomComponent,
+    StaffComponent,
+    CuPersonnelComponent
   ],
   imports: [
     BrowserModule,
