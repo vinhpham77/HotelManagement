@@ -32,7 +32,7 @@ export class CuRoomComponent implements OnDestroy {
   }
 
   get RoomTypeId() {
-    return this.roomForm.get('roomTypeName');
+    return this.roomForm.get('roomTypeId');
   }
 
   get PricePerDay() {
@@ -55,16 +55,26 @@ export class CuRoomComponent implements OnDestroy {
               private commonService: CommonService,
               private roomsService: RoomsService,
               private roomTypesService: RoomTypesService) {
-    // Subscribe
+
+    const roomTypesSubscription = this.roomTypesService.roomTypes$.subscribe(data => {
+      this.roomTypes = data;
+    });
+
+    this.subscriptions = [roomTypesSubscription];
+  }
+
+  ngOnInit() {
+    this.roomTypesService.uploadRoomTypeAll();
     const formSubscription = this.commonService.formData$.subscribe(data => {
       this.data = data;
       this.roomForm.reset();
 
       if (this.data.action === 'update') {
+        let pricePerDay = this.commonService.convertToCurrency(this.data?.object.pricePerDay);
         this.roomForm.patchValue({
           name: this.data?.object.name,
           roomTypeId: this.data?.object.roomTypeId,
-          pricePerDay: this.data?.object.pricePerDay,
+          pricePerDay,
           maxAdult: this.data?.object.maxAdult,
           maxChild: this.data?.object.maxChild,
           description: this.data?.object.description
@@ -72,32 +82,31 @@ export class CuRoomComponent implements OnDestroy {
       }
 
       this.isHidden = false;
+
     });
 
-    const roomTypesSubscription = this.roomTypesService.roomTypes$.subscribe(data => {
-      this.roomTypes = data;
-    });
-
-    this.subscriptions = [formSubscription, roomTypesSubscription];
+    this.subscriptions.push(formSubscription);
   }
 
   onSave() {
     if (this.roomForm.valid) {
+      let pricePerDay = this.commonService.convertToNumber(this.PricePerDay?.value);
+      let room = <Room> {
+        name: this.Name?.value,
+        roomTypeId: this.RoomTypeId?.value,
+        pricePerDay,
+        maxAdult: this.MaxAdult?.value,
+        maxChild: this.MaxChild?.value,
+        description: this.Description?.value
+      };
       if (this.data.action === 'create') {
-        // @ts-ignore
-        this.roomsService.create(<Room>{
-          name: this.Name?.value,
-          roomTypeId: this.RoomTypeId?.value,
-          pricePerDay: this.PricePerDay?.value,
-          maxAdult: this.MaxAdult?.value,
-          maxChild: this.MaxChild?.value,
-          description: this.Description?.value
-        }).subscribe(
+        room.isEmpty = true;
+        room.isCleaned = true;
+        room.lastCleanedAt = new Date();
+        this.roomsService.create(room).subscribe(
           {
             next: () => {
-              this.isHidden = true;
-              this.roomsService.load();
-              this.commonService.openSnackBar('Thêm mới thành công');
+              this.refreshOnSuccess('Thêm mới thành công');
             },
             error: () => {
               this.commonService.openSnackBar('Có lỗi xảy ra. Vui lòng thử lại sau');
@@ -105,21 +114,11 @@ export class CuRoomComponent implements OnDestroy {
           }
         );
       } else if (this.data.action === 'update') {
-        // @ts-ignore
-        this.roomsService.update(<Room>{
-          _id: this.data.object._id,
-          name: this.Name?.value,
-          roomTypeId: this.RoomTypeId?.value,
-          pricePerDay: this.PricePerDay?.value,
-          maxAdult: this.MaxAdult?.value,
-          maxChild: this.MaxChild?.value,
-          description: this.Description?.value
-        }).subscribe(
+        room.id = this.data.object.id;
+        this.roomsService.patch(room).subscribe(
           {
             next: () => {
-              this.isHidden = true;
-              this.roomsService.load();
-              this.commonService.openSnackBar('Cập nhật thành công');
+              this.refreshOnSuccess('Cập nhật thành công');
             },
             error: () => {
               this.commonService.openSnackBar('Có lỗi xảy ra. Vui lòng thử lại sau');
@@ -138,5 +137,11 @@ export class CuRoomComponent implements OnDestroy {
 
   ngOnDestroy() {
     this.subscriptions.forEach(subscription => subscription.unsubscribe());
+  }
+
+  refreshOnSuccess(msg: string) {
+    this.roomsService.load();
+    this.isHidden = true;
+    this.commonService.openSnackBar(msg);
   }
 }

@@ -22,7 +22,7 @@
     <div class='half-form-field'>
       <mat-form-field appearance='fill'>
         <mat-label>Loại phòng</mat-label>
-        <mat-select required formControlName='roomTypeName'>
+        <mat-select required formControlName='roomTypeId'>
           <mat-option [value]='roomType.id' *ngFor='let roomType of roomTypes'>{{roomType.name}}</mat-option>
         </mat-select>
         <mat-error *ngIf='RoomTypeId?.invalid'>Bạn phải chọn loại phòng</mat-error>
@@ -31,8 +31,8 @@
     <div class='half-form-field'>
       <mat-form-field appearance='fill'>
         <mat-label>Giá ngày</mat-label>
-        <input matInput type='number' class='text-right' formControlName='pricePerDay'>
-        <span matTextSuffix class='nowrap' >.000 ₫</span>
+        <input matInput type='text' class='text-right' formControlName='pricePerDay' appCurrencyFormatter>
+        <span matTextSuffix class='nowrap'> &nbsp;₫</span>
         <mat-error *ngIf='PricePerDay?.errors?.["required"]'>Bạn phải nhập giá ngày</mat-error>
         <mat-error *ngIf='PricePerDay?.errors?.["min"]'>Bạn phải nhập giá ngày không âm</mat-error>
       </mat-form-field>

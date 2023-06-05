@@ -3,26 +3,25 @@ import { catchError, map, merge, of, startWith, Subscription, switchMap } from '
 import { SelectionModel } from '@angular/cdk/collections';
 import { MatPaginator } from '@angular/material/paginator';
 import { MatSort } from '@angular/material/sort';
-import { CommonService } from '../../../services/common.service';
-import { CuRoomComponent } from '../cu-room/cu-room.component';
-import { RoomsService } from '../../../services/rooms.service';
-import { RoomDto } from '../../../models/RoomDto';
-import { Room } from '../../../models/Room';
 import { MatDialog } from '@angular/material/dialog';
+import { CommonService } from '../../../services/common.service';
 import { DialogConfirm } from '../../../models/dialog-confirm';
 import { DialogComponent } from '../../dialog/dialog.component';
+import { Personnel } from '../../../models/Personnel';
+import { CuPersonnelComponent } from '../cu-personnel/cu-personnel.component';
+import { StaffService } from '../../../services/staff.service';
 
 @Component({
-  selector: 'app-rooms',
-  templateUrl: './rooms.component.html',
-  styleUrls: ['./rooms.component.scss']
+  selector: 'app-staff',
+  templateUrl: './staff.component.html',
+  styleUrls: ['./staff.component.scss']
 })
-export class RoomsComponent implements OnInit, AfterViewInit, OnDestroy {
+export class StaffComponent implements OnInit, AfterViewInit, OnDestroy {
   timer: any;
-  dataSource: RoomDto[] = [];
-  displayedColumns: string[] = ['select', 'name', 'roomType.name', 'pricePerDay', 'roomDescription', 'maxAdult', 'maxChild', 'actions'];
+  dataSource: Personnel[] = [];
+  displayedColumns: string[] = ['select', 'fullName', 'username', 'birthdate', 'sex', 'idNo', 'phoneNumber', 'address', 'nationality', 'actions'];
   subscription = new Subscription();
-  selections = new SelectionModel<RoomDto>(true, []);
+  selections = new SelectionModel<Personnel>(true, []);
   searchValue = '';
   paginatorSizeOptions: number[];
 
@@ -30,29 +29,29 @@ export class RoomsComponent implements OnInit, AfterViewInit, OnDestroy {
   @ViewChild(MatSort) sort!: MatSort;
   resultsLength = 0;
 
-  constructor(public dialog: MatDialog, private roomsService: RoomsService, private commonService: CommonService) {
+  constructor(public dialog: MatDialog, private staffService: StaffService, private commonService: CommonService) {
     this.paginatorSizeOptions = this.commonService.PaginatorOptions;
 
-    this.subscription = this.roomsService.roomsDtos$.subscribe(data => {
+    this.subscription = this.staffService.staff$.subscribe(data => {
       this.dataSource = data;
     });
   }
 
   ngOnInit() {
-    this.commonService.Form = CuRoomComponent;
+    this.commonService.Form = CuPersonnelComponent;
   }
 
   ngAfterViewInit() {
     this.sort.sortChange.subscribe(() => this.paginator.pageIndex = 0);
-    this.loadRoomDtos();
+    this.loadStaff();
   }
 
-  loadRoomDtos() {
+  loadStaff() {
     merge(this.sort.sortChange, this.paginator.page)
       .pipe(
         startWith({}),
         switchMap(() => {
-          return this.roomsService.getRoomDtos(
+          return this.staffService.getStaff(
             this.searchValue,
             this.sort.active,
             this.sort.direction,
@@ -93,7 +92,7 @@ export class RoomsComponent implements OnInit, AfterViewInit, OnDestroy {
 
     this.timer = setTimeout(() => {
       this.paginator.pageIndex = 0;
-      this.loadRoomDtos();
+      this.loadStaff();
     }, 500);
   }
 
@@ -105,33 +104,26 @@ export class RoomsComponent implements OnInit, AfterViewInit, OnDestroy {
     this.commonService.FormData = { title: 'Thêm mới', action: 'create' };
   }
 
-  showEditingForm(roomDto: RoomDto) {
-    const room = <Room> {
-      id: roomDto.id,
-      name: roomDto.name,
-      roomTypeId: roomDto.roomTypeId,
-      pricePerDay: roomDto.pricePerDay,
-      isEmpty: roomDto.isEmpty,
-      isCleaned: roomDto.isCleaned,
-      lastCleanedAt: roomDto.lastCleanedAt,
-      description: roomDto.description,
-      maxAdult: roomDto.maxAdult,
-      maxChild: roomDto.maxChild
-    }
-    this.commonService.FormData = { title: 'Cập nhật', action: 'update', object: room };
+  showEditingForm(personnel: Personnel) {
+    this.commonService.FormData = { title: 'Cập nhật', action: 'update', object: personnel };
   }
 
-  onDelete(roomDto: RoomDto) {
-    this.roomsService.delete(roomDto.id).subscribe(() => {
-      this.refreshOnSuccess('Xoá thành công phòng ' + roomDto.name);
+  onDelete(personnel: Personnel) {
+    this.staffService.delete(personnel.id).subscribe(() => {
+      this.refreshOnSuccess('Xoá thành công nhân sự ' + personnel.fullName);
     });
   }
 
   onDeleteMany() {
-    const roomDtoIds = this.selections.selected.map(roomDto => roomDto.id);
-    this.roomsService.deleteMany(roomDtoIds).subscribe(() => {
-      this.refreshOnSuccess('Xoá thành công ' + roomDtoIds.length + ' phòng');
+    const personnelIds = this.selections.selected.map(personnel => personnel.id);
+    this.staffService.deleteMany(personnelIds).subscribe(() => {
+      this.refreshOnSuccess('Xoá thành công ' + personnelIds.length + ' nhân sự');
     });
+  }
+
+  refreshOnSuccess(msg: string) {
+    this.loadStaff();
+    this.commonService.openSnackBar(msg);
   }
 
   openDialog(data: DialogConfirm): void {
@@ -151,23 +143,18 @@ export class RoomsComponent implements OnInit, AfterViewInit, OnDestroy {
   openDeleteManyDialog() {
     this.openDialog({
       title: 'Xác nhận xoá',
-      message: 'Bạn có chắc chắn muốn xoá ' + this.selections.selected.length + ' phòng đã chọn?',
+      message: 'Bạn có chắc chắn muốn xoá ' + this.selections.selected.length + ' nhân sự đã chọn?',
       action: 'deleteMany',
       data: null
     });
   }
 
-  openDeleteDialog(roomDto: RoomDto) {
+  openDeleteDialog(personnel: Personnel) {
     this.openDialog({
       title: 'Xác nhận xoá',
-      message: 'Bạn có chắc chắn muốn xoá ' + roomDto.name + '?',
+      message: 'Bạn có chắc chắn muốn xoá nhân sự ' + personnel.fullName + '?',
       action: 'delete',
-      data: roomDto
+      data: personnel
     });
-  }
-
-  refreshOnSuccess(msg: string) {
-    this.loadRoomDtos();
-    this.commonService.openSnackBar(msg);
   }
 }

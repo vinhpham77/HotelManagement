@@ -13,7 +13,7 @@ export class ManagerComponent {
     { title: 'Phòng', link: './rooms', icon: 'hotel' },
     { title: 'Menu', link: './menu', icon: 'fastfood' },
     { title: 'Khách hàng', link: './customers', icon: 'badge' },
-    { title: 'Nhân viên', link: './staff', icon: 'contacts' },
+    { title: 'Nhân sự', link: './staff', icon: 'contacts' },
     { title: 'Thống kê', link: './reports', icon: 'analytics' },
     { title: 'Hóa đơn', link: './receipts', icon: 'receipt' },
     { title: 'Thiết lập khác', link: './configs', icon: 'room_preferences' }

@@ -21,9 +21,7 @@ export class RoomTypesService {
   private roomTypesSource = new BehaviorSubject<RoomType[]>([]);
 
   roomTypes$ = this.roomTypesSource.asObservable();
-
   constructor(private httpClient: HttpClient, private commonService: CommonService) {
-
   }
 
   load() {
@@ -42,7 +40,7 @@ export class RoomTypesService {
   uploadRoomTypeAll() {
     this.httpClient.get<any>(this.roomTypesAPI, this.httpOptions).subscribe({
       next: data => {
-        this.roomTypesSource.next(data);
+        this.roomTypesSource.next(data.items);
       }
     })
   }

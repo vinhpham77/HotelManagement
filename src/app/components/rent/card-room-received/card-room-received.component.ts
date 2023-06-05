@@ -30,7 +30,7 @@ export class CardRoomReceivedComponent implements OnInit, OnChanges{
   }
 
   ngOnChanges(changes: SimpleChanges): void {
-    this.setData(this.room._id);
+    this.setData(this.room.id);
   }
 
   setData(roomId: string) {

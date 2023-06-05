@@ -110,7 +110,7 @@ export class CustomersComponent implements OnDestroy, OnInit, AfterViewInit {
 
   onDelete(customer: Customer) {
     this.customersService.delete(customer.id).subscribe(() => {
-      this.refreshOnSuccess('Xoá thành công khách hàng ' + customer.firstName);
+      this.refreshOnSuccess('Xoá thành công khách hàng ' + customer.fullName);
     });
   }
 
@@ -122,8 +122,8 @@ export class CustomersComponent implements OnDestroy, OnInit, AfterViewInit {
   }
 
   refreshOnSuccess(msg: string) {
-    this.commonService.openSnackBar(msg);
     this.loadCustomers();
+    this.commonService.openSnackBar(msg);
   }
 
   openDialog(data: DialogConfirm): void {
@@ -152,7 +152,7 @@ export class CustomersComponent implements OnDestroy, OnInit, AfterViewInit {
   openDeleteDialog(customer: Customer) {
     this.openDialog({
       title: 'Xác nhận xoá',
-      message: 'Bạn có chắc chắn muốn xoá khách hàng ' + customer.firstName + '?',
+      message: 'Bạn có chắc chắn muốn xoá khách hàng ' + customer.fullName + '?',
       action: 'delete',
       data: customer
     });

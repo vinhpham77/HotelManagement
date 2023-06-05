@@ -48,7 +48,7 @@
                     </mat-expansion-panel-header>
                     <div class="d_flex flex-wrap">
                         <div *ngFor="let room of rooms;">
-                            <mat-card class="card" *ngIf="!room.status && room.roomTypeId == roomType.id">
+                            <mat-card class="card" *ngIf="!room.isEmpty && room.roomTypeId == roomType.id">
                                 <div class="d_flex flex-row border-bottom">
                                     <div class="flex-grow-1 room-name text-primary ellipsis title-card">{{room.name}}</div>
                                     <div>
@@ -64,7 +64,7 @@
                                                 <mat-icon class="mat-list-icon">today</mat-icon>
                                                 <span>Nhận phòng đặt trước</span>
                                             </button>
-                                            <button mat-menu-item (click)="onCleanRoom(room)" [disabled]="room.cleanRoom">
+                                            <button mat-menu-item (click)="onCleanRoom(room)" [disabled]="room.isCleaned">
                                                 <mat-icon class="mat-list-icon">loyalty</mat-icon>
                                                 <span>Yêu cầu dọn phòng</span>
                                             </button>
@@ -77,13 +77,13 @@
                                         <span class="pl-2">Chưa sử dụng</span>
                                     </div>
                                 </div>
-                                <div class="px-2 py-2 d_flex flex-row" *ngIf="!room.cleanRoom">
+                                <div class="px-2 py-2 d_flex flex-row" *ngIf="!room.isCleaned">
                                     <div><mat-icon class="mat-list-icon text-success">check</mat-icon></div>
                                     <div class="flex-grow-1 icon-text align-self-center">
                                         <span class="pl-2">Phòng đã dọn</span>
                                     </div>
                                 </div>
-                                <div class="px-2 py-2 d_flex flex-row" *ngIf="room.cleanRoom">
+                                <div class="px-2 py-2 d_flex flex-row" *ngIf="room.isCleaned">
                                     <div><mat-icon class="mat-list-icon text-danger">close</mat-icon></div>
                                     <div class="flex-grow-1 icon-text text-danger align-self-center">
                                         <span class="pl-2">Chưa dọn phòng</span>
@@ -108,7 +108,7 @@
                         </mat-expansion-panel-header>
                         <div class="d_flex flex-wrap">
                             <div *ngFor="let room of rooms;">
-                                <div *ngIf="room.status && room.roomTypeId == roomType.id">
+                                <div *ngIf="room.isEmpty && room.roomTypeId == roomType.id">
                                     <app-card-room-received [room]="room" [dateCheck]="checkOut" (open)="openPanel($event, room)" (clean)="onCleanRoom(room)"></app-card-room-received>
                                 </div>
                             </div>
@@ -129,7 +129,7 @@
                     </mat-expansion-panel-header>
                     <div class="d_flex flex-wrap">
                         <div *ngFor="let room of rooms;">
-                            <mat-card class="card" *ngIf="room.cleanRoom && room.roomTypeId == roomType.id">
+                            <mat-card class="card" *ngIf="room.isCleaned && room.roomTypeId == roomType.id">
                                 <div class="d_flex flex-row border-bottom ">
                                     <div class="flex-grow-1 room-name text-danger ellipsis title-card">{{room.name}}</div>
                                     <div>
@@ -144,13 +144,13 @@
                                         </mat-menu>
                                     </div>
                                 </div>
-                                <div class="px-2 pt-2 d_flex flex-row" *ngIf="!room.status">
+                                <div class="px-2 pt-2 d_flex flex-row" *ngIf="!room.isEmpty">
                                     <div><mat-icon class="mat-list-icon">hourglass_empty</mat-icon></div>
                                     <div class="flex-grow-1 icon-text align-self-center">
                                         <span class="pl-2 text-primary">Phòng chờ</span>
                                     </div>
                                 </div>
-                                <div class="px-2 pt-2 d_flex flex-row" *ngIf="room.status">
+                                <div class="px-2 pt-2 d_flex flex-row" *ngIf="room.isEmpty">
                                     <div><mat-icon class="mat-list-icon">local_hotel</mat-icon></div>
                                     <div class="flex-grow-1 icon-text align-self-center">
                                         <span class="pl-2 text-warning">Phòng đang thuê</span>
@@ -159,7 +159,7 @@
                                 <div class="px-2 py-2 d_flex flex-row">
                                     <div><mat-icon class="mat-list-icon" matTooltip="Thời điểm yêu cầu">timer</mat-icon></div>
                                     <div class="flex-grow-1 icon-text align-self-center">
-                                        <span class="pl-2">{{days(room.cleanRoomAt)}} ngày trước</span>
+                                        <span class="pl-2">{{days(room.lastCleanedAt)}} ngày trước</span>
                                     </div>
                                 </div>
                             </mat-card>

@@ -17,7 +17,7 @@
             </mat-expansion-panel-header>
             <div class="d_flex flex-wrap">
                 <div *ngFor="let room of rooms;">
-                    <mat-card *ngIf="!room.status && room.roomTypeId == roomType.id">
+                    <mat-card *ngIf="!room.isEmpty && room.roomTypeId == roomType.id">
                         <div class="d_flex flex-row border-bottom ">
                             <div class="flex-grow-1 room-name text-primary ellipsis title-card">{{room.name}}</div>
                             <div>
@@ -36,13 +36,13 @@
                                 </mat-menu>
                             </div>
                         </div>
-                        <div class="px-2 py-2 d_flex flex-row" *ngIf="!room.cleanRoom">
+                        <div class="px-2 py-2 d_flex flex-row" *ngIf="!room.isCleaned">
                             <div><mat-icon class="mat-list-icon text-success">check</mat-icon></div>
                             <div class="flex-grow-1 icon-text align-self-center">
                                 <span class="pl-2">Đã dọn</span>
                             </div>
                         </div>
-                        <div class="px-2 py-2 d_flex flex-row" *ngIf="room.cleanRoom">
+                        <div class="px-2 py-2 d_flex flex-row" *ngIf="room.isCleaned">
                             <div><mat-icon class="mat-list-icon text-danger">close</mat-icon></div>
                             <div class="flex-grow-1 icon-text text-danger align-self-center">
                                 <span class="pl-2">Chưa dọn</span>

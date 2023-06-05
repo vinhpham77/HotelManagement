@@ -31,15 +31,15 @@ export class RentComponent implements OnDestroy{
   subscriptionRoomType = new Subscription();
   subscriptionReceipts = new Subscription();
 
-  constructor(public dialog: MatDialog, 
-    public roomService: RoomsService, 
+  constructor(public dialog: MatDialog,
+    public roomService: RoomsService,
     public roomTypeService: RoomTypesService,
-    public reservationDetailService: ReservationDetailService, 
+    public reservationDetailService: ReservationDetailService,
     public orderService: OrderService,
     public receiptsService: ReceiptService,
     public reservationService: ReservationService,
     public fb: FormBuilder) {
-    this.subscriptionRoom = this.roomService.rooms$$.subscribe(result =>this.rooms = result);
+    this.subscriptionRoom = this.roomService.rooms$.subscribe(result =>this.rooms = result);
     this.roomService.uploadRoomAll();
     this.subscriptionRoomType = this.roomTypeService.roomTypes$.subscribe(result =>this.roomTypes = result);
     roomTypeService.uploadRoomTypeAll();
@@ -72,8 +72,8 @@ export class RentComponent implements OnDestroy{
     });
   }
   onCleanRoom(room: Room): void{
-    room.cleanRoom = !room.cleanRoom;
-    room.cleanRoomAt = new Date();
+    room.isCleaned = !room.isCleaned;
+    room.lastCleanedAt = new Date();
     this.roomService.update(room).subscribe({
       next: next => this.roomService.uploadRoomAll()
     })
@@ -89,7 +89,7 @@ export class RentComponent implements OnDestroy{
 
   openPanel(name: string, roomSelect: Room): void {
     this.namePanel = name;
-    this.roomId = roomSelect._id;
+    this.roomId = roomSelect.id;
   }
 
   openPanelChangeReceipt(name: string, receiptSelect: Receipt): void {
@@ -103,6 +103,6 @@ export class RentComponent implements OnDestroy{
   }
 
   // getDaysIn
-  
+
 
 }

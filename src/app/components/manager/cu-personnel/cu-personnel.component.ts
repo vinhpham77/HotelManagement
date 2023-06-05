@@ -1,16 +1,16 @@
-import { Component, OnDestroy } from '@angular/core';
+import { Component } from '@angular/core';
 import { Subscription } from 'rxjs';
 import { FormBuilder, Validators } from '@angular/forms';
 import { CommonService } from '../../../services/common.service';
-import { CustomersService } from '../../../services/customers.service';
-import { Customer } from '../../../models/Customer';
+import { StaffService } from '../../../services/staff.service';
+import { Personnel } from '../../../models/Personnel';
 
 @Component({
-  selector: 'app-cu-customer',
-  templateUrl: './cu-customer.component.html',
-  styleUrls: ['./cu-customer.component.scss']
+  selector: 'app-cu-personnel',
+  templateUrl: './cu-personnel.component.html',
+  styleUrls: ['./cu-personnel.component.scss']
 })
-export class CuCustomerComponent implements OnDestroy {
+export class CuPersonnelComponent {
   data: any;
   subscription: Subscription;
   isHidden = true;
@@ -18,6 +18,7 @@ export class CuCustomerComponent implements OnDestroy {
   customerForm = this.fb.group({
     firstName: ['', Validators.required],
     lastName: ['', Validators.required],
+    username: ['', Validators.required],
     birthdate: this.fb.control<Date | null>(null, [Validators.required]),
     sex: this.fb.control<boolean>(true, [Validators.required]),
     idNo: ['', [Validators.required]],
@@ -32,6 +33,10 @@ export class CuCustomerComponent implements OnDestroy {
 
   get LastName() {
     return this.customerForm.get('lastName');
+  }
+
+  get Username() {
+    return this.customerForm.get('username');
   }
 
   get Birthdate() {
@@ -58,22 +63,24 @@ export class CuCustomerComponent implements OnDestroy {
     return this.customerForm.get('nationality');
   }
 
-  constructor(private fb: FormBuilder, private commonService: CommonService, private customersService: CustomersService) {
+  constructor(private fb: FormBuilder, private commonService: CommonService, private staffService: StaffService) {
     this.subscription = this.commonService.formData$.subscribe(data => {
       this.data = data;
       this.customerForm.reset();
+      this.Sex?.setValue(true);
 
       if (this.data.action === 'update') {
-        let customer = this.data?.object;
+        let personnel = this.data?.object;
         this.customerForm.patchValue({
-          firstName: customer.firstName,
-          lastName: customer.lastName,
-          birthdate: customer.birthdate,
-          sex: customer.sex,
-          idNo: customer.idNo,
-          phoneNumber: customer.phoneNumber,
-          address: customer.address,
-          nationality: customer.nationality
+          firstName: personnel.firstName,
+          lastName: personnel.lastName,
+          username: personnel.username,
+          birthdate: personnel.birthdate,
+          sex: personnel.sex,
+          idNo: personnel.idNo,
+          phoneNumber: personnel.phoneNumber,
+          address: personnel.address,
+          nationality: personnel.nationality
         });
       } else if (this.data.action === 'create') {
         this.Sex?.setValue(true);
@@ -88,10 +95,11 @@ export class CuCustomerComponent implements OnDestroy {
     if (this.customerForm.valid) {
       let birthdate = new Date(this.Birthdate?.value as Date).toISOString();
 
-      const customer = <Customer>{
+      const personnel = <Personnel>{
         firstName: this.FirstName?.value,
         lastName: this.LastName?.value,
         birthdate,
+        username: this.Username?.value,
         sex: this.Sex?.value,
         idNo: this.IdNo?.value,
         phoneNumber: this.PhoneNumber?.value,
@@ -100,7 +108,7 @@ export class CuCustomerComponent implements OnDestroy {
       };
 
       if (this.data.action === 'create') {
-        this.customersService.create(customer).subscribe(
+        this.staffService.create(personnel).subscribe(
           {
             next: () => {
               this.refreshOnSuccess('Thêm mới thành công');
@@ -111,8 +119,8 @@ export class CuCustomerComponent implements OnDestroy {
           }
         );
       } else if (this.data.action === 'update') {
-        customer.id = this.data.object.id;
-        this.customersService.update(customer).subscribe(
+        personnel.id = this.data.object.id;
+        this.staffService.patch(personnel).subscribe(
           {
             next: () => {
               this.refreshOnSuccess('Cập nhật thành công');
@@ -138,7 +146,7 @@ export class CuCustomerComponent implements OnDestroy {
 
   refreshOnSuccess(msg: string) {
     this.isHidden = true;
-    this.customersService.load();
+    this.staffService.load();
     this.commonService.openSnackBar(msg);
   }
 }
