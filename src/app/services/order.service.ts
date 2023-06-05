@@ -37,9 +37,10 @@ export class OrderService {
     return this.httpClient.get<any>(url, this.httpOptions);
   }
 
-  getTotalOrderByReservationId(id: string){
-    let url = `${this.orderAPI}?reservationId=${id}&totalprice`
-    return this.httpClient.get<any>(url, this.httpOptions);
+  getTotalOrderByReservationId(order: Order){
+    let total = 0;
+    order.details.forEach(item => total += item.price * item.quantity);
+    return total;
   }
 
   create(orderItem: Order) {

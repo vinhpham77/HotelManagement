@@ -38,9 +38,9 @@ export class CardRoomReceivedComponent implements OnInit, OnChanges{
       this.reServationDetail = data[0];
       this.reServationDetail.checkInAt = new Date(this.reServationDetail.checkInAt);
       this.reServationDetail.checkOutAt = null;
-      this.orderService.getTotalOrderByReservationId(this.reServationDetail.id).subscribe({
+      this.orderService.getOrderByReservationDetail(this.reServationDetail).subscribe({
         next: data => {
-          this.priceOrder = data[0].total;
+          this.priceOrder = this.orderService.getTotalOrderByReservationId(data[0]);
           this.priceRoom = this.getPriceRoom();
           this.intoMoney = this.getIntoMoney();
         }
