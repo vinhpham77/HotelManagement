@@ -34,7 +34,7 @@ export class MenuService {
     let url = `${this.menuAPI}`;
     this.httpClient.get<any>(url).subscribe({
       next: data => {
-        this.menuSource.next(data);
+        this.menuSource.next(data.items);
       }
     });
   }

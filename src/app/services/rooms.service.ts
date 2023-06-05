@@ -49,10 +49,10 @@ export class RoomsService {
 
   uploadRoomAll() {
     let url = `${this.roomAPI}`;
-    this.httpClient.get<Room[]>(url, this.httpOptions).subscribe({
+    this.httpClient.get<any>(url, this.httpOptions).subscribe({
       next: data => {
-        this.convert(data);
-        this.rooms.next(data);
+        this.convert(data.items);
+        this.rooms.next(data.items);
       }
     });
   }

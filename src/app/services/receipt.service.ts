@@ -26,8 +26,15 @@ export class ReceiptService {
     let url = `${this.receiptAPI}`;
     this.httpClient.get<any>(url).subscribe({
       next: data => {
-        this.receiptSource.next(data);
+        this.convert(data.items);
+        this.receiptSource.next(data.items);
       }
+    });
+  }
+
+  convert(data: Receipt[]) {
+    data.forEach(receipt => {
+      receipt.createdAt = new Date(receipt.createdAt);
     });
   }
 

@@ -9,6 +9,7 @@ import { RoomsComponent } from '../components/manager/rooms/rooms.component';
 import { MenuComponent } from '../components/manager/menu/menu.component';
 import { CustomersComponent } from '../components/manager/customers/customers.component';
 import { StaffComponent } from '../components/manager/staff/staff.component';
+import { RentComponent } from '../components/rent/rent.component';
 
 const appRoutes: Routes = [
 
@@ -17,7 +18,8 @@ const appRoutes: Routes = [
     path: '',
     component: TwoColsLayoutComponent,
     children: [
-      { path: 'manager', component: ManagerComponent, title: 'Quản lý hệ thống' }
+      { path: 'manager', component: ManagerComponent, title: 'Quản lý hệ thống' },
+      { path: 'check', component: RentComponent}
     ]
   },
 

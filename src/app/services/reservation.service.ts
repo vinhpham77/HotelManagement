@@ -26,8 +26,8 @@ export class ReservationService {
     let url = `${this.reservationAPI}`;
     this.httpClient.get<any>(url).subscribe({
       next: data => {
-        this.convert(data);
-        this.reservationSource.next(data);
+        this.convert(data.items);
+        this.reservationSource.next(data.items);
       }
     });
   }
