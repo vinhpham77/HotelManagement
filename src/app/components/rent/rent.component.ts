@@ -19,7 +19,6 @@ import { DialogComponent } from '../dialog/dialog.component';
   styleUrls: ['./rent.component.scss']
 })
 export class RentComponent implements OnDestroy{
-  public b = true;
   public namePanel: string = "under";
   public rooms: Room[] = [];
   public roomTypes: RoomType[] = [];
@@ -27,6 +26,10 @@ export class RentComponent implements OnDestroy{
   public checkOut = new Date();
   public roomId: string = '';
   public receiptId: string = '';
+  public order: string = 'asc';
+  public selected = 'name';
+  public keyword = '';
+  public sort = 'name';
   subscriptionRoom = new Subscription();
   subscriptionRoomType = new Subscription();
   subscriptionReceipts = new Subscription();
@@ -40,7 +43,7 @@ export class RentComponent implements OnDestroy{
     public reservationService: ReservationService,
     public fb: FormBuilder) {
     this.subscriptionRoom = this.roomService.rooms$.subscribe(result =>this.rooms = result);
-    this.roomService.uploadRoomAll();
+    this.loadRoom();
     this.subscriptionRoomType = this.roomTypeService.roomTypes$.subscribe(result =>this.roomTypes = result);
     roomTypeService.uploadRoomTypeAll();
     this.subscriptionReceipts = this.receiptsService.receipt$.subscribe(result =>this.receipts = result);
@@ -62,6 +65,11 @@ export class RentComponent implements OnDestroy{
     }
   }
 
+  loadRoom() {
+    let query = `keyword=${this.keyword}&sort=${this.sort}&order=${this.order}`;
+    this.roomService.loadByQuery(query);
+  }
+
   openDialog(): void {
     const dialogRef = this.dialog.open(DialogComponent, {
       data: {content: "", field: "", id: "", setting: ""},
@@ -75,16 +83,30 @@ export class RentComponent implements OnDestroy{
     room.isCleaned = !room.isCleaned;
     room.lastCleanedAt = new Date();
     this.roomService.update(room).subscribe({
-      next: next => this.roomService.uploadRoomAll()
+      next: next => this.loadRoom()
     })
   }
 
   reload(event: any) {
     this.orderService.uploadOrderAll();
-    this.roomService.uploadRoomAll();
+    this.loadRoom()
     this.reservationDetailService.uploadReservationDetailAll();
     this.receiptsService.uploadReceiptAll();
     this.namePanel = "under";
+  }
+
+  onSort(order: string) {
+    this.order = order;
+    this.loadRoom();
+  }
+
+  onSearch(s: string) {
+    this.keyword = s;
+    this.loadRoom()
+  }
+
+  keyup() {
+    this.loadRoom();
   }
 
   openPanel(name: string, roomSelect: Room): void {

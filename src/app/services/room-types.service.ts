@@ -45,6 +45,10 @@ export class RoomTypesService {
     })
   }
 
+  getRoomTypeAll() {
+    return this.httpClient.get<any>(this.roomTypesAPI, this.httpOptions);
+  }
+
   create(roomType: RoomType) {
     return this.httpClient.post<RoomType>(this.roomTypesAPI, roomType, this.httpOptions);
   }

@@ -1,7 +1,7 @@
 <mat-card class="card">
     <div class="d_flex flex-row border-bottom">
         <div class="flex-grow-1 room-name text-warning ellipsis title-card">{{room.name}}</div>
-        <div class="align-self-center" *ngIf="room.isCleaned">
+        <div class="align-self-center" *ngIf="!room.isCleaned">
             <mat-icon class="mat-list-icon text-warning">loyalty</mat-icon>
         </div>
         <div>
@@ -25,7 +25,7 @@
                     <mat-icon class="mat-list-icon">sync</mat-icon>
                     <span>Đổi phòng</span>
                 </button>
-                <button mat-menu-item (click)="onCleanRoom()" [disabled]="room.isCleaned">
+                <button mat-menu-item (click)="onCleanRoom()" [disabled]="!room.isCleaned">
                     <mat-icon class="mat-list-icon">loyalty</mat-icon>
                     <span>Yêu cầu dọn phòng</span>
                 </button>

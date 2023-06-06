@@ -6,6 +6,7 @@ import { environment } from '../../environments/environment';
 import { HttpClient, HttpHeaders } from '@angular/common/http';
 import { SortDirection } from '@angular/material/sort';
 import { CommonService } from './common.service';
+import { query } from '@angular/animations';
 
 @Injectable({
   providedIn: 'root'
@@ -47,8 +48,23 @@ export class RoomsService {
     return this.httpClient.get<any>(url, this.httpOptions);
   }
 
+  getRoom(){
+    let url = `${this.roomAPI}`;
+    return this.httpClient.get<any>(url, this.httpOptions);
+  }
+
   uploadRoomAll() {
     let url = `${this.roomAPI}`;
+    this.httpClient.get<any>(url, this.httpOptions).subscribe({
+      next: data => {
+        this.convert(data.items);
+        this.rooms.next(data.items);
+      }
+    });
+  }
+
+  loadByQuery(query: string) {
+    let url = `${this.roomAPI}?${query}`;
     this.httpClient.get<any>(url, this.httpOptions).subscribe({
       next: data => {
         this.convert(data.items);

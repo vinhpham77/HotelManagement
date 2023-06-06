@@ -19,7 +19,7 @@ const appRoutes: Routes = [
     component: TwoColsLayoutComponent,
     children: [
       { path: 'manager', component: ManagerComponent, title: 'Quản lý hệ thống' },
-      { path: 'check', component: RentComponent}
+      { path: 'check', component: RentComponent, title: 'THUÊ - TRẢ PHÒNG'}
     ]
   },
 

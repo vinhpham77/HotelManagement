@@ -74,7 +74,7 @@ export class RentCheckOutComponent implements OnInit, OnChanges {
         this.room = next;
         this.reservationDetailService.getReservationDetail(this.roomId).subscribe({
           next: next => {
-            this.reservationdetail = next[0];
+            this.reservationdetail = next.items[0];
             this.reservationdetail.checkInAt = new Date(this.reservationdetail.checkInAt);
             this.reservationdetail.checkOutAt = null;
             this.orderService.getOrderByReservationDetail(this.reservationdetail).subscribe({next: data => {
@@ -90,12 +90,11 @@ export class RentCheckOutComponent implements OnInit, OnChanges {
       error: err => {}
     })
 
-    this.menuService.menu$.subscribe({
+    this.menuService.getMenuAll().subscribe({
       next: data => {
-        this.menus = data;
+        this.menus = data.items;
       }
     });
-    this.menuService.uploadMenuAll();
   }
 
   configuration(){

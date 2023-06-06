@@ -39,9 +39,24 @@ export class MenuService {
     });
   }
 
+  loadByQuery(query: string) {
+    let url = `${this.menuAPI}?${query}`;
+    this.httpClient.get<any>(url).subscribe({
+      next: data => {
+        this.menuSource.next(data.items);
+      }
+    });
+  }
+
   getMenu(keyword: string, sort: string, order: SortDirection, page: number, size: number) {
     this.commonService.tableData = { keyword, sort, order, page, size };
     let url = `${this.menuAPI}?keyword=${keyword}&sort=${sort}&order=${order}&page=${page + 1}&size=${size}`;
+    return this.httpClient.get<any>(url);
+  }
+
+  getMenuAll() {
+    let url = `${this.menuAPI}`;
+    console.log(url);
     return this.httpClient.get<any>(url);
   }
 

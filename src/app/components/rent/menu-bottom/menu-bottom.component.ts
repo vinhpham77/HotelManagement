@@ -16,8 +16,7 @@ export class MenuBottomComponent {
     @Inject(MAT_BOTTOM_SHEET_DATA) public data: Order,
     private menuService: MenuService,
     ) {
-      this.menuService.menu$.subscribe(result => this.menus = result);
-      this.menuService.uploadMenuAll();
+      this.menuService.getMenuAll().subscribe(result => this.menus = result.items);
   }
 
   selectItem(event: MouseEvent, item: MenuItem): void {

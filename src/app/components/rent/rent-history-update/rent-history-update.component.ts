@@ -107,12 +107,11 @@ export class RentHistoryUpdateComponent implements OnInit, OnChanges {
         })
       }
     });
-    this.menuService.menu$.subscribe({
+    this.menuService.getMenuAll().subscribe({
       next: data => {
-        this.menus = data;
+        this.menus = data.items;
       }
     });
-    this.menuService.uploadMenuAll();
   }
 
   changeDay() {
@@ -243,7 +242,9 @@ export class RentHistoryUpdateComponent implements OnInit, OnChanges {
 
   forMatTime(s: string): boolean {
     let subS = s.split(":");
-    if(subS.length == 2 && parseInt(subS[0]) < 24 && parseInt(subS[1]) < 60)
+    let isAllDigitsHourse = /^\d+$/.test(subS[0]);
+    let isAllDigitsMinute = /^\d+$/.test(subS[1]);
+    if(isAllDigitsHourse && parseInt(subS[0]) < 24 && isAllDigitsMinute && parseInt(subS[1]) < 60)
       return true;
     return false;
   }
@@ -319,7 +320,6 @@ export class RentHistoryUpdateComponent implements OnInit, OnChanges {
 
   daysIn(checkIn: Date, checkOut: Date) {
     this.day = this.reservationDetailService.daysIn(checkIn, checkOut);
-    console.log(this.day);
   }
 
   hourseSurchargeCheckIn(checkIn: Date) {

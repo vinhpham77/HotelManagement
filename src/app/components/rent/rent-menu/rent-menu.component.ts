@@ -26,6 +26,7 @@ export class RentMenuComponent implements OnInit, OnChanges {
   public order: Order = <Order>{};
   public room: Room = <Room>{};
   public menus: menuOrder[] = [];
+  public keyword: string = '';
   @Output() orderSave = new EventEmitter();
 
   constructor(private menuService: MenuService,
@@ -37,11 +38,15 @@ export class RentMenuComponent implements OnInit, OnChanges {
       this.menus = [];
       data.forEach(each => this.menus.push({...each, quantity: 0}));
     });
-    this.menuService.uploadMenuAll();
+    this.loadMenu();
   }
 
   ngOnInit(): void {
-    this.setData();
+  }
+
+  loadMenu() {
+    let query = `keyword=${this.keyword}`
+    this.menuService.loadByQuery(query);
   }
 
   ngOnChanges() {
@@ -55,12 +60,16 @@ export class RentMenuComponent implements OnInit, OnChanges {
     })
     this.reservationdetailService.getReservationDetail(this.roomId).subscribe({
       next: next => {
-        this.orderService.getOrderByReservationDetail(next[0]).subscribe({
+        this.orderService.getOrderByReservationDetail(next.items[0]).subscribe({
           next: next => {this.order = next[0]},
           error: err => {}
         })
       }
     })
+  }
+
+  keyup() {
+    this.loadMenu();
   }
 
   remove(item: menuOrder) {

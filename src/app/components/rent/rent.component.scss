@@ -5,7 +5,7 @@
 
 .search-input {
     padding: 0.4375rem 0;
-    font-size: 1rem;
+    font-size: 1.8rem;
     color: #495057;
     outline: none;
     line-height: 1;
@@ -45,7 +45,6 @@ button, input, optgroup, select, textarea {
 
 .room-panel {
     flex-grow: 1;
-    min-width: 700px;
     overflow-x: auto;
     padding-top: 14px;
     width: calc(100vh - 710px);

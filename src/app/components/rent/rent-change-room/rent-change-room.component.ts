@@ -35,26 +35,35 @@ export class RentChangeRoomComponent implements OnInit, OnChanges {
   }
 
   setForm() {
-    this.roomTypeService.roomTypes$.subscribe({next: data => this.roomTypes = data,
+    this.roomTypeService.getRoomTypeAll().subscribe({next: data => {
+      this.roomTypes = data.items;
+    },
       error: err => {}
     });
-    this.roomTypeService.uploadRoomTypeAll();
-    this.roomService.rooms$.subscribe({next: data => this.rooms = data,
+    this.roomService.getRoom().subscribe({next: data => {
+      this.convert(data.items);
+      this.rooms = data.items;
+    },
       error: err => {}
     });
-    this.roomService.uploadRoomAll();
     this.roomService.getRoomById(this.roomId).subscribe({
-      next: next => {this.roomChange = next},
+      next: next => {this.roomChange = next; this.roomChange.lastCleanedAt = new Date(this.roomChange.lastCleanedAt)},
       error: err => {}
     })
 
     this.reservationDetailService.getReservationDetail(this.roomId).subscribe({
-      next: next => {this.reservationdetail = next[0];
+      next: next => {this.reservationdetail = next.items[0];
         this.reservationdetail.checkInAt = new Date(this.reservationdetail.checkInAt);
         this.reservationdetail.checkOutAt = null;
       },
       error: err => {}
     })
+  }
+
+  convert(data: Room[]) {
+    data.forEach(room => {
+      room.lastCleanedAt = new Date(room.lastCleanedAt);
+    });
   }
 
   changeRoom(room: Room) {

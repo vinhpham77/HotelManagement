@@ -15,8 +15,8 @@
         </div>
     </div>
     <div class="form-sub">
-        <p class="text-danger" *ngIf="!isFormatTime">Giờ nhận phòng cần đúng định dạng giờ phút (00:00 đến 23:59).</p>
-        <p *ngIf="!isCheckDay">Thời gian nhận phòng phải nhỏ hơn thời gian trả phòng</p>
+        <mat-error class="text-danger" *ngIf="!isFormatTime">Giờ cần đúng định dạng giờ phút (00:00 đến 23:59).</mat-error>
+        <mat-error *ngIf="!isCheckDay">Thời gian nhận phòng phải nhỏ hơn thời gian trả phòng</mat-error>
         <form [formGroup]="formHistory">
             <div class="w-50 d-inline-block">
                 <mat-form-field appearance="fill" class="formField w-100 pr-2">

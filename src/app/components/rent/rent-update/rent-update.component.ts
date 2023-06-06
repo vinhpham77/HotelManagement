@@ -65,7 +65,7 @@ export class RentUpdateComponent implements OnInit, OnChanges{
     })
     this.reservationdetailService.getReservationDetail(this.roomId).subscribe({
       next: next => {
-        this.reservationdetail = next[0];
+        this.reservationdetail = next.items[0];
         this.reservationdetail.checkInAt = new Date(this.reservationdetail.checkInAt);
         this.reservationdetail.checkOutAt = null;
         this.DayCheckIn?.setValue(this.reservationdetail.checkInAt);
@@ -79,12 +79,12 @@ export class RentUpdateComponent implements OnInit, OnChanges{
       },
       error: err => {}
     })
-    this.menuService.menu$.subscribe({
+    this.menuService.getMenuAll().subscribe({
       next: data => {
-        this.menus = data;
+        console.log(data.items)
+        this.menus = data.items;
       }
     });
-    this.menuService.uploadMenuAll();
     // this.roomTypeService.roomTypesSource$.subscribe(data => this.rob  
   }
 
@@ -138,10 +138,11 @@ export class RentUpdateComponent implements OnInit, OnChanges{
       data: this.order,
     }).afterDismissed().subscribe(result => {
       let t = new Date();
+      console.log(result);
       this.dataSource.push(<OrderDetail>{
         itemId: result.id,
         quantity: 1,
-        price: result.price,
+        price: result.exportPrice,
         orderedAt: t,
       })
       this.table.renderRows();
@@ -184,7 +185,10 @@ export class RentUpdateComponent implements OnInit, OnChanges{
 
   forMatTime(s: string): boolean {
     let subS = s.split(":");
-    if(subS.length == 2 && parseInt(subS[0]) < 24 && parseInt(subS[1]) < 60)
+
+    let isAllDigitsHourse = /^\d+$/.test(subS[0]);
+    let isAllDigitsMinute = /^\d+$/.test(subS[1]);
+    if(isAllDigitsHourse && parseInt(subS[0]) < 24 && isAllDigitsMinute && parseInt(subS[1]) < 60)
       return true;
     return false;
   }

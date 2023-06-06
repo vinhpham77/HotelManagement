@@ -1,1 +1,44 @@
-<p>rent-menu works!</p>
+<div class="rent-update">
+    <div class="topbar-sub">
+        <div class="container d_flex-center">
+            <div class="d_flex-center w-100">
+                <mat-icon class="mat-list-icon text-warning icon-bar-sub">fastfood</mat-icon>
+                <div class="topbar-sub-title">{{room.name}}</div>
+                <div class="flex-grow-1"></div>
+                <button mat-button class="text-primary" (click)="save()">
+                    <i class="fas fa-save"></i>LƯU
+                </button>
+            </div>
+        </div>
+    </div>
+    <div class="form-sub">
+        <input type="text" class="search-input form-control w-100" (keyup)="keyup()" [(ngModel)]="keyword" placeholder="Tìm menu">
+        <div class="d_flex-center flex-wrap">
+            <div *ngFor="let item of menus">
+                <div class="item-menu">
+                    <div class="d_flex-center flex-row" [matBadge]="item.quantity" [matBadgeHidden]="item.quantity == 0">
+                        <button class="d_flex" mat-icon-button (click)="remove(item)">
+                            <mat-icon class="mat-list-icon">remove</mat-icon>
+                        </button>
+                        <div class="item-name text-warning">{{item.name}}</div>
+                        <div>
+                            <button class="d_flex" mat-icon-button [matMenuTriggerFor]="menuAdd">
+                                <mat-icon class="mat-list-icon">more_vert</mat-icon>
+                            </button>
+                            <mat-menu #menuAdd="matMenu">
+                                <button mat-menu-item (click)="add(item, 5)">
+                                    <mat-icon class="mat-list-icon">add</mat-icon>
+                                    <span>5</span>
+                                </button>
+                                <button mat-menu-item (click)="add(item, 10)">
+                                    <mat-icon class="mat-list-icon">add</mat-icon>
+                                    <span>10</span>
+                                </button>
+                            </mat-menu>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
