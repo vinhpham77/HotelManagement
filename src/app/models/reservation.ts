@@ -2,7 +2,7 @@ export interface Reservation {
     id: string;
     roomIds: string[];
     customerId: string;
-    employeeId: string;
+    personnelId: string;
     reservedAt: Date;
-    deposits: number;
+    deposit: number;
 }

@@ -141,12 +141,12 @@
   "reservationDetails": [
     {
       "_id": "dt01",
-      "reservevationId": "r01",
+      "reservationId": "r01",
       "roomId": "p01",
-      "checkInAt": "20-5-2023",
-      "checkOutAt": "26-5-2023",
+      "checkedInAt": "20-5-2023",
+      "checkedOutAt": "26-5-2023",
       "customerId": "KH01",
-      "deposits": 500000,
+      "deposit": 500000,
       "totalAdults": 20,
       "totalChildren": 30,
       "roomPricePerDay": 90000

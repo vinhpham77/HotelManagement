@@ -50,7 +50,7 @@ import {MatMenuModule} from '@angular/material/menu';
 import { CardRoomReceivedComponent } from './components/rent/card-room-received/card-room-received.component';
 import { RentChangeRoomComponent } from './components/rent/rent-change-room/rent-change-room.component';
 import {MatExpansionModule} from '@angular/material/expansion';
-import { RentCheckOutComponent } from './components/rent/rent-check-out/rent-check-out.component';
+import { RentCheckedOutComponent } from './components/rent/rent-check-out/rent-check-out.component';
 import { RentHistoryUpdateComponent } from './components/rent/rent-history-update/rent-history-update.component';
 import { RentMenuComponent } from './components/rent/rent-menu/rent-menu.component';
 import {MatBadgeModule} from '@angular/material/badge';
@@ -92,7 +92,7 @@ import { MatSlideToggleModule } from '@angular/material/slide-toggle';
     CardHistoryComponent,
     CardRoomReceivedComponent,
     RentChangeRoomComponent,
-    RentCheckOutComponent,
+    RentCheckedOutComponent,
     RentHistoryUpdateComponent,
     RentMenuComponent,
     RentUpdateComponent,

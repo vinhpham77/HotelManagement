@@ -53,8 +53,8 @@ export class RentChangeRoomComponent implements OnInit, OnChanges {
 
     this.reservationDetailService.getReservationDetail(this.roomId).subscribe({
       next: next => {this.reservationdetail = next.items[0];
-        this.reservationdetail.checkInAt = new Date(this.reservationdetail.checkInAt);
-        this.reservationdetail.checkOutAt = null;
+        this.reservationdetail.checkedInAt = new Date(this.reservationdetail.checkedInAt);
+        this.reservationdetail.checkedOutAt = null;
       },
       error: err => {}
     })

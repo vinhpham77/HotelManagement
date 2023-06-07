@@ -1,11 +1,11 @@
 export interface ReservationDetail {
     id: string;
-    reservevationId: string;
+    reservationId: string;
     roomId: string;
-    checkInAt: Date;
-    checkOutAt: Date | null;
+    checkedInAt: Date;
+    checkedOutAt: Date | null;
     customerId: string;
-    deposits: number;
+    deposit: number;
     totalAdults: number;
     totalChildren: number;
     roomPricePerDay: number;
