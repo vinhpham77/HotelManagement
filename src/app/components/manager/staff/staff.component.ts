@@ -34,6 +34,7 @@ export class StaffComponent implements OnInit, AfterViewInit, OnDestroy {
 
     this.subscription = this.staffService.staff$.subscribe(data => {
       this.dataSource = data;
+      this.selections.clear();
     });
   }
 

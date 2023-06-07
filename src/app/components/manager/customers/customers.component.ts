@@ -34,6 +34,7 @@ export class CustomersComponent implements OnDestroy, OnInit, AfterViewInit {
 
     this.subscription = this.customersService.customers$.subscribe(data => {
       this.dataSource = data;
+      this.selections.clear();
     });
   }
 

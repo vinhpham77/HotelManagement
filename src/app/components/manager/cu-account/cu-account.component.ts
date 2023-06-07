@@ -1,11 +1,11 @@
 import { Component } from '@angular/core';
 import { Subscription } from 'rxjs';
 import { AbstractControl, FormBuilder, ValidationErrors, ValidatorFn, Validators } from '@angular/forms';
-import { CommonService } from '../../services/common.service';
-import { AccountsService } from '../../services/accounts.service';
-import { Account } from '../../models/Account';
+import { CommonService } from '../../../services/common.service';
+import { AccountsService } from '../../../services/accounts.service';
+import { Account } from '../../../models/Account';
 
-import { accountRoles } from '../../../assets/accountRoles';
+import { accountRoles } from '../../../../assets/accountRoles';
 
 @Component({
   selector: 'app-cu-account',

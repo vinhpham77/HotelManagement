@@ -64,8 +64,8 @@ import { StaffComponent } from './components/manager/staff/staff.component';
 import { CuPersonnelComponent } from './components/manager/cu-personnel/cu-personnel.component';
 import {MatBottomSheetModule} from '@angular/material/bottom-sheet';
 import {MatTooltipModule} from '@angular/material/tooltip';
-import { CuAccountComponent } from './components/cu-account/cu-account.component';
-import { AccountsComponent } from './components/accounts/accounts.component';
+import { CuAccountComponent } from './components/manager/cu-account/cu-account.component';
+import { AccountsComponent } from './components/manager/accounts/accounts.component';
 import { MatSlideToggleModule } from '@angular/material/slide-toggle';
 
 @NgModule({

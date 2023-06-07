@@ -1,16 +1,16 @@
 import { AfterViewInit, Component, OnDestroy, OnInit, ViewChild } from '@angular/core';
-import { Account } from '../../models/Account';
+import { Account } from '../../../models/Account';
 import { catchError, map, merge, of, startWith, Subscription, switchMap } from 'rxjs';
 import { SelectionModel } from '@angular/cdk/collections';
 import { MatPaginator } from '@angular/material/paginator';
 import { MatSort } from '@angular/material/sort';
 import { MatDialog } from '@angular/material/dialog';
-import { CommonService } from '../../services/common.service';
-import { DialogConfirm } from '../../models/dialog-confirm';
-import { DialogComponent } from '../dialog/dialog.component';
-import { AccountsService } from '../../services/accounts.service';
+import { CommonService } from '../../../services/common.service';
+import { DialogConfirm } from '../../../models/dialog-confirm';
+import { DialogComponent } from '../../dialog/dialog.component';
+import { AccountsService } from '../../../services/accounts.service';
 import { CuAccountComponent } from '../cu-account/cu-account.component';
-import { accountRoles } from '../../../assets/accountRoles';
+import { accountRoles } from '../../../../assets/accountRoles';
 
 @Component({
   selector: 'app-accounts',
@@ -40,6 +40,7 @@ export class AccountsComponent implements OnInit, OnDestroy, AfterViewInit {
     this.paginatorSizeOptions = this.commonService.PaginatorOptions;
     this.subscription = this.accountsService.account$.subscribe(data => {
       this.dataSource = data;
+      this.selections.clear();
     });
   }
 
@@ -115,7 +116,7 @@ export class AccountsComponent implements OnInit, OnDestroy, AfterViewInit {
   }
 
   onDelete(account: Account) {
-    this.accountsService.delete(account.id).subscribe(() => {
+    this.accountsService.delete(account.username).subscribe(() => {
       this.refreshOnSuccess('Xoá thành công tài khoản ' + account.username);
     });
   }
