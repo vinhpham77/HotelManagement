@@ -56,7 +56,7 @@ export class RentHistoryUpdateComponent implements OnInit, OnChanges {
         dayCheckedIn: [new Date(), Validators.required],
         hourCheckedIn: ["", Validators.required],
         dayCheckedOut: [new Date(), Validators.required],
-        hourseCheckedOut: ["", Validators.required],
+        hourCheckedOut: ["", Validators.required],
         roomPrice: [0, Validators.required],
         roomExceed: [0, Validators.required],
         prepayment: [0, Validators.required],
@@ -95,9 +95,9 @@ export class RentHistoryUpdateComponent implements OnInit, OnChanges {
                   this.order = data[0];
                   let checkedOut = this.reservationdetail.checkedOutAt? this.reservationdetail.checkedOutAt:new Date();
                   this.DayCheckedIn?.setValue(this.reservationdetail.checkedInAt);
-                  this.HourCheckedIn?.setValue(this.getHourse(this.reservationdetail.checkedInAt));
+                  this.HourCheckedIn?.setValue(this.getHour(this.reservationdetail.checkedInAt));
                   this.DayCheckedOut?.setValue(checkedOut);
-                  this.HourCheckedOut?.setValue(this.getHourse(checkedOut));
+                  this.HourCheckedOut?.setValue(this.getHour(checkedOut));
                   this.dataSource = this.order.details;
                   this.configuration(this.reservationdetail.checkedInAt, checkedOut);
                 });
@@ -131,8 +131,8 @@ export class RentHistoryUpdateComponent implements OnInit, OnChanges {
       let checkedOut = new Date(this.dayString(this.DayCheckedOut?.value) + ' ' + this.HourCheckedOut?.value + ':00');
       this.checkDay(checkedIn, checkedOut);
       if(!this.isCheckDay) return;
-      this.hourseSurchargeCheckedIn(checkedIn);
-      this.hourseSurchargeCheckedOut(checkedOut);
+      this.hourSurchargeCheckedIn(checkedIn);
+      this.hourSurchargeCheckedOut(checkedOut);
       this.daysIn(checkedIn, checkedOut);
       this.setPrice(checkedIn, checkedOut);
       this.totalPrice();
@@ -153,8 +153,8 @@ export class RentHistoryUpdateComponent implements OnInit, OnChanges {
     this.setPrice(checkedIn, checkedOut);
     this.totalPrice();
     this.daysIn(checkedIn, checkedOut);
-    this.hourseSurchargeCheckedIn(checkedIn);
-    this.hourseSurchargeCheckedOut(checkedOut);
+    this.hourSurchargeCheckedIn(checkedIn);
+    this.hourSurchargeCheckedOut(checkedOut);
 
   }
 
@@ -236,15 +236,15 @@ export class RentHistoryUpdateComponent implements OnInit, OnChanges {
     }
   }
 
-  getHourse(date: Date): string {
+  getHour(date: Date): string {
     return date.getHours() + ':' + date.getMinutes();
   }
 
   forMatTime(s: string): boolean {
     let subS = s.split(":");
-    let isAllDigitsHourse = /^\d+$/.test(subS[0]);
+    let isAllDigitsHour = /^\d+$/.test(subS[0]);
     let isAllDigitsMinute = /^\d+$/.test(subS[1]);
-    if(isAllDigitsHourse && parseInt(subS[0]) < 24 && isAllDigitsMinute && parseInt(subS[1]) < 60)
+    if(isAllDigitsHour && parseInt(subS[0]) < 24 && isAllDigitsMinute && parseInt(subS[1]) < 60)
       return true;
     return false;
   }
@@ -322,7 +322,7 @@ export class RentHistoryUpdateComponent implements OnInit, OnChanges {
     this.day = this.reservationDetailService.daysIn(checkedIn, checkedOut);
   }
 
-  hourseSurchargeCheckedIn(checkedIn: Date) {
+  hourSurchargeCheckedIn(checkedIn: Date) {
     this.lateHourCheckedIn = 12 - checkedIn.getHours();
     this.lateMinuteCheckedIn = 60 - checkedIn.getMinutes();
     if(this.lateMinuteCheckedIn < 60)
@@ -331,7 +331,7 @@ export class RentHistoryUpdateComponent implements OnInit, OnChanges {
       this.lateMinuteCheckedIn = 0;
   }
 
-  hourseSurchargeCheckedOut(checkedOut: Date) {
+  hourSurchargeCheckedOut(checkedOut: Date) {
     this.lateHourCheckedOut = checkedOut.getHours() - 12;
     this.lateMinuteCheckedOut = checkedOut.getMinutes();
   }
@@ -359,14 +359,14 @@ export class RentHistoryUpdateComponent implements OnInit, OnChanges {
   }
 
   get HourCheckedIn() {
-    return this.formHistory.get('hourseCheckedIn');
+    return this.formHistory.get('hourCheckedIn');
   }
 
   get DayCheckedOut() {
     return this.formHistory.get('dayCheckedOut');
   }
   get HourCheckedOut() {
-    return this.formHistory.get('hourseCheckedOut');
+    return this.formHistory.get('hourCheckedOut');
   }
   get RoomPrice() {
     return this.formHistory.get('roomPrice');

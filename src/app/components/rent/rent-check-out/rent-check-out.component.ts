@@ -49,7 +49,7 @@ export class RentCheckedOutComponent implements OnInit, OnChanges {
         dayCheckedIn: [new Date(), Validators.required],
         hourCheckedIn: ["", Validators.required],
         dayCheckedOut: [new Date(), Validators.required],
-        hourseCheckedOut: ["", Validators.required],
+        hourCheckedOut: ["", Validators.required],
         roomPrice: [0, Validators.required],
         roomExceed: [0, Validators.required],
         prepayment: [0, Validators.required],
