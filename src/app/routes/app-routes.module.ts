@@ -10,6 +10,7 @@ import { MenuComponent } from '../components/manager/menu/menu.component';
 import { CustomersComponent } from '../components/manager/customers/customers.component';
 import { StaffComponent } from '../components/manager/staff/staff.component';
 import { RentComponent } from '../components/rent/rent.component';
+import { AccountsComponent } from '../components/accounts/accounts.component';
 
 const appRoutes: Routes = [
 
@@ -33,6 +34,7 @@ const appRoutes: Routes = [
       { path: 'manager/menu', component: MenuComponent, title: 'Menu' },
       { path: 'manager/customers', component: CustomersComponent, title: 'Khách hàng' },
       { path: 'manager/staff', component: StaffComponent, title: 'Nhân sự' },
+      { path: 'manager/accounts', component: AccountsComponent, title: 'Tài khoản' },
     ]
   }
 ];

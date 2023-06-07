@@ -198,6 +198,10 @@ mat-paginator .mat-mdc-paginator-container {
   min-height: unset;
 }
 
+.mdc-text-field--disabled.mdc-text-field--filled {
+  background-color: unset;
+}
+
 .mat-mdc-form-field.mat-mdc-paginator-page-size-select {
   margin: 0.6rem 0.4rem 0;
   width: 5.6rem;

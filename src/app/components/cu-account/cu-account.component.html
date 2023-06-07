@@ -1,0 +1,50 @@
+<div class='form-wrapper' [hidden]='isHidden'>
+  <header class='form-header'>
+    <p class='form-heading'>{{data?.title}}</p>
+    <div class='form-actions'>
+      <button mat-button class='secondary' (click)='onSave()'>
+        <mat-icon>save</mat-icon>
+        Lưu
+      </button>
+      <button mat-button (click)='onCancel()'>
+        <mat-icon>close</mat-icon>
+        Huỷ
+      </button>
+    </div>
+  </header>
+  <mat-divider></mat-divider>
+  <form class='form-content' [formGroup]='accountForm'>
+    <div class='half-form-field'>
+      <mat-form-field appearance='fill'>
+        <mat-label>Tên đăng nhập</mat-label>
+        <input matInput formControlName='username' required>
+        <mat-error *ngIf='Username?.invalid'>Bạn phải nhập tên đăng nhập</mat-error>
+      </mat-form-field>
+    </div>
+    <div class='half-form-field'>
+      <mat-slide-toggle formControlName='status'>{{Status?.value ? "Hoạt động" : "Khoá"}}</mat-slide-toggle>
+    </div>
+    <mat-form-field appearance='fill'>
+      <mat-label>Mật khẩu</mat-label>
+      <input matInput type='password' formControlName='password' required>
+      <mat-error *ngIf='Password?.invalid'>Bạn phải nhập mật khẩu</mat-error>
+    </mat-form-field>
+
+    <mat-form-field appearance='fill'>
+      <mat-label>Nhập lại mật khẩu</mat-label>
+      <input matInput type='password' formControlName='repeatPassword' required>
+      <mat-error *ngIf='RepeatPassword?.errors?.["required"]'>Bạn phải nhập lại mật khẩu</mat-error>
+      <mat-error *ngIf='RepeatPassword?.errors?.["compare"]'>Mật khẩu không khớp</mat-error>
+    </mat-form-field>
+
+    <mat-form-field>
+      <mat-label>Vai trò</mat-label>
+      <mat-select formControlName='role'>
+        <mat-option *ngFor='let role of roles' [value]='role.name'>
+          {{role.meaning}}
+        </mat-option>
+      </mat-select>
+      <mat-error *ngIf='Username?.invalid'>Bạn phải chọn vai trò</mat-error>
+    </mat-form-field>
+  </form>
+</div>

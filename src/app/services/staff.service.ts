@@ -38,24 +38,12 @@ export class StaffService {
     return this.httpClient.get<any>(url, this.httpOptions);
   }
 
-  getRoomById(_id: string) {
-    let url = `${this.staffAPI}/${_id}`;
-    return this.httpClient.get<any>(url, this.httpOptions);
-  }
-
   create(personnel: Personnel) {
     return this.httpClient.post<Personnel>(this.staffAPI, personnel, this.httpOptions);
   }
 
-  patch(personnel: Personnel) {
-    const patchDoc = [
-      { op: 'replace', path: '/firstName', value: personnel.firstName },
-      { op: 'replace', path: '/lastName', value: personnel.lastName },
-      // { op: 'replace', path: '/maxAdult', value: room.maxAdult },
-      // { op: 'replace', path: '/maxChild', value: room.maxChild },
-      // { op: 'replace', path: '/description', value: room.description }
-    ];
-    return this.httpClient.patch<any>(this.staffAPI + `/${personnel.id}`, patchDoc);
+  update(personnel: Personnel) {
+    return this.httpClient.put<any>(this.staffAPI + `/${personnel.id}`, personnel, this.httpOptions);
   }
 
   delete(personnelId: string) {

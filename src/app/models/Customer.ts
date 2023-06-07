@@ -7,6 +7,5 @@ export interface Customer {
     sex: boolean;
     idNo: string;
     phoneNumber: string | null;
-    address: string;
     nationality: string;
 }

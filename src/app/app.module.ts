@@ -64,6 +64,9 @@ import { StaffComponent } from './components/manager/staff/staff.component';
 import { CuPersonnelComponent } from './components/manager/cu-personnel/cu-personnel.component';
 import {MatBottomSheetModule} from '@angular/material/bottom-sheet';
 import {MatTooltipModule} from '@angular/material/tooltip';
+import { CuAccountComponent } from './components/cu-account/cu-account.component';
+import { AccountsComponent } from './components/accounts/accounts.component';
+import { MatSlideToggleModule } from '@angular/material/slide-toggle';
 
 @NgModule({
   declarations: [
@@ -95,7 +98,9 @@ import {MatTooltipModule} from '@angular/material/tooltip';
     RentUpdateComponent,
     MenuBottomComponent,
     StaffComponent,
-    CuPersonnelComponent
+    CuPersonnelComponent,
+    CuAccountComponent,
+    AccountsComponent
   ],
   imports: [
     BrowserModule,
@@ -130,7 +135,8 @@ import {MatTooltipModule} from '@angular/material/tooltip';
     MatNativeDateModule,
     MatButtonToggleModule,
     MatBottomSheetModule,
-    MatTooltipModule
+    MatTooltipModule,
+    MatSlideToggleModule
   ],
   providers: [
     { provide: MatPaginatorIntl, useClass: CustomMatPaginatorIntlService },

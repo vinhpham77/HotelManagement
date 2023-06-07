@@ -22,7 +22,6 @@ export class CuCustomerComponent implements OnDestroy {
     sex: this.fb.control<boolean>(true, [Validators.required]),
     idNo: ['', [Validators.required]],
     phoneNumber: ['', [Validators.pattern(/^\d{10}$/)]],
-    address: ['', Validators.required],
     nationality: ['', Validators.required]
   });
 
@@ -50,10 +49,6 @@ export class CuCustomerComponent implements OnDestroy {
     return this.customerForm.get('phoneNumber');
   }
 
-  get Address() {
-    return this.customerForm.get('address');
-  }
-
   get Nationality() {
     return this.customerForm.get('nationality');
   }
@@ -72,7 +67,6 @@ export class CuCustomerComponent implements OnDestroy {
           sex: customer.sex,
           idNo: customer.idNo,
           phoneNumber: customer.phoneNumber,
-          address: customer.address,
           nationality: customer.nationality
         });
       } else if (this.data.action === 'create') {
@@ -95,7 +89,6 @@ export class CuCustomerComponent implements OnDestroy {
         sex: this.Sex?.value,
         idNo: this.IdNo?.value,
         phoneNumber: this.PhoneNumber?.value,
-        address: this.Address?.value,
         nationality: this.Nationality?.value
       };
 

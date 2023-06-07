@@ -1,21 +1,23 @@
-import { Component } from '@angular/core';
+import { Component, OnInit } from '@angular/core';
 import { Subscription } from 'rxjs';
 import { FormBuilder, Validators } from '@angular/forms';
 import { CommonService } from '../../../services/common.service';
 import { StaffService } from '../../../services/staff.service';
 import { Personnel } from '../../../models/Personnel';
+import { AccountsService } from '../../../services/accounts.service';
 
 @Component({
   selector: 'app-cu-personnel',
   templateUrl: './cu-personnel.component.html',
   styleUrls: ['./cu-personnel.component.scss']
 })
-export class CuPersonnelComponent {
+export class CuPersonnelComponent implements OnInit {
   data: any;
-  subscription: Subscription;
+  subscriptions: Subscription[];
+  usernames = [];
   isHidden = true;
 
-  customerForm = this.fb.group({
+  personnelForm = this.fb.group({
     firstName: ['', Validators.required],
     lastName: ['', Validators.required],
     username: ['', Validators.required],
@@ -23,55 +25,58 @@ export class CuPersonnelComponent {
     sex: this.fb.control<boolean>(true, [Validators.required]),
     idNo: ['', [Validators.required]],
     phoneNumber: ['', [Validators.pattern(/^\d{10}$/)]],
-    address: ['', Validators.required],
     nationality: ['', Validators.required]
   });
 
   get FirstName() {
-    return this.customerForm.get('firstName');
+    return this.personnelForm.get('firstName');
   }
 
   get LastName() {
-    return this.customerForm.get('lastName');
+    return this.personnelForm.get('lastName');
   }
 
   get Username() {
-    return this.customerForm.get('username');
+    return this.personnelForm.get('username');
   }
 
   get Birthdate() {
-    return this.customerForm.get('birthdate');
+    return this.personnelForm.get('birthdate');
   }
 
   get Sex() {
-    return this.customerForm.get('sex');
+    return this.personnelForm.get('sex');
   }
 
   get IdNo() {
-    return this.customerForm.get('idNo');
+    return this.personnelForm.get('idNo');
   }
 
   get PhoneNumber() {
-    return this.customerForm.get('phoneNumber');
-  }
-
-  get Address() {
-    return this.customerForm.get('address');
+    return this.personnelForm.get('phoneNumber');
   }
 
   get Nationality() {
-    return this.customerForm.get('nationality');
+    return this.personnelForm.get('nationality');
   }
 
-  constructor(private fb: FormBuilder, private commonService: CommonService, private staffService: StaffService) {
-    this.subscription = this.commonService.formData$.subscribe(data => {
+  constructor(private fb: FormBuilder, private commonService: CommonService, private staffService: StaffService, private accountService: AccountsService) {
+    const usernameSubscription = this.accountService.getUsernames().subscribe(usernames => {
+      this.usernames = usernames;
+    });
+
+    this.subscriptions = [usernameSubscription];
+  }
+
+  ngOnInit() {
+    const formSubscription = this.commonService.formData$.subscribe(data => {
       this.data = data;
-      this.customerForm.reset();
+      this.personnelForm.reset();
       this.Sex?.setValue(true);
 
       if (this.data.action === 'update') {
         let personnel = this.data?.object;
-        this.customerForm.patchValue({
+        this.personnelForm.patchValue({
           firstName: personnel.firstName,
           lastName: personnel.lastName,
           username: personnel.username,
@@ -79,7 +84,6 @@ export class CuPersonnelComponent {
           sex: personnel.sex,
           idNo: personnel.idNo,
           phoneNumber: personnel.phoneNumber,
-          address: personnel.address,
           nationality: personnel.nationality
         });
       } else if (this.data.action === 'create') {
@@ -89,10 +93,12 @@ export class CuPersonnelComponent {
 
       this.isHidden = false;
     });
+
+    this.subscriptions.push(formSubscription);
   }
 
   onSave() {
-    if (this.customerForm.valid) {
+    if (this.personnelForm.valid) {
       let birthdate = new Date(this.Birthdate?.value as Date).toISOString();
 
       const personnel = <Personnel>{
@@ -103,7 +109,6 @@ export class CuPersonnelComponent {
         sex: this.Sex?.value,
         idNo: this.IdNo?.value,
         phoneNumber: this.PhoneNumber?.value,
-        address: this.Address?.value,
         nationality: this.Nationality?.value
       };
 
@@ -120,7 +125,7 @@ export class CuPersonnelComponent {
         );
       } else if (this.data.action === 'update') {
         personnel.id = this.data.object.id;
-        this.staffService.patch(personnel).subscribe(
+        this.staffService.update(personnel).subscribe(
           {
             next: () => {
               this.refreshOnSuccess('Cập nhật thành công');
@@ -132,7 +137,7 @@ export class CuPersonnelComponent {
         );
       }
     } else {
-      this.customerForm.markAllAsTouched();
+      this.personnelForm.markAllAsTouched();
     }
   }
 
@@ -141,7 +146,7 @@ export class CuPersonnelComponent {
   }
 
   ngOnDestroy() {
-    this.subscription.unsubscribe();
+    this.subscriptions.forEach(subscription => subscription.unsubscribe());
   }
 
   refreshOnSuccess(msg: string) {
