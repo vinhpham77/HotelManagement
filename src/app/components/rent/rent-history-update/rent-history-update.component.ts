@@ -7,7 +7,7 @@ import { Room } from 'src/app/models/Room';
 import { Order } from 'src/app/models/order';
 import { OrderDetail } from 'src/app/models/order-detail';
 import { Receipt } from 'src/app/models/receipt';
-import { ReservationDetail } from 'src/app/models/reservation-detail';
+import { ReservationDetail } from 'src/app/models/ReservationDetail';
 import { MenuService } from 'src/app/services/menu.service';
 import { OrderService } from 'src/app/services/order.service';
 import { ReceiptService } from 'src/app/services/receipt.service';
@@ -92,7 +92,7 @@ export class RentHistoryUpdateComponent implements OnInit, OnChanges {
               next: next => {
                 this.room = next;
                 this.orderService.getOrderByReservationDetail(this.reservationdetail).subscribe(data => {
-                  this.order = data[0];
+                  this.order = data;
                   let checkedOut = this.reservationdetail.checkedOutAt? this.reservationdetail.checkedOutAt:new Date();
                   this.DayCheckedIn?.setValue(this.reservationdetail.checkedInAt);
                   this.HourCheckedIn?.setValue(this.getHour(this.reservationdetail.checkedInAt));
@@ -155,12 +155,11 @@ export class RentHistoryUpdateComponent implements OnInit, OnChanges {
     this.daysIn(checkedIn, checkedOut);
     this.hourSurchargeCheckedIn(checkedIn);
     this.hourSurchargeCheckedOut(checkedOut);
-
   }
 
   setPrice(checkedIn: Date, checkedOut: Date) {
-    let roomP = this.reservationDetailService.roomPriceDay(this.reservationdetail, checkedIn, checkedOut);
-    let roomE = this.reservationDetailService.roomSurcharge(this.reservationdetail, this.room, checkedIn, checkedOut);
+    let roomP = this.reservationDetailService.getRoomPriceDay(this.reservationdetail, checkedIn, checkedOut);
+    let roomE = this.reservationDetailService.getRoomSurcharge(this.reservationdetail, this.room, checkedIn, checkedOut);
     this.RoomPrice?.setValue(roomP/1000);
     this.RoomExceed?.setValue(roomE/1000);
     this.Prepayment?.setValue(this.reservationdetail.deposit/1000);

@@ -67,6 +67,8 @@ import {MatTooltipModule} from '@angular/material/tooltip';
 import { CuAccountComponent } from './components/manager/cu-account/cu-account.component';
 import { AccountsComponent } from './components/manager/accounts/accounts.component';
 import { MatSlideToggleModule } from '@angular/material/slide-toggle';
+import { ReceiptsComponent } from './components/manager/receipts/receipts.component';
+import { UpdateReceiptComponent } from './components/manager/update-receipt/update-receipt.component';
 
 @NgModule({
   declarations: [
@@ -100,7 +102,9 @@ import { MatSlideToggleModule } from '@angular/material/slide-toggle';
     StaffComponent,
     CuPersonnelComponent,
     CuAccountComponent,
-    AccountsComponent
+    AccountsComponent,
+    ReceiptsComponent,
+    UpdateReceiptComponent,
   ],
   imports: [
     BrowserModule,
@@ -136,7 +140,7 @@ import { MatSlideToggleModule } from '@angular/material/slide-toggle';
     MatButtonToggleModule,
     MatBottomSheetModule,
     MatTooltipModule,
-    MatSlideToggleModule
+    MatSlideToggleModule,
   ],
   providers: [
     { provide: MatPaginatorIntl, useClass: CustomMatPaginatorIntlService },

@@ -2,7 +2,7 @@ import { Component, EventEmitter, Input, OnChanges, OnInit, Output, SimpleChange
 import { MatSnackBar } from '@angular/material/snack-bar';
 import { Room } from 'src/app/models/Room';
 import { RoomType } from 'src/app/models/RoomType';
-import { ReservationDetail } from 'src/app/models/reservation-detail';
+import { ReservationDetail } from 'src/app/models/ReservationDetail';
 import { ReservationDetailService } from 'src/app/services/reservation-detail.service';
 import { RoomTypesService } from 'src/app/services/room-types.service';
 import { RoomsService } from 'src/app/services/rooms.service';

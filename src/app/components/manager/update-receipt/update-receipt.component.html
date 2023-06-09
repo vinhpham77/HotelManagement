@@ -1,0 +1,134 @@
+<div class='form-wrapper' [hidden]='isHidden'>
+  <header class='form-header'>
+    <p class='form-heading'>{{data?.title}}</p>
+    <div class='form-actions'>
+      <button mat-button class='secondary' (click)='onSave()'>
+        <mat-icon>save</mat-icon>
+        Lưu
+      </button>
+      <button mat-button (click)='onCancel()'>
+        <mat-icon>close</mat-icon>
+        Huỷ
+      </button>
+    </div>
+  </header>
+  <mat-divider></mat-divider>
+  <form class='form-content' [formGroup]='receiveDtoForm'>
+    <div class='half-form-field'>
+      <mat-form-field appearance='fill'>
+        <mat-label>Ngày nhận phòng</mat-label>
+        <input matInput [matDatepicker]='checkedInPicker' formControlName='checkedInAt'
+               [max]='CheckedOutAt?.value! > now ? now : CheckedOutAt?.value' readonly>
+        <mat-datepicker-toggle matSuffix [for]='checkedInPicker'></mat-datepicker-toggle>
+        <mat-datepicker #checkedInPicker></mat-datepicker>
+        <mat-error *ngIf='CheckedInAt?.hasError("required")'>Ngày nhận phòng không thể để trống</mat-error>
+        <mat-error *ngIf='CheckedInAt?.value! > now'>Không thể muộn hơn ngày hiện tại</mat-error>
+        <mat-error *ngIf='CheckedInAt?.hasError("dateTimeCompare")'>Không thể muộn hơn thời gian trả</mat-error>
+      </mat-form-field>
+    </div>
+    <div class='half-form-field'>
+      <mat-form-field appearance='fill'>
+        <mat-label>Giờ nhận phòng</mat-label>
+        <input matInput formControlName='checkedInTime' placeholder='HH:mm'>
+        <mat-error *ngIf='CheckedInTime?.hasError("required")'>Giờ nhận phòng không thể để trống</mat-error>
+        <mat-error *ngIf='CheckedInTime?.hasError("invalidTime")'>Giờ nhận phòng không hợp lệ</mat-error>
+        <mat-error *ngIf='CheckedInTime?.hasError("dateTimeCompare")'>Không thể muộn hơn thời gian trả
+        </mat-error>
+      </mat-form-field>
+    </div>
+
+    <div class='half-form-field'>
+      <mat-form-field appearance='fill'>
+        <mat-label>Ngày trả phòng</mat-label>
+        <input matInput [matDatepicker]='checkedOutPicker' formControlName='checkedOutAt' [min]='CheckedInAt?.value'
+               [max]='now' readonly>
+        <mat-datepicker-toggle matSuffix [for]='checkedOutPicker'></mat-datepicker-toggle>
+        <mat-datepicker #checkedOutPicker></mat-datepicker>
+        <mat-error *ngIf='CheckedOutAt?.hasError("required")'>Ngày trả phòng không thể để trống</mat-error>
+        <mat-error *ngIf='CheckedOutAt?.value! > now'>Không thể lớn hơn ngày hiện tại</mat-error>
+        <mat-error *ngIf='CheckedOutAt?.hasError("dateTimeCompare")'>Không thể sớm hơn thời gian nhận</mat-error>
+      </mat-form-field>
+    </div>
+
+    <div class='half-form-field'>
+      <mat-form-field appearance='fill'>
+        <mat-label>Giờ trả phòng</mat-label>
+        <input matInput formControlName='checkedOutTime' placeholder='HH:mm'>
+        <mat-error *ngIf='CheckedOutTime?.hasError("required")'>Giờ trả phòng không thể để trống</mat-error>
+        <mat-error *ngIf='CheckedOutTime?.hasError("invalidTime")'>Giờ trả phòng không hợp lệ</mat-error>
+        <mat-error *ngIf='CheckedOutTime?.hasError("dateTimeCompare")'>Không thể sớm hơn thời gian nhận
+        </mat-error>
+      </mat-form-field>
+    </div>
+
+    <div class='half-form-field'>
+      <p>Aaaa</p>
+    </div>
+    <div class='half-form-field'>
+      <p>Aaaa</p>
+    </div>
+
+    <div class='half-form-field'>
+      <mat-form-field appearance='fill'>
+        <mat-label>Tiền phòng</mat-label>
+        <input matInput class='text-right' formControlName='roomPrice' appCurrencyFormatter readonly>
+        <span matTextSuffix class='nowrap'> &nbsp;₫</span>
+      </mat-form-field>
+    </div>
+
+    <div class='half-form-field'>
+      {{"â"}}
+    </div>
+
+    <div class='half-form-field'>
+      <mat-form-field>
+        <mat-label>Phụ thu</mat-label>
+        <input matInput class='text-right' formControlName='surcharge' appCurrencyFormatter readonly>
+        <span matTextSuffix class='nowrap'> &nbsp;₫</span>
+      </mat-form-field>
+    </div>
+
+    <div class='half-form-field'>
+      <mat-form-field>
+        <mat-label>Đặt trước</mat-label>
+        <input matInput class='text-right' formControlName='deposit' appCurrencyFormatter>
+        <span matTextSuffix class='nowrap'> &nbsp;₫</span>
+      </mat-form-field>
+    </div>
+
+    <div class='half-form-field'>
+      <mat-form-field>
+        <mat-label>Tổng tiền dịch vụ</mat-label>
+        <input matInput class='text-right' formControlName='totalMenuPrice' appCurrencyFormatter readonly>
+        <span matTextSuffix class='nowrap'> &nbsp;₫</span>
+      </mat-form-field>
+    </div>
+
+    <div class='half-form-field'>
+      <mat-form-field>
+        <mat-label>Tổng tiền</mat-label>
+        <input matInput class='text-right' formControlName='totalPrice' appCurrencyFormatter readonly>
+        <span matTextSuffix class='nowrap'> &nbsp;₫</span>
+      </mat-form-field>
+    </div>
+
+    <div class='half-form-field'>
+      <mat-form-field>
+        <mat-label>Thanh toán</mat-label>
+        <input matInput class='text-right' formControlName='payment' appCurrencyFormatter readonly>
+        <span matTextSuffix class='nowrap'> &nbsp;₫</span>
+      </mat-form-field>
+    </div>
+  </form>
+  <mat-divider></mat-divider>
+  <header class='form-header'>
+    <p class='form-heading'>Dịch vụ sử dụng</p>
+    <div class='form-actions'>
+      <button mat-button (click)='onCancel()'>
+        <mat-icon (click)='openBottomSheet()'>add</mat-icon>
+        Thêm
+      </button>
+    </div>
+  </header>
+  <mat-divider></mat-divider>
+</div>

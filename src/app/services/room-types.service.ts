@@ -21,6 +21,7 @@ export class RoomTypesService {
   private roomTypesSource = new BehaviorSubject<RoomType[]>([]);
 
   roomTypes$ = this.roomTypesSource.asObservable();
+
   constructor(private httpClient: HttpClient, private commonService: CommonService) {
   }
 
@@ -32,7 +33,7 @@ export class RoomTypesService {
   }
 
   getRoomTypes(keyword: string, sort: string, order: SortDirection, page: number, size: number) {
-    this.commonService.tableData = { keyword, sort, order, page, size };
+    this.commonService.tableData = { keyword, startDate: null, endDate: null, sort, order, page, size };
     let url = `${this.roomTypesAPI}?keyword=${keyword}&sort=${sort}&order=${order}&page=${page + 1}&size=${size}`;
     return this.httpClient.get<any>(url);
   }
@@ -42,7 +43,7 @@ export class RoomTypesService {
       next: data => {
         this.roomTypesSource.next(data.items);
       }
-    })
+    });
   }
 
   getRoomTypeAll() {

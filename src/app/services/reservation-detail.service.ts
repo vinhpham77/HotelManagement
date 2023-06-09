@@ -1,6 +1,6 @@
 import { Injectable } from '@angular/core';
 import { BehaviorSubject } from 'rxjs';
-import { ReservationDetail } from '../models/reservation-detail';
+import { ReservationDetail } from '../models/ReservationDetail';
 import { environment } from 'src/environments/environment';
 import { HttpClient, HttpHeaders } from '@angular/common/http';
 import { Room } from '../models/Room';
@@ -75,11 +75,11 @@ export class ReservationDetailService {
     return Math.floor((t2.getTime() - t1.getTime()) / (24*60*60*1000));
   }
 
-  roomPriceDay(reservationDetail: ReservationDetail, checkedIn: Date, checkedOut: Date): number {
+  getRoomPriceDay(reservationDetail: ReservationDetail, checkedIn: Date, checkedOut: Date): number {
     return reservationDetail.roomPricePerDay * this.daysIn(checkedIn, checkedOut);
   }
 
-  roomSurcharge(reservationDetail: ReservationDetail, room: Room, checkedIn: Date, checkedOut: Date): number {
+  getRoomSurcharge(reservationDetail: ReservationDetail, room: Room, checkedIn: Date, checkedOut: Date): number {
     let p = reservationDetail.roomPricePerDay;
     return p * this.surchargeCheckedIn(checkedIn) + p * this.surchargeCheckedOut(checkedOut) + 200000 * this.adultsExceed(reservationDetail, room) + 100000 * this.childrenExceed(reservationDetail, room);
   }

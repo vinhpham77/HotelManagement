@@ -1,7 +1,7 @@
 import { Component, EventEmitter, Input, OnChanges, OnInit, Output, SimpleChanges } from '@angular/core';
 import { MatDialog } from '@angular/material/dialog';
 import { Room } from 'src/app/models/Room';
-import { ReservationDetail } from 'src/app/models/reservation-detail';
+import { ReservationDetail } from 'src/app/models/ReservationDetail';
 import { OrderService } from 'src/app/services/order.service';
 import { ReservationDetailService } from 'src/app/services/reservation-detail.service';
 import { DialogComponent } from '../../dialog/dialog.component';
@@ -40,7 +40,7 @@ export class CardRoomReceivedComponent implements OnInit, OnChanges{
       this.reServationDetail.checkedOutAt = null;
       this.orderService.getOrderByReservationDetail(this.reServationDetail).subscribe({
         next: data => {
-          this.priceOrder = this.orderService.getTotalOrderByReservationId(data[0]);
+          this.priceOrder = this.orderService.getTotalOrderByReservationId(data);
           this.priceRoom = this.getPriceRoom();
           this.intoMoney = this.getIntoMoney();
         }
@@ -59,7 +59,7 @@ export class CardRoomReceivedComponent implements OnInit, OnChanges{
 
   getPriceRoom(): number {
     if(Object.keys(this.reServationDetail).length > 0)
-      return this.reServationDetailService.roomPriceDay(this.reServationDetail, this.reServationDetail.checkedInAt, this.dateCheck) + this.reServationDetailService.roomSurcharge(this.reServationDetail, this.room, this.reServationDetail.checkedInAt, this.dateCheck);
+      return this.reServationDetailService.getRoomPriceDay(this.reServationDetail, this.reServationDetail.checkedInAt, this.dateCheck) + this.reServationDetailService.getRoomSurcharge(this.reServationDetail, this.room, this.reServationDetail.checkedInAt, this.dateCheck);
     return 0;
   }
 

@@ -31,7 +31,7 @@ export class CustomersService {
   }
 
   getCustomers(keyword: string, sort: string, order: SortDirection, page: number, size: number) {
-    this.commonService.tableData = { keyword, sort, order, page, size };
+    this.commonService.tableData = { keyword, startDate: null, endDate: null, sort, order, page, size };
     let url = `${this.customersAPI}?keyword=${keyword}&sort=${sort}&order=${order}&page=${page + 1}&size=${size}`;
     return this.httpClient.get<any>(url);
   }

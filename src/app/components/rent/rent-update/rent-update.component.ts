@@ -6,7 +6,7 @@ import { MatTable } from '@angular/material/table';
 import { Room } from 'src/app/models/Room';
 import { Order } from 'src/app/models/order';
 import { OrderDetail } from 'src/app/models/order-detail';
-import { ReservationDetail } from 'src/app/models/reservation-detail';
+import { ReservationDetail } from 'src/app/models/ReservationDetail';
 import { MenuService } from 'src/app/services/menu.service';
 import { OrderService } from 'src/app/services/order.service';
 import { ReservationDetailService } from 'src/app/services/reservation-detail.service';
@@ -72,8 +72,8 @@ export class RentUpdateComponent implements OnInit, OnChanges{
         this.HourCheckedIn?.setValue(this.getHourse(this.reservationdetail.checkedInAt));
         this.Deposit?.setValue(this.reservationdetail.deposit/1000);
         this.orderService.getOrderByReservationDetail(this.reservationdetail).subscribe(data => {
-          this.order = data[0];
-          this.dataSource = data[0].details;
+          this.order = data;
+          this.dataSource = data.details;
           this.totalPrice();
         });
       },

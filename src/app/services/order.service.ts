@@ -1,9 +1,10 @@
-import { ReservationDetail } from './../models/reservation-detail';
+import { ReservationDetail } from '../models/ReservationDetail';
 import { Injectable } from '@angular/core';
 import { BehaviorSubject } from 'rxjs';
 import { Order } from '../models/order';
 import { environment } from 'src/environments/environment';
 import { HttpClient, HttpHeaders } from '@angular/common/http';
+import { OrderDetail } from '../models/order-detail';
 
 @Injectable({
   providedIn: 'root'
@@ -34,7 +35,7 @@ export class OrderService {
 
   getOrderByReservationDetail(reservationDetail: ReservationDetail) {
     let url = `${this.orderAPI}?reservationDetailId=${reservationDetail.id}`;
-    return this.httpClient.get<any>(url, this.httpOptions);
+    return this.httpClient.get<Order>(url, this.httpOptions);
   }
 
   getTotalOrderByReservationId(order: Order){

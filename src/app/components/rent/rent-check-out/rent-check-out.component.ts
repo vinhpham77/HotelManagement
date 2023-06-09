@@ -7,7 +7,7 @@ import { Room } from 'src/app/models/Room';
 import { Order } from 'src/app/models/order';
 import { OrderDetail } from 'src/app/models/order-detail';
 import { Receipt } from 'src/app/models/receipt';
-import { ReservationDetail } from 'src/app/models/reservation-detail';
+import { ReservationDetail } from 'src/app/models/ReservationDetail';
 import { MenuService } from 'src/app/services/menu.service';
 import { OrderService } from 'src/app/services/order.service';
 import { ReceiptService } from 'src/app/services/receipt.service';
@@ -78,7 +78,7 @@ export class RentCheckedOutComponent implements OnInit, OnChanges {
             this.reservationdetail.checkedInAt = new Date(this.reservationdetail.checkedInAt);
             this.reservationdetail.checkedOutAt = null;
             this.orderService.getOrderByReservationDetail(this.reservationdetail).subscribe({next: data => {
-              this.order = data[0];
+              this.order = data;
               this.configuration();
             },
             error: err => {}
@@ -98,8 +98,8 @@ export class RentCheckedOutComponent implements OnInit, OnChanges {
   }
 
   configuration(){
-    let roomP = this.reservationDetailService.roomPriceDay(this.reservationdetail, this.reservationdetail.checkedInAt, this.checkedOut);
-    let roomE = this.reservationDetailService.roomSurcharge(this.reservationdetail, this.room, this.reservationdetail.checkedInAt, this.checkedOut);
+    let roomP = this.reservationDetailService.getRoomPriceDay(this.reservationdetail, this.reservationdetail.checkedInAt, this.checkedOut);
+    let roomE = this.reservationDetailService.getRoomSurcharge(this.reservationdetail, this.room, this.reservationdetail.checkedInAt, this.checkedOut);
     this.DayCheckedIn?.setValue(this.reservationdetail.checkedInAt);
     this.HourseCheckedIn?.setValue(this.getHourse(this.reservationdetail.checkedInAt));
     this.DayCheckedOut?.setValue(this.checkedOut);

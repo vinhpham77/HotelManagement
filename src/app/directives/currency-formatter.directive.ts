@@ -29,7 +29,10 @@ export class CurrencyFormatterDirective {
 
   @HostListener('blur')
   onBlur() {
-    const value = this.control.value.replace(/,/g, '');
+    let value = this.control.value;
+    if (value === null) value = '0';
+    value = value.replace(/,/g, '');
+    if (value === '') value = '0';
     this.el.nativeElement.value = this.currencyPipe.transform(
       value,
       'VND',
@@ -41,9 +44,8 @@ export class CurrencyFormatterDirective {
   @HostListener('ngModelChange', ['$event'])
   onModelChange(event: any) {
     if (event) {
-      // Loại bỏ dấu phẩy khỏi giá trị của input
+      event = event.toString();
       let value = event.replace(/,/g, '');
-      // Loại bỏ ký tự E/e và các ký tự theo sau nó khỏi giá trị của input
       const indexOfE = value.search(/e/i);
       if (indexOfE !== -1) {
         value = value.slice(0, indexOfE);
