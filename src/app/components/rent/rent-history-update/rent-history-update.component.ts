@@ -158,7 +158,7 @@ export class RentHistoryUpdateComponent implements OnInit, OnChanges {
   }
 
   setPrice(checkedIn: Date, checkedOut: Date) {
-    let roomP = this.reservationDetailService.getRoomPriceDay(this.reservationdetail, checkedIn, checkedOut);
+    let roomP = this.reservationDetailService.getTotalRoomPrice(this.reservationdetail, checkedIn, checkedOut);
     let roomE = this.reservationDetailService.getRoomSurcharge(this.reservationdetail, this.room, checkedIn, checkedOut);
     this.RoomPrice?.setValue(roomP/1000);
     this.RoomExceed?.setValue(roomE/1000);
@@ -213,7 +213,7 @@ export class RentHistoryUpdateComponent implements OnInit, OnChanges {
       this.reservationdetail.checkedOutAt = checkedOut;
       this.order.details = this.dataSource;
       this.receipt.orderPrice = this.total;
-      this.receipt.roomPrice = this.TotalPrice?.value*1000;
+      this.receipt.totalPrice = this.TotalPrice?.value*1000;
       this.reservationDetailService.update(this.reservationdetail).subscribe({
         next: next => {
           this.orderService.update(this.order).subscribe({

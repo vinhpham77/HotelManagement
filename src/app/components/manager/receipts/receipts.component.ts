@@ -25,7 +25,7 @@ lastWeek.setDate(now.getDate() - 54);
 export class ReceiptsComponent implements OnInit, AfterViewInit, OnDestroy {
   timer: any;
   dataSource: ReceiptDto[] = [];
-  displayedColumns: string[] = ['select', 'room.name', 'customer.fullName', 'personnel.fullName', 'reservationDetail.checkedInAt', 'reservationDetail.checkedOutAt', 'roomPrice', 'createdAt', 'actions'];
+  displayedColumns: string[] = ['select', 'room.name', 'customer.fullName', 'personnel.fullName', 'reservationDetail.checkedInAt', 'reservationDetail.checkedOutAt', 'totalPrice', 'createdAt', 'actions'];
   subscription = new Subscription();
   selections = new SelectionModel<ReceiptDto>(true, []);
   searchValue = '';

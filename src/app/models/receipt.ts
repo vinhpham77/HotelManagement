@@ -4,5 +4,5 @@ export interface Receipt {
     reservationDetailId: string;
     createdAt: Date;
     orderPrice: number;
-    roomPrice: number;
+    totalPrice: number;
 }

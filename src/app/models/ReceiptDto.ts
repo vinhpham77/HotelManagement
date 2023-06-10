@@ -13,5 +13,5 @@ export interface ReceiptDto {
   customer: Customer;
   room: Room;
   orderPrice: number;
-  roomPrice: number;
+  totalPrice: number;
 }

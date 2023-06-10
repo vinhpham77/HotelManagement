@@ -1,9 +1,8 @@
-import { Component, OnInit, ViewChild } from '@angular/core';
+import { Component, ViewChild } from '@angular/core';
 import { AbstractControl, FormBuilder, ValidationErrors, ValidatorFn, Validators } from '@angular/forms';
-import { Subscription } from 'rxjs';
+import { Subscription, switchMap } from 'rxjs';
 import { CommonService } from '../../../services/common.service';
 import { CustomersService } from '../../../services/customers.service';
-import { Customer } from '../../../models/Customer';
 import { MenuBottomComponent } from '../../rent/menu-bottom/menu-bottom.component';
 import { OrderDetail } from '../../../models/order-detail';
 import { MatBottomSheet } from '@angular/material/bottom-sheet';
@@ -16,13 +15,16 @@ import { ReservationDetailService } from '../../../services/reservation-detail.s
 import { ReceiptDto } from '../../../models/ReceiptDto';
 import { MenuService } from '../../../services/menu.service';
 import { MenuItem } from '../../../models/MenuItem';
+import { Receipt } from '../../../models/receipt';
+import { ReceiptService } from '../../../services/receipt.service';
+import { ReceiptDtosService } from '../../../services/receipt-dtos.service';
 
 @Component({
   selector: 'app-update-receipt',
   templateUrl: './update-receipt.component.html',
   styleUrls: ['./update-receipt.component.scss']
 })
-export class UpdateReceiptComponent implements OnInit {
+export class UpdateReceiptComponent {
   now = new Date();
   data: any;
   subscription: Subscription;
@@ -37,7 +39,9 @@ export class UpdateReceiptComponent implements OnInit {
   earlyMinutes = 0;
   lateHours = 0;
   lateMinutes = 0;
+  previousQuantity = 1;
   dataSource: OrderDetail[] = [];
+  displayedColumns: string[] = ['item', 'quantity', 'price', 'operation'];
 
   @ViewChild(MatTable) table!: MatTable<OrderDetail>;
 
@@ -47,14 +51,14 @@ export class UpdateReceiptComponent implements OnInit {
     checkedInTime: ['', [Validators.required, this.timeValidator, this.dateTimeCompare('checkedInAt',
       'checkedOutAt', 'checkedOutTime', false, true)]],
     checkedOutAt: this.fb.control<Date | null>(null, [this.dateTimeCompare('checkedOutTime',
-      'checkedInAt', 'checkedInTime', false, false)]),
+      'checkedInAt', 'checkedInTime', true, false)]),
     checkedOutTime: ['', [Validators.required, this.timeValidator, this.dateTimeCompare('checkedOutAt', 'checkedInAt', 'checkedInTime', true, true)]],
-    roomPrice: [0, []],
-    surcharge: [0, []],
-    deposit: [0, []],
-    totalMenuPrice: [0, []],
-    totalPrice: [0, []],
-    payment: [0, []]
+    roomPrice: [0],
+    surcharge: [0],
+    deposit: [0],
+    totalMenuPrice: [0],
+    totalPrice: [0],
+    payment: [0]
   });
 
   get CheckedInAt() {
@@ -65,24 +69,12 @@ export class UpdateReceiptComponent implements OnInit {
     return this.receiveDtoForm.get('checkedOutAt');
   }
 
-  get RoomPrice() {
-    return this.receiveDtoForm.get('roomPrice');
-  }
-
-  get Surcharge() {
-    return this.receiveDtoForm.get('surcharge');
-  }
-
   get TotalMenuPrice() {
     return this.receiveDtoForm.get('totalMenuPrice');
   }
 
   get TotalPrice() {
     return this.receiveDtoForm.get('totalPrice');
-  }
-
-  get Payment() {
-    return this.receiveDtoForm.get('payment');
   }
 
   get Deposit() {
@@ -103,7 +95,9 @@ export class UpdateReceiptComponent implements OnInit {
               private _bottomSheet: MatBottomSheet,
               private orderService: OrderService,
               private resDetailService: ReservationDetailService,
-              private menuService: MenuService) {
+              private menuService: MenuService,
+              private receiptService: ReceiptService,
+              private receiptDtosService: ReceiptDtosService) {
     this.subscription = this.commonService.formData$.subscribe(data => {
       this.data = data;
       this.receiveDtoForm.reset();
@@ -114,6 +108,7 @@ export class UpdateReceiptComponent implements OnInit {
         this.reservationDetail.checkedOutAt = this.getDate(this.reservationDetail.checkedOutAt);
         this.reservationDetail.checkedInAt = new Date(this.reservationDetail.checkedInAt);
         this.room = this.receiptDto.room;
+
         this.receiveDtoForm.patchValue({
           checkedInAt: this.reservationDetail.checkedInAt,
           checkedInTime: this.getTime(this.reservationDetail.checkedInAt),
@@ -131,6 +126,7 @@ export class UpdateReceiptComponent implements OnInit {
               this.configTimeAndPrices(this.reservationDetail.checkedInAt, this.reservationDetail.checkedOutAt!);
             }
           });
+
         this.menuService.getMenuAll().subscribe({
           next: data => {
             this.menu = data.items;
@@ -140,9 +136,6 @@ export class UpdateReceiptComponent implements OnInit {
 
       this.isHidden = false;
     });
-  }
-
-  ngOnInit(): void {
   }
 
   get timeValidator(): ValidatorFn {
@@ -180,17 +173,15 @@ export class UpdateReceiptComponent implements OnInit {
         return null;
       }
 
-      const date = this.getDateTimeControl(dateControl, timeControl!);
+      const date = this.getDateTimeFromControl(dateControl, timeControl!);
       if (!date) {
         return null;
       }
 
-      const compareDate = this.getDateTimeControl(compareDateControl, compareTimeControl);
+      const compareDate = this.getDateTimeFromControl(compareDateControl, compareTimeControl);
       if (!compareDate) {
         return null;
       }
-
-      console.log(date, compareDate);
 
       if (isGreater) {
         return date > compareDate ? null : { dateTimeCompare: true };
@@ -199,7 +190,7 @@ export class UpdateReceiptComponent implements OnInit {
     };
   };
 
-  getDateTimeControl(dateControl: AbstractControl, timeControl: AbstractControl) {
+  getDateTimeFromControl(dateControl: AbstractControl, timeControl: AbstractControl) {
     const dateValue = dateControl.value;
     const time = timeControl.value;
 
@@ -269,7 +260,7 @@ export class UpdateReceiptComponent implements OnInit {
   }
 
   setRoomPriceAndSurcharge(checkedIn: Date, checkedOut: Date) {
-    let roomPrice = this.resDetailService.getRoomPriceDay(this.reservationDetail, checkedIn, checkedOut);
+    let roomPrice = this.resDetailService.getTotalRoomPrice(this.reservationDetail, checkedIn, checkedOut);
     let roomSurcharge = this.resDetailService.getRoomSurcharge(this.reservationDetail, this.room, checkedIn, checkedOut);
 
     this.setCurrency('roomPrice', roomPrice);
@@ -299,20 +290,21 @@ export class UpdateReceiptComponent implements OnInit {
 
   getCurrency(control: string) {
     let value = this.receiveDtoForm.get(control)?.value;
-    console.log(value, control);
     return this.commonService.convertToNumber(value);
   }
 
   openBottomSheet(): void {
     this._bottomSheet.open(MenuBottomComponent, { data: this.order })
       .afterDismissed().subscribe(result => {
+      if (!result) return;
+
       this.dataSource.push(<OrderDetail>{
         itemId: result.id,
         quantity: 1,
-        price: result.price,
+        price: result.exportPrice,
         orderedAt: new Date()
       });
-      console.log(this);
+
       this.table.renderRows();
       this.setTotalMenuPrice(this.setTotalPrice, this.setPayment);
     });
@@ -320,32 +312,11 @@ export class UpdateReceiptComponent implements OnInit {
 
   getTime(date: Date | null): string {
     date = new Date(date!);
-    return date.getHours() + ':' + date.getMinutes();
+    const hours = date.getHours().toString().padStart(2, '0');
+    const minutes = date.getMinutes().toString().padStart(2, '0');
+    return `${hours}:${minutes}`;
   }
 
-  onSave() {
-    if (this.receiveDtoForm.valid) {
-      // let birthdate = new Date(this.Birthdate?.value as Date).toISOString();
-
-      const customer = <Customer>{};
-
-      if (this.data.action === 'update') {
-        customer.id = this.data.object.id;
-        this.customersService.update(customer).subscribe(
-          {
-            next: () => {
-              this.refreshOnSuccess('Cập nhật thành công');
-            },
-            error: () => {
-              this.commonService.openSnackBar('Có lỗi xảy ra. Vui lòng thử lại sau');
-            }
-          }
-        );
-      }
-    } else {
-      this.receiveDtoForm.markAllAsTouched();
-    }
-  }
 
   onCancel() {
     this.isHidden = true;
@@ -357,9 +328,109 @@ export class UpdateReceiptComponent implements OnInit {
 
   refreshOnSuccess(msg: string) {
     this.isHidden = true;
-    this.customersService.load();
+    this.receiptDtosService.load();
     this.commonService.openSnackBar(msg);
   }
+
+  onDateChange() {
+    if (!this.receiveDtoForm.valid) return;
+
+    let checkedIn = this.getDateTimeFromControl(this.CheckedInAt!, this.CheckedInTime!);
+    let checkedOut = this.getDateTimeFromControl(this.CheckedOutAt!, this.CheckedOutTime!);
+
+    this.usageDays = this.resDetailService.daysIn(checkedIn!, checkedOut!);
+    this.setRoomPriceAndSurcharge(checkedIn!, checkedOut!);
+    this.setTotalMenuPrice(this.setTotalPrice, this.setPayment);
+  }
+
+  onTimeChange() {
+    if (!this.receiveDtoForm.valid) return;
+
+    let checkedIn = this.getDateTimeFromControl(this.CheckedInAt!, this.CheckedInTime!);
+    let checkedOut = this.getDateTimeFromControl(this.CheckedOutAt!, this.CheckedOutTime!);
+
+    this.setEarlyTime(checkedIn!);
+    this.setLateTime(checkedOut!);
+    this.usageDays = this.resDetailService.daysIn(checkedIn!, checkedOut!);
+    this.setRoomPriceAndSurcharge(checkedIn!, checkedOut!);
+    this.setTotalMenuPrice(this.setTotalPrice, this.setPayment);
+  }
+
+  deleteOrderDetail(item: OrderDetail) {
+    let index = this.dataSource.findIndex(each => {
+        return each.itemId === item.itemId && each.orderedAt === item.orderedAt;
+      }
+    );
+
+    this.dataSource.splice(index, 1);
+    this.table.renderRows();
+    this.setTotalMenuPrice(this.setTotalPrice, this.setPayment);
+  }
+
+  startInputting(event: Event) {
+    this.previousQuantity = parseInt((event.target as HTMLInputElement).value);
+  }
+
+  updateQuantity(event: Event, item: OrderDetail) {
+    const inputElement = event.target as HTMLInputElement;
+    let currentQuantity = parseInt(inputElement.value);
+    if (currentQuantity && currentQuantity > 0) {
+      item.quantity = currentQuantity;
+      this.setTotalMenuPrice(this.setTotalPrice, this.setPayment);
+    }
+  }
+
+  rollBackQuantity(event: Event, item: OrderDetail) {
+    const inputElement = event.target as HTMLInputElement;
+    item.quantity = this.previousQuantity;
+    inputElement.value = item.quantity + '';
+  }
+
+  getItemName(itemId: string) {
+    let item = this.menu.find(item => item.id === itemId);
+    return item ? item.name : '';
+  }
+
+  onSave() {
+    if (!this.receiveDtoForm.valid) return;
+
+    let checkedIn = this.getDateTimeFromControl(this.CheckedInAt!, this.CheckedInTime!);
+    let checkedOut = this.getDateTimeFromControl(this.CheckedOutAt!, this.CheckedOutTime!);
+    let totalMenuPrice = this.commonService.convertToNumber(this.TotalMenuPrice?.value);
+    let totalPrice = this.commonService.convertToNumber(this.TotalPrice?.value);
+    let deposit = this.commonService.convertToNumber(this.Deposit?.value);
+
+    this.reservationDetail.checkedInAt = checkedIn!;
+    this.reservationDetail.checkedOutAt = checkedOut!;
+    this.reservationDetail.deposit = deposit;
+    this.order.details = this.dataSource;
+
+    const receipt = <Receipt>{
+      id: this.receiptDto.id,
+      personnelId: this.receiptDto.personnelId,
+      reservationDetailId: this.receiptDto.reservationDetailId,
+      orderPrice: totalMenuPrice,
+      totalPrice,
+      createdAt: this.receiptDto.createdAt
+    };
+
+    this.update(this.order, this.reservationDetail, receipt);
+  }
+
+  update(order: Order, reservationDetail: ReservationDetail, receipt: Receipt) {
+    this.orderService.update(order).pipe(
+      switchMap(() => this.resDetailService.update(reservationDetail)),
+      switchMap(() => this.receiptService.update(receipt))
+    ).subscribe({
+      next: () => this.refreshOnSuccess('Cập nhật thành công'),
+      error: () => {
+        this.commonService.openSnackBar('Có lỗi xảy ra. Vui lòng thử lại sau');
+      }
+    });
+  }
+
+  updatePrices() {
+    this.setTotalPrice();
+    this.setPayment();
+  }
 }
-
-

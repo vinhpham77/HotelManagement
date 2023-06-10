@@ -98,7 +98,7 @@ export class RentCheckedOutComponent implements OnInit, OnChanges {
   }
 
   configuration(){
-    let roomP = this.reservationDetailService.getRoomPriceDay(this.reservationdetail, this.reservationdetail.checkedInAt, this.checkedOut);
+    let roomP = this.reservationDetailService.getTotalRoomPrice(this.reservationdetail, this.reservationdetail.checkedInAt, this.checkedOut);
     let roomE = this.reservationDetailService.getRoomSurcharge(this.reservationdetail, this.room, this.reservationdetail.checkedInAt, this.checkedOut);
     this.DayCheckedIn?.setValue(this.reservationdetail.checkedInAt);
     this.HourseCheckedIn?.setValue(this.getHourse(this.reservationdetail.checkedInAt));
@@ -118,7 +118,7 @@ export class RentCheckedOutComponent implements OnInit, OnChanges {
         reservationDetailId: this.reservationdetail.id,
         createdAt: this.checkedOut,
         orderPrice: this.total,
-        roomPrice: this.TotalPrice?.value*1000,
+        totalPrice: this.TotalPrice?.value*1000,
       }
       let update = {
         checkedOutAt: this.checkedOut

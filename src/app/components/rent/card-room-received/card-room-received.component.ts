@@ -59,7 +59,7 @@ export class CardRoomReceivedComponent implements OnInit, OnChanges{
 
   getPriceRoom(): number {
     if(Object.keys(this.reServationDetail).length > 0)
-      return this.reServationDetailService.getRoomPriceDay(this.reServationDetail, this.reServationDetail.checkedInAt, this.dateCheck) + this.reServationDetailService.getRoomSurcharge(this.reServationDetail, this.room, this.reServationDetail.checkedInAt, this.dateCheck);
+      return this.reServationDetailService.getTotalRoomPrice(this.reServationDetail, this.reServationDetail.checkedInAt, this.dateCheck) + this.reServationDetailService.getRoomSurcharge(this.reServationDetail, this.room, this.reServationDetail.checkedInAt, this.dateCheck);
     return 0;
   }
 

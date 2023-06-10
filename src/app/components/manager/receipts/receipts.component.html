@@ -99,10 +99,10 @@
         <td mat-cell *matCellDef='let element'>{{element.reservationDetail.checkedOutAt | date:'dd/MM/yyyy'}}</td>
       </ng-container>
 
-      <ng-container matColumnDef='roomPrice'>
-        <th mat-header-cell *matHeaderCellDef mat-sort-header sortActionDescription='Sắp theo giá phòng'>Giá phòng
+      <ng-container matColumnDef='totalPrice'>
+        <th mat-header-cell *matHeaderCellDef mat-sort-header sortActionDescription='Sắp theo tổng tiền'>Tổng tiền
         </th>
-        <td mat-cell *matCellDef='let element'>{{element.roomPrice | currency:'VND'}}</td>
+        <td mat-cell *matCellDef='let element'>{{element.totalPrice | currency:'VND'}}</td>
       </ng-container>
 
       <ng-container matColumnDef='createdAt'>

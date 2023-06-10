@@ -11,12 +11,13 @@ import { Order } from 'src/app/models/order';
   styleUrls: ['./menu-bottom.component.scss']
 })
 export class MenuBottomComponent {
-  public menus!: MenuItem[];
+  public menu!: MenuItem[];
+
   constructor(private _bottomSheetRef: MatBottomSheetRef<MenuBottomComponent>,
-    @Inject(MAT_BOTTOM_SHEET_DATA) public data: Order,
-    private menuService: MenuService,
-    ) {
-      this.menuService.getMenuAll().subscribe(result => this.menus = result.items);
+              @Inject(MAT_BOTTOM_SHEET_DATA) public data: Order,
+              private menuService: MenuService
+  ) {
+    this.menuService.getMenuAll().subscribe(result => this.menu = result.items);
   }
 
   selectItem(event: MouseEvent, item: MenuItem): void {
@@ -26,6 +27,6 @@ export class MenuBottomComponent {
 
   hadItem(id: string): boolean {
     let item = this.data.details.find(each => each.itemId === id);
-    return item? true:false;
+    return !!item;
   }
 }

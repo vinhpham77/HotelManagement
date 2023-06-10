@@ -75,7 +75,7 @@ export class ReservationDetailService {
     return Math.floor((t2.getTime() - t1.getTime()) / (24*60*60*1000));
   }
 
-  getRoomPriceDay(reservationDetail: ReservationDetail, checkedIn: Date, checkedOut: Date): number {
+  getTotalRoomPrice(reservationDetail: ReservationDetail, checkedIn: Date, checkedOut: Date): number {
     return reservationDetail.roomPricePerDay * this.daysIn(checkedIn, checkedOut);
   }
 
