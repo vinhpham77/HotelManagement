@@ -65,6 +65,6 @@ export class AccountsService {
       { op: 'replace', path: '/status', value: account.status }
     ];
 
-    return this.httpClient.patch<any>(this.accountAPI + `/${account.username}`, patchDoc);
+    return this.httpClient.patch<any>(this.accountAPI + `/${account.username}/status`, patchDoc);
   }
 }
