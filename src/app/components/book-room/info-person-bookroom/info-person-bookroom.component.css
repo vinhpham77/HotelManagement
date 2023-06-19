@@ -1,0 +1,31 @@
+.st-booking {
+    background-color: #42a5f5;
+}
+.fc-event{
+    width: 164px;
+    left: 110px;
+    height: 24px;
+    color: #fff;
+    text-decoration: none;
+   
+    border-radius: 12px;
+    position: absolute;
+}
+
+.fc-content{
+    position: absolute;
+    top: 0;
+    left: 0;
+    right: 0;
+    z-index: 4;
+    padding-bottom: 2px;
+}
+.alight{
+    display: flex;
+    justify-content: flex-start;
+    align-items: center;
+}
+
+.green{
+    background-color: #26a69a;
+}
