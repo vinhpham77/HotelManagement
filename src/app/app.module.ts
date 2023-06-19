@@ -69,6 +69,8 @@ import { AccountsComponent } from './components/manager/accounts/accounts.compon
 import { MatSlideToggleModule } from '@angular/material/slide-toggle';
 import { ReceiptsComponent } from './components/manager/receipts/receipts.component';
 import { UpdateReceiptComponent } from './components/manager/update-receipt/update-receipt.component';
+import { RentAddComponent } from './components/rent/rent-add/rent-add.component';
+import {MatRadioModule} from '@angular/material/radio';
 
 @NgModule({
   declarations: [
@@ -105,6 +107,7 @@ import { UpdateReceiptComponent } from './components/manager/update-receipt/upda
     AccountsComponent,
     ReceiptsComponent,
     UpdateReceiptComponent,
+    RentAddComponent,
   ],
   imports: [
     BrowserModule,
@@ -141,6 +144,7 @@ import { UpdateReceiptComponent } from './components/manager/update-receipt/upda
     MatBottomSheetModule,
     MatTooltipModule,
     MatSlideToggleModule,
+    MatRadioModule,
   ],
   providers: [
     { provide: MatPaginatorIntl, useClass: CustomMatPaginatorIntlService },

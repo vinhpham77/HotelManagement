@@ -5,9 +5,6 @@
                 <mat-icon class="mat-list-icon text-warning icon-bar-sub">meeting_room</mat-icon>
                 <div class="topbar-sub-title">{{room.name}}</div>
                 <div class="flex-grow-1"></div>
-                <button mat-button class="text-danger" (click)="delete()">
-                    <i class="fas fa-trash"></i>Xóa
-                </button>
                 <button mat-button class="text-primary" (click)="save()">
                     <i class="fas fa-save"></i>LƯU
                 </button>
@@ -46,12 +43,15 @@
                     <input formControlName="hourCheckedOut" (change)="changeHour()" matInput>
                 </mat-form-field>
             </div>
-            <div *ngIf="(lateHourCheckedIn + lateMinuteCheckedIn) > 0" class="w-50 d-inline-block">
-                <p class="pr-2">Nhận phòng sớm {{lateHourCheckedIn}} giờ {{lateMinuteCheckedIn}} phút</p>
+            <div class="w-100 d_flex">
+                <div *ngIf="(lateHourCheckedIn*60 + lateMinuteCheckedIn) > 0" class="w-50 d-inline-block">
+                    <p class="pr-2">Nhận phòng sớm {{lateHourCheckedIn}} giờ {{lateMinuteCheckedIn}} phút</p>
+                </div>
+                <div *ngIf="(lateHourCheckedOut*60 + lateMinuteCheckedOut) > 0" class="w-50 d-inline-block">
+                    <p class="pl-2">Trả phòng muộn {{lateHourCheckedOut}} giờ {{lateMinuteCheckedOut}} phút</p>
+                </div>
             </div>
-            <div *ngIf="(lateHourCheckedOut + lateMinuteCheckedOut) > 0" class="w-50 d-inline-block">
-                <p class="pl-2">Trả phòng muộn {{lateHourCheckedOut}} giờ {{lateMinuteCheckedOut}} phút</p>
-            </div>
+            
             <div class="w-50 d-inline-block">
                 <mat-form-field appearance="fill" class="formField w-100 pr-2">
                     <mat-label>Tiền phòng</mat-label>
@@ -120,7 +120,7 @@
         <div class="container-use-menu">
             <mat-toolbar class="toolbar">
                 <span class="title-toolbar">Menu sử dụng</span>
-                <mat-icon class="mat-list-icon" (click)="openBottomSheet()" style="color: #c2c2c2;">add_box</mat-icon>
+                <mat-icon class="mat-list-icon" style="color: #c2c2c2;" (click)="deleteOrderDetailAll()">delete</mat-icon>
             </mat-toolbar>
             <table mat-table [dataSource]="dataSource" class="mat-elevation-z8">
 
@@ -146,8 +146,8 @@
 
                 <!-- Price Column -->
                 <ng-container matColumnDef="price">
-                  <th mat-header-cell *matHeaderCellDef class="hearder-cell"> Thành tiền </th>
-                  <td mat-cell *matCellDef="let element"> {{element.quantity * element.price}} </td>
+                  <th mat-header-cell *matHeaderCellDef class="hearder-cell"> Ngày mua </th>
+                  <td mat-cell *matCellDef="let element"> {{element.orderedAt.toLocaleDateString()}} </td>
                 </ng-container>
 
                 <!-- Operation Column -->

@@ -49,7 +49,7 @@
                                                 <mat-icon class="mat-list-icon">more_vert</mat-icon>
                                             </button>
                                             <mat-menu #menuWaitingMoom="matMenu">
-                                                <button mat-menu-item>
+                                                <button mat-menu-item (click)="openPanel('add', room)">
                                                     <mat-icon class="mat-list-icon">vpn_key</mat-icon>
                                                     <span>Nhận phòng</span>
                                                 </button>
@@ -102,7 +102,7 @@
                             <div class="d_flex flex-wrap">
                                 <div *ngFor="let room of rentRoom.rooms;">
                                     <div *ngIf="room != null && !room.isEmpty">
-                                        <app-card-room-received [room]="room" [dateCheck]="checkedOut" (open)="openPanel($event, room)" (clean)="onCleanRoom(room)"></app-card-room-received>
+                                        <app-card-room-received [room]="room" [dateCheck]="checkedOut" (open)="openPanel($event, room)" (delete)="loadRentRoom()" (clean)="onCleanRoom(room)"></app-card-room-received>
                                     </div>
                                 </div>
                             </div>
@@ -183,8 +183,7 @@
     </div>
 
     <div class="right-panel">
-        <!-- update rent -->
-
+        <app-rent-add *ngIf="namePanel == 'add'" [roomId]="roomId"></app-rent-add>
         <app-rent-update *ngIf="namePanel == 'edit'" (updateRoom)="reload($event)" [roomId]="roomId"></app-rent-update>
         <app-rent-menu *ngIf="namePanel == 'fastfood'" (orderSave)="reload($event)" [roomId]="roomId"></app-rent-menu>
         <app-rent-change-room *ngIf="namePanel == 'sync'" (change)="reload($event)" [roomId]="roomId"></app-rent-change-room>

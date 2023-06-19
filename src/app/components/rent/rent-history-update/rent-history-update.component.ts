@@ -46,7 +46,6 @@ export class RentHistoryUpdateComponent implements OnInit, OnChanges {
   constructor(private orderService: OrderService,
     private fb: FormBuilder,
     public menuService: MenuService,
-    private _bottomSheet: MatBottomSheet,
     private roomService: RoomsService,
     private receiptSerice: ReceiptService,
     private _snackBar: MatSnackBar,
@@ -92,7 +91,7 @@ export class RentHistoryUpdateComponent implements OnInit, OnChanges {
               next: next => {
                 this.room = next;
                 this.orderService.getOrderByReservationDetail(this.reservationdetail).subscribe(data => {
-                  this.order = data;
+                  this.order = data[0];
                   let checkedOut = this.reservationdetail.checkedOutAt? this.reservationdetail.checkedOutAt:new Date();
                   this.DayCheckedIn?.setValue(this.reservationdetail.checkedInAt);
                   this.HourCheckedIn?.setValue(this.getHour(this.reservationdetail.checkedInAt));
@@ -165,46 +164,6 @@ export class RentHistoryUpdateComponent implements OnInit, OnChanges {
     this.Prepayment?.setValue(this.reservationdetail.deposit/1000);
   }
 
-  check() {
-    // if(this.formCheckedIn.valid) {
-    //   let receipt: Receipt = <Receipt>{
-    //     employeeId: "luong",
-    //     reservationDetailId: this.reservationdetail.id,
-    //     createdAt: this.checkedOut,
-    //     orderPrice: this.total,
-    //     roomPrice: this.TotalPrice?.value*1000,
-    //   }
-    //   let update = {
-    //     checkedOutAt: this.checkedOut
-    //   }
-    //   this.receiptSerice.createReceipt(receipt).subscribe({
-    //     next: next => {
-    //       this.reservationDetailService.upDate(this.reservationdetail, update).subscribe({
-    //         next: next => {
-    //           this.orderService.updateDetail(this.order, this.dataSource).subscribe({
-    //             next: next => {
-    //               this.roomService.changeStatus(this.room).subscribe({
-    //                 next: next => {
-    //                   this._snackBar.open("Trả phòng thành cồng", "",{
-    //                     duration: 1000,
-    //                     horizontalPosition: 'right',
-    //                     verticalPosition: 'top',
-    //                   });
-    //                   this.checkRoom.emit();
-    //                 }
-    //               })
-    //             }
-    //           })
-    //         }
-    //       })
-    //     }
-    //   })
-    // }
-  }
-
-  delete() {
-  }
-
   save() {
     if(this.formHistory.valid && this.isCheckDay && this.isFormatTime) {
       let checkedIn = new Date(this.dayString(this.DayCheckedIn?.value) + ' ' + this.HourCheckedIn?.value + ':00');
@@ -248,20 +207,10 @@ export class RentHistoryUpdateComponent implements OnInit, OnChanges {
     return false;
   }
 
-  openBottomSheet(): void {
-    this._bottomSheet.open(MenuBottomComponent,{
-      data: this.order,
-    }).afterDismissed().subscribe(result => {
-      let t = new Date();
-      this.dataSource.push(<OrderDetail>{
-        itemId: result.id,
-        quantity: 1,
-        price: result.price,
-        orderedAt: t,
-      })
-      this.table.renderRows();
-      this.totalPrice();
-    })
+  deleteOrderDetailAll() {
+    this.dataSource.splice(0, this.dataSource.length);
+    this.table.renderRows();
+    this.totalPrice();
   }
 
   deleteOrderDetail(item: OrderDetail) {
@@ -322,7 +271,7 @@ export class RentHistoryUpdateComponent implements OnInit, OnChanges {
   }
 
   hourSurchargeCheckedIn(checkedIn: Date) {
-    this.lateHourCheckedIn = 12 - checkedIn.getHours();
+    this.lateHourCheckedIn = 14 - checkedIn.getHours();
     this.lateMinuteCheckedIn = 60 - checkedIn.getMinutes();
     if(this.lateMinuteCheckedIn < 60)
       this.lateHourCheckedIn--;

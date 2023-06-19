@@ -36,6 +36,12 @@ export class CustomersService {
     return this.httpClient.get<any>(url);
   }
 
+  getCustomersByNoId(idNo: string)
+  {
+    let url = `${this.customersAPI}?idNo=${idNo}`;
+    return this.httpClient.get<any>(url);
+  }
+
   create(customer: Customer) {
     return this.httpClient.post<Customer>(this.customersAPI, customer, this.httpOptions);
   }

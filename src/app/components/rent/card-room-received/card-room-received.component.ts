@@ -5,6 +5,9 @@ import { ReservationDetail } from 'src/app/models/ReservationDetail';
 import { OrderService } from 'src/app/services/order.service';
 import { ReservationDetailService } from 'src/app/services/reservation-detail.service';
 import { DialogComponent } from '../../dialog/dialog.component';
+import { Order } from 'src/app/models/order';
+import { MatSnackBar } from '@angular/material/snack-bar';
+import { RoomsService } from 'src/app/services/rooms.service';
 
 @Component({
   selector: 'app-card-room-received',
@@ -19,9 +22,13 @@ export class CardRoomReceivedComponent implements OnInit, OnChanges{
   public priceOrder!: number;
   public priceRoom!: number;
   public intoMoney!: number;
+  @Output() delete = new EventEmitter();
   public reServationDetail: ReservationDetail = <ReservationDetail>{};
+  public order: Order = <Order>{};
 
   constructor(public dialog: MatDialog,
+    private _snackBar: MatSnackBar,
+    private roomService: RoomsService,
     private reServationDetailService: ReservationDetailService,
     private orderService: OrderService
     ) {}
@@ -40,7 +47,8 @@ export class CardRoomReceivedComponent implements OnInit, OnChanges{
       this.reServationDetail.checkedOutAt = null;
       this.orderService.getOrderByReservationDetail(this.reServationDetail).subscribe({
         next: data => {
-          this.priceOrder = this.orderService.getTotalOrderByReservationId(data);
+          this.order = data[0];
+          this.priceOrder = this.orderService.getTotalOrderByReservationId(data[0]);
           this.priceRoom = this.getPriceRoom();
           this.intoMoney = this.getIntoMoney();
         }
@@ -81,11 +89,32 @@ export class CardRoomReceivedComponent implements OnInit, OnChanges{
 
   openDialog(): void {
     const dialogRef = this.dialog.open(DialogComponent, {
-      data: {content: "", field: "", id: "", setting: ""},
+      data: {title: "Xác nhận", message: "Bạn có muôn xóa dữ liệu", data: "", action: "delete"},
     });
 
     dialogRef.afterClosed().subscribe(result => {
-      console.log(result);
+      if(result)
+      {
+        this.room.isEmpty = true;
+        this.roomService.update(this.room).subscribe({
+          next: next => {
+            this.reServationDetailService.delete(this.reServationDetail.id).subscribe({
+              next: next => {
+                this.orderService.delete(this.order.id).subscribe({
+                  next: next => {
+                    this._snackBar.open("Xóa dữ liệu thành cồng", "",{
+                      duration: 1000,
+                      horizontalPosition: 'right',
+                      verticalPosition: 'top',
+                    });
+                    this.delete.emit();
+                  }
+                })
+              }
+            });
+          }
+        })
+      }
     });
   }
 }

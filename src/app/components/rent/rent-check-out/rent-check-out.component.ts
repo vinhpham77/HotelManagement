@@ -39,7 +39,6 @@ export class RentCheckedOutComponent implements OnInit, OnChanges {
   constructor(private orderService: OrderService,
     private fb: FormBuilder,
     public menuService: MenuService,
-    private _bottomSheet: MatBottomSheet,
     private roomService: RoomsService,
     private receiptSerice: ReceiptService,
     private _snackBar: MatSnackBar,
@@ -78,7 +77,7 @@ export class RentCheckedOutComponent implements OnInit, OnChanges {
             this.reservationdetail.checkedInAt = new Date(this.reservationdetail.checkedInAt);
             this.reservationdetail.checkedOutAt = null;
             this.orderService.getOrderByReservationDetail(this.reservationdetail).subscribe({next: data => {
-              this.order = data;
+              this.order = data[0];
               this.configuration();
             },
             error: err => {}
@@ -155,26 +154,16 @@ export class RentCheckedOutComponent implements OnInit, OnChanges {
     return date.getHours() + ':' + date.getMinutes();
   }
 
-  openBottomSheet(): void {
-    this._bottomSheet.open(MenuBottomComponent,{
-      data: this.order,
-    }).afterDismissed().subscribe(result => {
-      let t = new Date();
-      this.dataSource.push(<OrderDetail>{
-        itemId: result.id,
-        quantity: 1,
-        price: result.price,
-        orderedAt: t,
-      })
-      this.table.renderRows();
-      this.totalPrice();
-    })
-  }
-
   getNameMenu(id: string)
   {
     let item = this.menus.find(item => item.id = id);
     return item? item.name : "";
+  }
+
+  deleteOrderDetailAll() {
+    this.dataSource.splice(0, this.dataSource.length);
+    this.table.renderRows();
+    this.totalPrice();
   }
 
   deleteOrderDetail(item: OrderDetail) {
