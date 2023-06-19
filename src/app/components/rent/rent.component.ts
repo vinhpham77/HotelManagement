@@ -1,3 +1,4 @@
+
 import { Component, OnDestroy } from '@angular/core';
 import { FormBuilder } from '@angular/forms';
 import { MatDialog } from '@angular/material/dialog';
@@ -12,6 +13,8 @@ import { ReservationService } from 'src/app/services/reservation.service';
 import { RoomTypesService } from 'src/app/services/room-types.service';
 import { RoomsService } from 'src/app/services/rooms.service';
 import { DialogComponent } from '../dialog/dialog.component';
+import { RentRoom } from 'src/app/models/rent-room';
+import { RentroomService } from 'src/app/services/rentroom.service';
 
 @Component({
   selector: 'app-rent',
@@ -20,8 +23,6 @@ import { DialogComponent } from '../dialog/dialog.component';
 })
 export class RentComponent implements OnDestroy{
   public namePanel: string = "under";
-  public rooms: Room[] = [];
-  public roomTypes: RoomType[] = [];
   public receipts: Receipt[] = [];
   public checkedOut = new Date();
   public roomId: string = '';
@@ -30,33 +31,26 @@ export class RentComponent implements OnDestroy{
   public selected = 'name';
   public keyword = '';
   public sort = 'name';
-  subscriptionRoom = new Subscription();
-  subscriptionRoomType = new Subscription();
+  public rentRooms: RentRoom[] = [];
+  subscriptionRentRoom = new Subscription();
   subscriptionReceipts = new Subscription();
 
   constructor(public dialog: MatDialog,
-    public roomService: RoomsService,
-    public roomTypeService: RoomTypesService,
     public reservationDetailService: ReservationDetailService,
-    public orderService: OrderService,
     public receiptsService: ReceiptService,
-    public reservationService: ReservationService,
+    public roomService: RoomsService,
+    public orderService: OrderService,
+    public rentRoomService: RentroomService,
     public fb: FormBuilder) {
-    this.subscriptionRoom = this.roomService.rooms$.subscribe(result =>this.rooms = result);
-    this.loadRoom();
-    this.subscriptionRoomType = this.roomTypeService.roomTypes$.subscribe(result =>this.roomTypes = result);
-    roomTypeService.uploadRoomTypeAll();
+    this.subscriptionRentRoom = this.rentRoomService.rentRoom$.subscribe(result =>this.rentRooms = result);
+    this.loadRentRoom();
     this.subscriptionReceipts = this.receiptsService.receipt$.subscribe(result =>this.receipts = result);
     receiptsService.uploadReceiptAll();
   }
   ngOnDestroy() {
 
-    if (this.subscriptionRoom) {
-      this.subscriptionRoom.unsubscribe();
-      return;
-    }
-    if (this.subscriptionRoomType) {
-      this.subscriptionRoomType.unsubscribe();
+    if (this.subscriptionRentRoom) {
+      this.subscriptionRentRoom.unsubscribe();
       return;
     }
     if (this.subscriptionReceipts) {
@@ -65,9 +59,9 @@ export class RentComponent implements OnDestroy{
     }
   }
 
-  loadRoom() {
+  loadRentRoom() {
     let query = `keyword=${this.keyword}&sort=${this.sort}&order=${this.order}`;
-    this.roomService.loadByQuery(query);
+    this.rentRoomService.loadByQuery(query);
   }
 
   openDialog(): void {
@@ -83,13 +77,13 @@ export class RentComponent implements OnDestroy{
     room.isCleaned = !room.isCleaned;
     room.lastCleanedAt = new Date();
     this.roomService.update(room).subscribe({
-      next: next => this.loadRoom()
+      next: next => this.loadRentRoom()
     })
   }
 
   reload(event: any) {
     this.orderService.uploadOrderAll();
-    this.loadRoom()
+    this.loadRentRoom()
     this.reservationDetailService.uploadReservationDetailAll();
     this.receiptsService.uploadReceiptAll();
     this.namePanel = "under";
@@ -97,16 +91,16 @@ export class RentComponent implements OnDestroy{
 
   onSort(order: string) {
     this.order = order;
-    this.loadRoom();
+    this.loadRentRoom();
   }
 
   onSearch(s: string) {
     this.keyword = s;
-    this.loadRoom()
+    this.loadRentRoom()
   }
 
   keyup() {
-    this.loadRoom();
+    this.loadRentRoom();
   }
 
   openPanel(name: string, roomSelect: Room): void {

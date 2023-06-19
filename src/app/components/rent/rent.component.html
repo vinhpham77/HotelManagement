@@ -33,15 +33,15 @@
                         <i class="fas fa-door-open fa-lg text-primary"></i>
                         &nbsp;&nbsp;&nbsp;Phòng chờ
                     </ng-template>
-                    <mat-expansion-panel hideToggle [expanded]="true" *ngFor="let roomType of roomTypes;">
+                    <mat-expansion-panel hideToggle [expanded]="true" *ngFor="let rentRoom of rentRooms;">
                         <mat-expansion-panel-header>
                           <mat-panel-title>
-                            {{roomType.name}}
+                            {{rentRoom.name}}
                           </mat-panel-title>
                         </mat-expansion-panel-header>
                         <div class="d_flex flex-wrap">
-                            <div *ngFor="let room of rooms;">
-                                <mat-card class="card" *ngIf="room.isEmpty && room.roomTypeId == roomType.id">
+                            <div *ngFor="let room of rentRoom.rooms;">
+                                <mat-card class="card" *ngIf="room != null && room.isEmpty">
                                     <div class="d_flex flex-row border-bottom">
                                         <div class="flex-grow-1 room-name text-primary ellipsis title-card">{{room.name}}</div>
                                         <div>
@@ -93,15 +93,15 @@
                         &nbsp;&nbsp;&nbsp;Phòng đang thuê
                     </ng-template>
                     <div>
-                        <mat-expansion-panel hideToggle [expanded]="true" *ngFor="let roomType of roomTypes;" >
+                        <mat-expansion-panel hideToggle [expanded]="true" *ngFor="let rentRoom of rentRooms;" >
                             <mat-expansion-panel-header>
                             <mat-panel-title>
-                                {{roomType.name}}
+                                {{rentRoom.name}}
                             </mat-panel-title>
                             </mat-expansion-panel-header>
                             <div class="d_flex flex-wrap">
-                                <div *ngFor="let room of rooms;">
-                                    <div *ngIf="!room.isEmpty && room.roomTypeId == roomType.id">
+                                <div *ngFor="let room of rentRoom.rooms;">
+                                    <div *ngIf="room != null && !room.isEmpty">
                                         <app-card-room-received [room]="room" [dateCheck]="checkedOut" (open)="openPanel($event, room)" (clean)="onCleanRoom(room)"></app-card-room-received>
                                     </div>
                                 </div>
@@ -114,15 +114,15 @@
                         <i class="fas fa-broom fa-lg text-danger"></i>
                         &nbsp;&nbsp;&nbsp;Phòng cần dọn
                     </ng-template>
-                    <mat-expansion-panel hideToggle [expanded]="true" *ngFor="let roomType of roomTypes;">
+                    <mat-expansion-panel hideToggle [expanded]="true" *ngFor="let rentRoom of rentRooms;">
                         <mat-expansion-panel-header>
                           <mat-panel-title>
-                            {{roomType.name}}
+                            {{rentRoom.name}}
                           </mat-panel-title>
                         </mat-expansion-panel-header>
                         <div class="d_flex flex-wrap">
-                            <div *ngFor="let room of rooms;">
-                                <mat-card class="card" *ngIf="!room.isCleaned && room.roomTypeId == roomType.id">
+                            <div *ngFor="let room of rentRoom.rooms;">
+                                <mat-card class="card" *ngIf="room != null && !room.isCleaned">
                                     <div class="d_flex flex-row border-bottom ">
                                         <div class="flex-grow-1 room-name text-danger ellipsis title-card">{{room.name}}</div>
                                         <div>
