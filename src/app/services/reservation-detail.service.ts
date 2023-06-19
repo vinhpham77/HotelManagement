@@ -86,7 +86,7 @@ export class ReservationDetailService {
 
   surchargeCheckIn(checkIn: Date): number {
     var h = checkIn.getHours();
-    if(h >= 14)
+    if(h >= 12)
       return 0;
     if(h >= 9)
       return 0.3;
