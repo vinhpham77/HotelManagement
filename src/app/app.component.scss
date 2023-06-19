@@ -198,6 +198,10 @@ mat-paginator .mat-mdc-paginator-container {
   min-height: unset;
 }
 
+.mdc-text-field--disabled.mdc-text-field--filled {
+  background-color: unset;
+}
+
 .mat-mdc-form-field.mat-mdc-paginator-page-size-select {
   margin: 0.6rem 0.4rem 0;
   width: 5.6rem;
@@ -346,16 +350,9 @@ mat-form-field {
   outline: none;
   border: none;
 
-
-
   & input.text-right {
     text-align: right;
     -moz-appearance: textfield;
-
-    &::-webkit-outer-spin-button, &::-webkit-inner-spin-button {
-      display: none;
-      -webkit-appearance: none;
-    }
   }
 
   & .mdc-text-field--filled .ndc-floating-label--float-above {

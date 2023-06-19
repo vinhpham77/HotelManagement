@@ -19,7 +19,7 @@ import { StaffService } from '../../../services/staff.service';
 export class StaffComponent implements OnInit, AfterViewInit, OnDestroy {
   timer: any;
   dataSource: Personnel[] = [];
-  displayedColumns: string[] = ['select', 'fullName', 'username', 'birthdate', 'sex', 'idNo', 'phoneNumber', 'address', 'nationality', 'actions'];
+  displayedColumns: string[] = ['select', 'fullName', 'username', 'birthdate', 'sex', 'idNo', 'phoneNumber', 'nationality', 'actions'];
   subscription = new Subscription();
   selections = new SelectionModel<Personnel>(true, []);
   searchValue = '';
@@ -34,6 +34,7 @@ export class StaffComponent implements OnInit, AfterViewInit, OnDestroy {
 
     this.subscription = this.staffService.staff$.subscribe(data => {
       this.dataSource = data;
+      this.selections.clear();
     });
   }
 

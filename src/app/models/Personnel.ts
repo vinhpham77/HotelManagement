@@ -8,6 +8,5 @@ export interface Personnel {
   sex: boolean;
   idNo: string;
   phoneNumber: string | null;
-  address: string;
   nationality: string;
 }

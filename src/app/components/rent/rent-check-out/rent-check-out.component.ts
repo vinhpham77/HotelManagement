@@ -7,7 +7,7 @@ import { Room } from 'src/app/models/Room';
 import { Order } from 'src/app/models/order';
 import { OrderDetail } from 'src/app/models/order-detail';
 import { Receipt } from 'src/app/models/receipt';
-import { ReservationDetail } from 'src/app/models/reservation-detail';
+import { ReservationDetail } from 'src/app/models/ReservationDetail';
 import { MenuService } from 'src/app/services/menu.service';
 import { OrderService } from 'src/app/services/order.service';
 import { ReceiptService } from 'src/app/services/receipt.service';
@@ -21,17 +21,17 @@ import { MenuItem } from 'src/app/models/MenuItem';
   templateUrl: './rent-check-out.component.html',
   styleUrls: ['./rent-check-out.component.scss']
 })
-export class RentCheckOutComponent implements OnInit, OnChanges {
+export class RentCheckedOutComponent implements OnInit, OnChanges {
   @Input() roomId!: string;
   public reservationdetail: ReservationDetail = <ReservationDetail>{};
-  public formCheckIn!: FormGroup;
+  public formCheckedIn!: FormGroup;
   public order: Order = <Order>{};
   public room: Room = <Room>{};
   public menus: MenuItem[] = [];
   displayedColumns: string[] = ['nameItem', 'quantity', 'price', 'operation'];
   dataSource: OrderDetail[] = [];
   public total: number = 0;
-  @Input() checkOut!: Date;
+  @Input() checkedOut!: Date;
   @Output() checkRoom = new EventEmitter();
 
   @ViewChild(MatTable) table!: MatTable<OrderDetail>;
@@ -45,11 +45,11 @@ export class RentCheckOutComponent implements OnInit, OnChanges {
     private _snackBar: MatSnackBar,
     private reservationDetailService: ReservationDetailService
     ){
-      this.formCheckIn = this.fb.group({
-        dayCheckIn: [new Date(), Validators.required],
-        hourseCheckIn: ["", Validators.required],
-        dayCheckOut: [new Date(), Validators.required],
-        hourseCheckOut: ["", Validators.required],
+      this.formCheckedIn = this.fb.group({
+        dayCheckedIn: [new Date(), Validators.required],
+        hourCheckedIn: ["", Validators.required],
+        dayCheckedOut: [new Date(), Validators.required],
+        hourCheckedOut: ["", Validators.required],
         roomPrice: [0, Validators.required],
         roomExceed: [0, Validators.required],
         prepayment: [0, Validators.required],
@@ -75,10 +75,10 @@ export class RentCheckOutComponent implements OnInit, OnChanges {
         this.reservationDetailService.getReservationDetail(this.roomId).subscribe({
           next: next => {
             this.reservationdetail = next.items[0];
-            this.reservationdetail.checkInAt = new Date(this.reservationdetail.checkInAt);
-            this.reservationdetail.checkOutAt = null;
+            this.reservationdetail.checkedInAt = new Date(this.reservationdetail.checkedInAt);
+            this.reservationdetail.checkedOutAt = null;
             this.orderService.getOrderByReservationDetail(this.reservationdetail).subscribe({next: data => {
-              this.order = data[0];
+              this.order = data;
               this.configuration();
             },
             error: err => {}
@@ -98,32 +98,32 @@ export class RentCheckOutComponent implements OnInit, OnChanges {
   }
 
   configuration(){
-    let roomP = this.reservationDetailService.roomPriceDay(this.reservationdetail, this.reservationdetail.checkInAt, this.checkOut);
-    let roomE = this.reservationDetailService.roomSurcharge(this.reservationdetail, this.room, this.reservationdetail.checkInAt, this.checkOut);
-    this.DayCheckIn?.setValue(this.reservationdetail.checkInAt);
-    this.HourseCheckIn?.setValue(this.getHourse(this.reservationdetail.checkInAt));
-    this.DayCheckOut?.setValue(this.checkOut);
-    this.HourseCheckOut?.setValue(this.getHourse(this.checkOut));
+    let roomP = this.reservationDetailService.getTotalRoomPrice(this.reservationdetail, this.reservationdetail.checkedInAt, this.checkedOut);
+    let roomE = this.reservationDetailService.getRoomSurcharge(this.reservationdetail, this.room, this.reservationdetail.checkedInAt, this.checkedOut);
+    this.DayCheckedIn?.setValue(this.reservationdetail.checkedInAt);
+    this.HourseCheckedIn?.setValue(this.getHourse(this.reservationdetail.checkedInAt));
+    this.DayCheckedOut?.setValue(this.checkedOut);
+    this.HourCheckedOut?.setValue(this.getHourse(this.checkedOut));
     this.RoomPrice?.setValue(roomP/1000);
     this.RoomExceed?.setValue(roomE/1000);
-    this.Prepayment?.setValue(this.reservationdetail.deposits/1000);
+    this.Prepayment?.setValue(this.reservationdetail.deposit/1000);
     this.dataSource = this.order.details;
     this.totalPrice();
   }
 
   check() {
-    if(this.formCheckIn.valid) {
+    if(this.formCheckedIn.valid) {
       let receipt: Receipt = <Receipt>{
-        employeeId: "luong",
+        personnelId: "luong",
         reservationDetailId: this.reservationdetail.id,
-        createdAt: this.checkOut,
+        createdAt: this.checkedOut,
         orderPrice: this.total,
-        roomPrice: this.TotalPrice?.value*1000,
+        totalPrice: this.TotalPrice?.value*1000,
       }
       let update = {
-        checkOutAt: this.checkOut
+        checkedOutAt: this.checkedOut
       }
-      this.reservationdetail.checkOutAt = this.checkOut;
+      this.reservationdetail.checkedOutAt = this.checkedOut;
       this.order.details = this.dataSource;
       this.room.isEmpty = !this.room.isEmpty;
       this.receiptSerice.create(receipt).subscribe({
@@ -220,34 +220,34 @@ export class RentCheckOutComponent implements OnInit, OnChanges {
       this.total += element.price * element.quantity;
     });
     let totalP = this.RoomPrice?.value*1000 + this.RoomExceed?.value*1000 + this.total;
-    let intoM = totalP - this.reservationdetail.deposits;
+    let intoM = totalP - this.reservationdetail.deposit;
     this.PriceMenu?.setValue(this.total/1000);
     this.TotalPrice?.setValue(totalP/1000);
     this.IntoMoney?.setValue(intoM/1000);
   }
 
   daysIn(): number {
-    return this.reservationDetailService.daysIn(this.reservationdetail.checkInAt, this.checkOut);
+    return this.reservationDetailService.daysIn(this.reservationdetail.checkedInAt, this.checkedOut);
   }
 
-  isSurchargeCheckIn(): boolean {
-    if(!this.reservationdetail.checkInAt) return false;
-    var t = this.reservationdetail.checkInAt.getHours();
+  isSurchargeCheckedIn(): boolean {
+    if(!this.reservationdetail.checkedInAt) return false;
+    var t = this.reservationdetail.checkedInAt.getHours();
     if(t >= 12)
       return false;
     return true
   }
 
-  isSurchargeCheckOut(): boolean {
-    var t = this.checkOut.getHours();
+  isSurchargeCheckedOut(): boolean {
+    var t = this.checkedOut.getHours();
     if(t >= 12)
       return  true;
     return false;
   }
 
-  hourseSurchargeCheckIn(): string {
-    var t = 12 - this.reservationdetail.checkInAt.getHours();
-    var h = 60 - this.reservationdetail.checkInAt.getMinutes();
+  hourseSurchargeCheckedIn(): string {
+    var t = 12 - this.reservationdetail.checkedInAt.getHours();
+    var h = 60 - this.reservationdetail.checkedInAt.getMinutes();
     if(h < 60)
       t--;
     else
@@ -255,9 +255,9 @@ export class RentCheckOutComponent implements OnInit, OnChanges {
     return t + ' Giờ ' + h + ' Phút';
   }
 
-  hourseSurchargeCheckOut(): string {
-    var t = this.checkOut.getHours() - 12;
-    var h = this.checkOut.getMinutes();
+  hourseSurchargeCheckedOut(): string {
+    var t = this.checkedOut.getHours() - 12;
+    var h = this.checkedOut.getMinutes();
     return t + ' Giờ ' + h + ' Phút';
   }
 
@@ -273,37 +273,37 @@ export class RentCheckOutComponent implements OnInit, OnChanges {
     return 0;
   }
 
-  get DayCheckIn() {
-    return this.formCheckIn.get('dayCheckIn');
+  get DayCheckedIn() {
+    return this.formCheckedIn.get('dayCheckedIn');
   }
 
-  get HourseCheckIn() {
-    return this.formCheckIn.get('hourseCheckIn');
+  get HourseCheckedIn() {
+    return this.formCheckedIn.get('hourseCheckedIn');
   }
 
-  get DayCheckOut() {
-    return this.formCheckIn.get('dayCheckOut');
+  get DayCheckedOut() {
+    return this.formCheckedIn.get('dayCheckedOut');
   }
-  get HourseCheckOut() {
-    return this.formCheckIn.get('hourseCheckOut');
+  get HourCheckedOut() {
+    return this.formCheckedIn.get('hourseCheckedOut');
   }
   get RoomPrice() {
-    return this.formCheckIn.get('roomPrice');
+    return this.formCheckedIn.get('roomPrice');
   }
   get RoomExceed() {
-    return this.formCheckIn.get('roomExceed');
+    return this.formCheckedIn.get('roomExceed');
   }
   get Prepayment() {
-    return this.formCheckIn.get('prepayment');
+    return this.formCheckedIn.get('prepayment');
   }
   get PriceMenu() {
-    return this.formCheckIn.get('priceMenu');
+    return this.formCheckedIn.get('priceMenu');
   }
   get TotalPrice() {
-    return this.formCheckIn.get('totalPrice');
+    return this.formCheckedIn.get('totalPrice');
   }
   get IntoMoney() {
-    return this.formCheckIn.get('intoMoney');
+    return this.formCheckedIn.get('intoMoney');
   }
 }
 

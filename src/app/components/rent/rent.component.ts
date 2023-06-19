@@ -23,7 +23,7 @@ export class RentComponent implements OnDestroy{
   public rooms: Room[] = [];
   public roomTypes: RoomType[] = [];
   public receipts: Receipt[] = [];
-  public checkOut = new Date();
+  public checkedOut = new Date();
   public roomId: string = '';
   public receiptId: string = '';
   public order: string = 'asc';
@@ -120,7 +120,7 @@ export class RentComponent implements OnDestroy{
   }
 
   days(date: Date) {
-    let t = Math.floor((this.checkOut.getTime() - date.getTime()) / (24*60*60*1000));
+    let t = Math.floor((this.checkedOut.getTime() - date.getTime()) / (24*60*60*1000));
     return t;
   }
 

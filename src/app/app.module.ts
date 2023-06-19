@@ -50,7 +50,7 @@ import {MatMenuModule} from '@angular/material/menu';
 import { CardRoomReceivedComponent } from './components/rent/card-room-received/card-room-received.component';
 import { RentChangeRoomComponent } from './components/rent/rent-change-room/rent-change-room.component';
 import {MatExpansionModule} from '@angular/material/expansion';
-import { RentCheckOutComponent } from './components/rent/rent-check-out/rent-check-out.component';
+import { RentCheckedOutComponent } from './components/rent/rent-check-out/rent-check-out.component';
 import { RentHistoryUpdateComponent } from './components/rent/rent-history-update/rent-history-update.component';
 import { RentMenuComponent } from './components/rent/rent-menu/rent-menu.component';
 import {MatBadgeModule} from '@angular/material/badge';
@@ -64,6 +64,11 @@ import { StaffComponent } from './components/manager/staff/staff.component';
 import { CuPersonnelComponent } from './components/manager/cu-personnel/cu-personnel.component';
 import {MatBottomSheetModule} from '@angular/material/bottom-sheet';
 import {MatTooltipModule} from '@angular/material/tooltip';
+import { CuAccountComponent } from './components/manager/cu-account/cu-account.component';
+import { AccountsComponent } from './components/manager/accounts/accounts.component';
+import { MatSlideToggleModule } from '@angular/material/slide-toggle';
+import { ReceiptsComponent } from './components/manager/receipts/receipts.component';
+import { UpdateReceiptComponent } from './components/manager/update-receipt/update-receipt.component';
 
 @NgModule({
   declarations: [
@@ -89,13 +94,17 @@ import {MatTooltipModule} from '@angular/material/tooltip';
     CardHistoryComponent,
     CardRoomReceivedComponent,
     RentChangeRoomComponent,
-    RentCheckOutComponent,
+    RentCheckedOutComponent,
     RentHistoryUpdateComponent,
     RentMenuComponent,
     RentUpdateComponent,
     MenuBottomComponent,
     StaffComponent,
-    CuPersonnelComponent
+    CuPersonnelComponent,
+    CuAccountComponent,
+    AccountsComponent,
+    ReceiptsComponent,
+    UpdateReceiptComponent,
   ],
   imports: [
     BrowserModule,
@@ -130,7 +139,8 @@ import {MatTooltipModule} from '@angular/material/tooltip';
     MatNativeDateModule,
     MatButtonToggleModule,
     MatBottomSheetModule,
-    MatTooltipModule
+    MatTooltipModule,
+    MatSlideToggleModule,
   ],
   providers: [
     { provide: MatPaginatorIntl, useClass: CustomMatPaginatorIntlService },

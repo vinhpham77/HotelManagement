@@ -19,7 +19,7 @@ import { DialogComponent } from '../../dialog/dialog.component';
 export class CustomersComponent implements OnDestroy, OnInit, AfterViewInit {
   timer: any;
   dataSource: Customer[] = [];
-  displayedColumns: string[] = ['select', 'fullName', 'birthdate', 'sex', 'idNo', 'phoneNumber', 'address', 'nationality', 'actions'];
+  displayedColumns: string[] = ['select', 'fullName', 'birthdate', 'sex', 'idNo', 'phoneNumber', 'nationality', 'actions'];
   subscription = new Subscription();
   selections = new SelectionModel<Customer>(true, []);
   searchValue = '';
@@ -34,6 +34,7 @@ export class CustomersComponent implements OnDestroy, OnInit, AfterViewInit {
 
     this.subscription = this.customersService.customers$.subscribe(data => {
       this.dataSource = data;
+      this.selections.clear();
     });
   }
 

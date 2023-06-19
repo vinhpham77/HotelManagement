@@ -34,6 +34,7 @@ export class MenuComponent implements AfterViewInit, OnDestroy {
 
     this.subscription = this.menuService.menu$.subscribe(data => {
       this.dataSource = data;
+      this.selections.clear();
     });
   }
 

@@ -1,7 +1,7 @@
 import { Component, EventEmitter, Input, OnChanges, OnInit, Output, SimpleChanges } from '@angular/core';
 import { MatDialog } from '@angular/material/dialog';
 import { Room } from 'src/app/models/Room';
-import { ReservationDetail } from 'src/app/models/reservation-detail';
+import { ReservationDetail } from 'src/app/models/ReservationDetail';
 import { OrderService } from 'src/app/services/order.service';
 import { ReservationDetailService } from 'src/app/services/reservation-detail.service';
 import { DialogComponent } from '../../dialog/dialog.component';
@@ -36,11 +36,11 @@ export class CardRoomReceivedComponent implements OnInit, OnChanges{
   setData(roomId: string) {
     this.reServationDetailService.getReservationDetail(roomId).subscribe((data) => {
       this.reServationDetail = data.items[0];
-      this.reServationDetail.checkInAt = new Date(this.reServationDetail.checkInAt);
-      this.reServationDetail.checkOutAt = null;
+      this.reServationDetail.checkedInAt = new Date(this.reServationDetail.checkedInAt);
+      this.reServationDetail.checkedOutAt = null;
       this.orderService.getOrderByReservationDetail(this.reServationDetail).subscribe({
         next: data => {
-          this.priceOrder = this.orderService.getTotalOrderByReservationId(data[0]);
+          this.priceOrder = this.orderService.getTotalOrderByReservationId(data);
           this.priceRoom = this.getPriceRoom();
           this.intoMoney = this.getIntoMoney();
         }
@@ -54,21 +54,21 @@ export class CardRoomReceivedComponent implements OnInit, OnChanges{
   });
 
   daysIn() {
-    return this.reServationDetailService.daysIn(this.reServationDetail.checkInAt, this.dateCheck);
+    return this.reServationDetailService.daysIn(this.reServationDetail.checkedInAt, this.dateCheck);
   }
 
   getPriceRoom(): number {
     if(Object.keys(this.reServationDetail).length > 0)
-      return this.reServationDetailService.roomPriceDay(this.reServationDetail, this.reServationDetail.checkInAt, this.dateCheck) + this.reServationDetailService.roomSurcharge(this.reServationDetail, this.room, this.reServationDetail.checkInAt, this.dateCheck);
+      return this.reServationDetailService.getTotalRoomPrice(this.reServationDetail, this.reServationDetail.checkedInAt, this.dateCheck) + this.reServationDetailService.getRoomSurcharge(this.reServationDetail, this.room, this.reServationDetail.checkedInAt, this.dateCheck);
     return 0;
   }
 
-  getDeposits() {
-    return this.reServationDetail.deposits;
+  getDeposit() {
+    return this.reServationDetail.deposit;
   }
 
   getIntoMoney() {
-    return (this.priceRoom + this.priceOrder - this.getDeposits());
+    return (this.priceRoom + this.priceOrder - this.getDeposit());
   }
 
   openPanel(namePanel: string) {

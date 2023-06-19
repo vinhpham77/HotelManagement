@@ -6,7 +6,7 @@ import { MatTable } from '@angular/material/table';
 import { Room } from 'src/app/models/Room';
 import { Order } from 'src/app/models/order';
 import { OrderDetail } from 'src/app/models/order-detail';
-import { ReservationDetail } from 'src/app/models/reservation-detail';
+import { ReservationDetail } from 'src/app/models/ReservationDetail';
 import { MenuService } from 'src/app/services/menu.service';
 import { OrderService } from 'src/app/services/order.service';
 import { ReservationDetailService } from 'src/app/services/reservation-detail.service';
@@ -42,9 +42,9 @@ export class RentUpdateComponent implements OnInit, OnChanges{
     private reservationdetailService: ReservationDetailService,
     private _snackBar: MatSnackBar) {
       this.rentChangeForm = this.fb.group({
-        dayCheckIn: [null, Validators.required],
-        hourseCheckIn: [null, Validators.required],
-        deposits: [null, [Validators.required, Validators.min(0)]],
+        dayCheckedIn: [null, Validators.required],
+        hourCheckedIn: [null, Validators.required],
+        deposit: [null, [Validators.required, Validators.min(0)]],
       })
   }
 
@@ -66,14 +66,14 @@ export class RentUpdateComponent implements OnInit, OnChanges{
     this.reservationdetailService.getReservationDetail(this.roomId).subscribe({
       next: next => {
         this.reservationdetail = next.items[0];
-        this.reservationdetail.checkInAt = new Date(this.reservationdetail.checkInAt);
-        this.reservationdetail.checkOutAt = null;
-        this.DayCheckIn?.setValue(this.reservationdetail.checkInAt);
-        this.HourseCheckIn?.setValue(this.getHourse(this.reservationdetail.checkInAt));
-        this.Deposits?.setValue(this.reservationdetail.deposits/1000);
+        this.reservationdetail.checkedInAt = new Date(this.reservationdetail.checkedInAt);
+        this.reservationdetail.checkedOutAt = null;
+        this.DayCheckedIn?.setValue(this.reservationdetail.checkedInAt);
+        this.HourCheckedIn?.setValue(this.getHourse(this.reservationdetail.checkedInAt));
+        this.Deposit?.setValue(this.reservationdetail.deposit/1000);
         this.orderService.getOrderByReservationDetail(this.reservationdetail).subscribe(data => {
-          this.order = data[0];
-          this.dataSource = data[0].details;
+          this.order = data;
+          this.dataSource = data.details;
           this.totalPrice();
         });
       },
@@ -85,15 +85,15 @@ export class RentUpdateComponent implements OnInit, OnChanges{
         this.menus = data.items;
       }
     });
-    // this.roomTypeService.roomTypesSource$.subscribe(data => this.rob  
+    // this.roomTypeService.roomTypesSource$.subscribe(data => this.rob
   }
 
   save() {
-    this.isFormatTime = this.forMatTime(this.HourseCheckIn?.value);
+    this.isFormatTime = this.forMatTime(this.HourCheckedIn?.value);
     if(this.rentChangeForm.valid && this.isFormatTime) {
-      let t = new Date(this.dayString(this.DayCheckIn?.value) + ' ' + this.HourseCheckIn?.value + ':00');
-      this.reservationdetail.checkInAt = t;
-      this.reservationdetail.deposits = this.Deposits?.value*1000;
+      let t = new Date(this.dayString(this.DayCheckedIn?.value) + ' ' + this.HourCheckedIn?.value + ':00');
+      this.reservationdetail.checkedInAt = t;
+      this.reservationdetail.deposit = this.Deposit?.value*1000;
       this.order.details = this.dataSource;
       this.reservationdetailService.update(this.reservationdetail).subscribe({
         next: next => {
@@ -109,7 +109,7 @@ export class RentUpdateComponent implements OnInit, OnChanges{
           })
         }
       });
-      
+
     }
   }
 
@@ -198,9 +198,9 @@ export class RentUpdateComponent implements OnInit, OnChanges{
     return item? item.name : "";
   }
 
-  get DayCheckIn(){ return this.rentChangeForm.get('dayCheckIn')}
+  get DayCheckedIn(){ return this.rentChangeForm.get('dayCheckedIn')}
 
-  get HourseCheckIn(){ return this.rentChangeForm.get('hourseCheckIn')}
+  get HourCheckedIn(){ return this.rentChangeForm.get('hourCheckedIn')}
 
-  get Deposits(){ return this.rentChangeForm.get('deposits')}
+  get Deposit(){ return this.rentChangeForm.get('deposit')}
 }

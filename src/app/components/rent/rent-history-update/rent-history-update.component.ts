@@ -7,7 +7,7 @@ import { Room } from 'src/app/models/Room';
 import { Order } from 'src/app/models/order';
 import { OrderDetail } from 'src/app/models/order-detail';
 import { Receipt } from 'src/app/models/receipt';
-import { ReservationDetail } from 'src/app/models/reservation-detail';
+import { ReservationDetail } from 'src/app/models/ReservationDetail';
 import { MenuService } from 'src/app/services/menu.service';
 import { OrderService } from 'src/app/services/order.service';
 import { ReceiptService } from 'src/app/services/receipt.service';
@@ -35,17 +35,17 @@ export class RentHistoryUpdateComponent implements OnInit, OnChanges {
   public isFormatTime: boolean = true;
   public day: number = 0;
   public isCheckDay: boolean = true;
-  public lateHourseCheckIn: number = 0;
-  public lateMinuteCheckIn: number = 0;
-  public lateHourseCheckOut: number = 0;
-  public lateMinuteCheckOut: number = 0;
+  public lateHourCheckedIn: number = 0;
+  public lateMinuteCheckedIn: number = 0;
+  public lateHourCheckedOut: number = 0;
+  public lateMinuteCheckedOut: number = 0;
   @Output() changeHistory = new EventEmitter();
 
   @ViewChild(MatTable) table!: MatTable<OrderDetail>;
 
   constructor(private orderService: OrderService,
     private fb: FormBuilder,
-    public menuService: MenuService, 
+    public menuService: MenuService,
     private _bottomSheet: MatBottomSheet,
     private roomService: RoomsService,
     private receiptSerice: ReceiptService,
@@ -53,10 +53,10 @@ export class RentHistoryUpdateComponent implements OnInit, OnChanges {
     private reservationDetailService: ReservationDetailService
     ){
       this.formHistory = this.fb.group({
-        dayCheckIn: [new Date(), Validators.required],
-        hourseCheckIn: ["", Validators.required],
-        dayCheckOut: [new Date(), Validators.required],
-        hourseCheckOut: ["", Validators.required],
+        dayCheckedIn: [new Date(), Validators.required],
+        hourCheckedIn: ["", Validators.required],
+        dayCheckedOut: [new Date(), Validators.required],
+        hourCheckedOut: ["", Validators.required],
         roomPrice: [0, Validators.required],
         roomExceed: [0, Validators.required],
         prepayment: [0, Validators.required],
@@ -66,7 +66,7 @@ export class RentHistoryUpdateComponent implements OnInit, OnChanges {
       })
   }
 
-  
+
 
   ngOnInit(): void {
   }
@@ -83,23 +83,23 @@ export class RentHistoryUpdateComponent implements OnInit, OnChanges {
         this.reservationDetailService.getReservationDetailById(this.receipt.reservationDetailId).subscribe({
           next: next => {
             this.reservationdetail = next;
-            this.reservationdetail.checkInAt = new Date(this.reservationdetail.checkInAt);
-            if(this.reservationdetail.checkOutAt)
-              this.reservationdetail.checkOutAt = new Date(this.reservationdetail.checkOutAt);
+            this.reservationdetail.checkedInAt = new Date(this.reservationdetail.checkedInAt);
+            if(this.reservationdetail.checkedOutAt)
+              this.reservationdetail.checkedOutAt = new Date(this.reservationdetail.checkedOutAt);
             else
-            this.reservationdetail.checkOutAt = null;
+            this.reservationdetail.checkedOutAt = null;
             this.roomService.getRoomById(this.reservationdetail.roomId).subscribe({
               next: next => {
                 this.room = next;
                 this.orderService.getOrderByReservationDetail(this.reservationdetail).subscribe(data => {
-                  this.order = data[0];
-                  let checkOut = this.reservationdetail.checkOutAt? this.reservationdetail.checkOutAt:new Date();
-                  this.DayCheckIn?.setValue(this.reservationdetail.checkInAt);
-                  this.HourseCheckIn?.setValue(this.getHourse(this.reservationdetail.checkInAt));
-                  this.DayCheckOut?.setValue(checkOut);
-                  this.HourseCheckOut?.setValue(this.getHourse(checkOut));
+                  this.order = data;
+                  let checkedOut = this.reservationdetail.checkedOutAt? this.reservationdetail.checkedOutAt:new Date();
+                  this.DayCheckedIn?.setValue(this.reservationdetail.checkedInAt);
+                  this.HourCheckedIn?.setValue(this.getHour(this.reservationdetail.checkedInAt));
+                  this.DayCheckedOut?.setValue(checkedOut);
+                  this.HourCheckedOut?.setValue(this.getHour(checkedOut));
                   this.dataSource = this.order.details;
-                  this.configuration(this.reservationdetail.checkInAt, checkOut);
+                  this.configuration(this.reservationdetail.checkedInAt, checkedOut);
                 });
               }
             })
@@ -115,33 +115,33 @@ export class RentHistoryUpdateComponent implements OnInit, OnChanges {
   }
 
   changeDay() {
-    let checkIn = new Date(this.dayString(this.DayCheckIn?.value) + ' ' + this.HourseCheckIn?.value + ':00');
-    let checkOut = new Date(this.dayString(this.DayCheckOut?.value) + ' ' + this.HourseCheckOut?.value + ':00');
-    this.checkDay(checkIn, checkOut);
+    let checkedIn = new Date(this.dayString(this.DayCheckedIn?.value) + ' ' + this.HourCheckedIn?.value + ':00');
+    let checkedOut = new Date(this.dayString(this.DayCheckedOut?.value) + ' ' + this.HourCheckedOut?.value + ':00');
+    this.checkDay(checkedIn, checkedOut);
     if(!this.isCheckDay) return;
-    this.daysIn(checkIn, checkOut);
-    this.setPrice(checkIn, checkOut);
+    this.daysIn(checkedIn, checkedOut);
+    this.setPrice(checkedIn, checkedOut);
     this.totalPrice();
   }
 
-  changeHourse() {
-    if(this.forMatTime(this.HourseCheckIn?.value) && this.forMatTime(this.HourseCheckOut?.value)){
+  changeHour() {
+    if(this.forMatTime(this.HourCheckedIn?.value) && this.forMatTime(this.HourCheckedOut?.value)){
       this.isFormatTime = true;
-      let checkIn = new Date(this.dayString(this.DayCheckIn?.value) + ' ' + this.HourseCheckIn?.value + ':00');
-      let checkOut = new Date(this.dayString(this.DayCheckOut?.value) + ' ' + this.HourseCheckOut?.value + ':00');
-      this.checkDay(checkIn, checkOut);
+      let checkedIn = new Date(this.dayString(this.DayCheckedIn?.value) + ' ' + this.HourCheckedIn?.value + ':00');
+      let checkedOut = new Date(this.dayString(this.DayCheckedOut?.value) + ' ' + this.HourCheckedOut?.value + ':00');
+      this.checkDay(checkedIn, checkedOut);
       if(!this.isCheckDay) return;
-      this.hourseSurchargeCheckIn(checkIn);
-      this.hourseSurchargeCheckOut(checkOut);
-      this.daysIn(checkIn, checkOut);
-      this.setPrice(checkIn, checkOut);
+      this.hourSurchargeCheckedIn(checkedIn);
+      this.hourSurchargeCheckedOut(checkedOut);
+      this.daysIn(checkedIn, checkedOut);
+      this.setPrice(checkedIn, checkedOut);
       this.totalPrice();
     }
     else this.isFormatTime = false;
   }
 
-  checkDay(checkIn: Date, checkOut: Date){
-    this.isCheckDay = (checkOut.getTime() - checkIn.getTime()) > 0;
+  checkDay(checkedIn: Date, checkedOut: Date){
+    this.isCheckDay = (checkedOut.getTime() - checkedIn.getTime()) > 0;
   }
 
   dayString(date: Date): string {
@@ -149,34 +149,33 @@ export class RentHistoryUpdateComponent implements OnInit, OnChanges {
     return date.getFullYear() + '-' + month + '-' + date.getDate();
   }
 
-  configuration(checkIn: Date, checkOut: Date){
-    this.setPrice(checkIn, checkOut);
+  configuration(checkedIn: Date, checkedOut: Date){
+    this.setPrice(checkedIn, checkedOut);
     this.totalPrice();
-    this.daysIn(checkIn, checkOut);
-    this.hourseSurchargeCheckIn(checkIn);
-    this.hourseSurchargeCheckOut(checkOut);
-    
+    this.daysIn(checkedIn, checkedOut);
+    this.hourSurchargeCheckedIn(checkedIn);
+    this.hourSurchargeCheckedOut(checkedOut);
   }
 
-  setPrice(checkIn: Date, checkOut: Date) {
-    let roomP = this.reservationDetailService.roomPriceDay(this.reservationdetail, checkIn, checkOut);
-    let roomE = this.reservationDetailService.roomSurcharge(this.reservationdetail, this.room, checkIn, checkOut);
+  setPrice(checkedIn: Date, checkedOut: Date) {
+    let roomP = this.reservationDetailService.getTotalRoomPrice(this.reservationdetail, checkedIn, checkedOut);
+    let roomE = this.reservationDetailService.getRoomSurcharge(this.reservationdetail, this.room, checkedIn, checkedOut);
     this.RoomPrice?.setValue(roomP/1000);
     this.RoomExceed?.setValue(roomE/1000);
-    this.Prepayment?.setValue(this.reservationdetail.deposits/1000);
+    this.Prepayment?.setValue(this.reservationdetail.deposit/1000);
   }
 
   check() {
-    // if(this.formCheckIn.valid) {
+    // if(this.formCheckedIn.valid) {
     //   let receipt: Receipt = <Receipt>{
     //     employeeId: "luong",
     //     reservationDetailId: this.reservationdetail.id,
-    //     createdAt: this.checkOut,
+    //     createdAt: this.checkedOut,
     //     orderPrice: this.total,
     //     roomPrice: this.TotalPrice?.value*1000,
     //   }
     //   let update = {
-    //     checkOutAt: this.checkOut
+    //     checkedOutAt: this.checkedOut
     //   }
     //   this.receiptSerice.createReceipt(receipt).subscribe({
     //     next: next => {
@@ -208,13 +207,13 @@ export class RentHistoryUpdateComponent implements OnInit, OnChanges {
 
   save() {
     if(this.formHistory.valid && this.isCheckDay && this.isFormatTime) {
-      let checkIn = new Date(this.dayString(this.DayCheckIn?.value) + ' ' + this.HourseCheckIn?.value + ':00');
-      let checkOut = new Date(this.dayString(this.DayCheckOut?.value) + ' ' + this.HourseCheckOut?.value + ':00');
-      this.reservationdetail.checkInAt = checkIn;
-      this.reservationdetail.checkOutAt = checkOut;
+      let checkedIn = new Date(this.dayString(this.DayCheckedIn?.value) + ' ' + this.HourCheckedIn?.value + ':00');
+      let checkedOut = new Date(this.dayString(this.DayCheckedOut?.value) + ' ' + this.HourCheckedOut?.value + ':00');
+      this.reservationdetail.checkedInAt = checkedIn;
+      this.reservationdetail.checkedOutAt = checkedOut;
       this.order.details = this.dataSource;
       this.receipt.orderPrice = this.total;
-      this.receipt.roomPrice = this.TotalPrice?.value*1000;
+      this.receipt.totalPrice = this.TotalPrice?.value*1000;
       this.reservationDetailService.update(this.reservationdetail).subscribe({
         next: next => {
           this.orderService.update(this.order).subscribe({
@@ -236,15 +235,15 @@ export class RentHistoryUpdateComponent implements OnInit, OnChanges {
     }
   }
 
-  getHourse(date: Date): string {
+  getHour(date: Date): string {
     return date.getHours() + ':' + date.getMinutes();
   }
 
   forMatTime(s: string): boolean {
     let subS = s.split(":");
-    let isAllDigitsHourse = /^\d+$/.test(subS[0]);
+    let isAllDigitsHour = /^\d+$/.test(subS[0]);
     let isAllDigitsMinute = /^\d+$/.test(subS[1]);
-    if(isAllDigitsHourse && parseInt(subS[0]) < 24 && isAllDigitsMinute && parseInt(subS[1]) < 60)
+    if(isAllDigitsHour && parseInt(subS[0]) < 24 && isAllDigitsMinute && parseInt(subS[1]) < 60)
       return true;
     return false;
   }
@@ -313,27 +312,27 @@ export class RentHistoryUpdateComponent implements OnInit, OnChanges {
 
   setTotalPrice() {
     let totalP = this.RoomPrice?.value*1000 + this.RoomExceed?.value*1000 + this.total;
-    let intoM = totalP - this.reservationdetail.deposits;
+    let intoM = totalP - this.reservationdetail.deposit;
     this.TotalPrice?.setValue(totalP/1000);
     this.IntoMoney?.setValue(intoM/1000);
   }
 
-  daysIn(checkIn: Date, checkOut: Date) {
-    this.day = this.reservationDetailService.daysIn(checkIn, checkOut);
+  daysIn(checkedIn: Date, checkedOut: Date) {
+    this.day = this.reservationDetailService.daysIn(checkedIn, checkedOut);
   }
 
-  hourseSurchargeCheckIn(checkIn: Date) {
-    this.lateHourseCheckIn = 12 - checkIn.getHours();
-    this.lateMinuteCheckIn = 60 - checkIn.getMinutes();
-    if(this.lateMinuteCheckIn < 60)
-      this.lateHourseCheckIn--;
+  hourSurchargeCheckedIn(checkedIn: Date) {
+    this.lateHourCheckedIn = 12 - checkedIn.getHours();
+    this.lateMinuteCheckedIn = 60 - checkedIn.getMinutes();
+    if(this.lateMinuteCheckedIn < 60)
+      this.lateHourCheckedIn--;
     else
-      this.lateMinuteCheckIn = 0;
+      this.lateMinuteCheckedIn = 0;
   }
 
-  hourseSurchargeCheckOut(checkOut: Date) {
-    this.lateHourseCheckOut = checkOut.getHours() - 12;
-    this.lateMinuteCheckOut = checkOut.getMinutes();
+  hourSurchargeCheckedOut(checkedOut: Date) {
+    this.lateHourCheckedOut = checkedOut.getHours() - 12;
+    this.lateMinuteCheckedOut = checkedOut.getMinutes();
   }
 
   adultsExceed(): number {
@@ -354,19 +353,19 @@ export class RentHistoryUpdateComponent implements OnInit, OnChanges {
     return item? item.name : "";
   }
 
-  get DayCheckIn() {
-    return this.formHistory.get('dayCheckIn');
+  get DayCheckedIn() {
+    return this.formHistory.get('dayCheckedIn');
   }
 
-  get HourseCheckIn() {
-    return this.formHistory.get('hourseCheckIn');
+  get HourCheckedIn() {
+    return this.formHistory.get('hourCheckedIn');
   }
 
-  get DayCheckOut() {
-    return this.formHistory.get('dayCheckOut');
+  get DayCheckedOut() {
+    return this.formHistory.get('dayCheckedOut');
   }
-  get HourseCheckOut() {
-    return this.formHistory.get('hourseCheckOut');
+  get HourCheckedOut() {
+    return this.formHistory.get('hourCheckedOut');
   }
   get RoomPrice() {
     return this.formHistory.get('roomPrice');

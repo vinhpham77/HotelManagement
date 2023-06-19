@@ -1,0 +1,69 @@
+@use '/src/assets/styles/mixins' as *;
+@use '/src/assets/styles/variables' as *;
+
+input[type=number] {
+  -webkit-appearance: textfield;
+  -moz-appearance: textfield;
+  appearance: textfield;
+}
+
+input[type=number] {
+  text-align: center;
+}
+
+.quantity-input {
+  width: 4rem;
+  height: 3.2rem;
+  line-height: 3.2rem;
+  padding: 0.5rem 0;
+  outline: none;
+  box-sizing: border-box;
+}
+
+.menu-table {
+  .mdc-data-table__header-cell {
+    font-weight: 400;
+    color: $text-color;
+  }
+
+  & button {
+    filter: brightness(80%);
+    font-weight: 400;
+  }
+}
+
+.delete-item-icon {
+  @include set-icon-size(1.6rem);
+}
+
+.faded-button {
+  color: $text-color;
+}
+
+.add-icon, .remove-icon {
+  @include set-icon-size(2rem);
+  margin: 0;
+}
+
+.date-time-note {
+  font-size: 1.3rem;
+  color: $text-color;
+  text-wrap: balance;
+}
+
+.quantity-btn {
+  &.mdc-button {
+    min-width: 3.2rem;
+    margin-left: 0.2rem;
+    margin-right: 0.2rem;
+    height: 3.4rem;
+  }
+}
+
+.quantity-cell {
+  vertical-align: center;
+}
+
+.text-center {
+  text-align: center;
+}

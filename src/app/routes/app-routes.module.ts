@@ -10,6 +10,8 @@ import { MenuComponent } from '../components/manager/menu/menu.component';
 import { CustomersComponent } from '../components/manager/customers/customers.component';
 import { StaffComponent } from '../components/manager/staff/staff.component';
 import { RentComponent } from '../components/rent/rent.component';
+import { AccountsComponent } from '../components/manager/accounts/accounts.component';
+import { ReceiptsComponent } from '../components/manager/receipts/receipts.component';
 
 const appRoutes: Routes = [
 
@@ -19,7 +21,7 @@ const appRoutes: Routes = [
     component: TwoColsLayoutComponent,
     children: [
       { path: 'manager', component: ManagerComponent, title: 'Quản lý hệ thống' },
-      { path: 'check', component: RentComponent, title: 'THUÊ - TRẢ PHÒNG'}
+      { path: 'check', component: RentComponent, title: 'Thuê - Trả phòng'}
     ]
   },
 
@@ -33,8 +35,11 @@ const appRoutes: Routes = [
       { path: 'manager/menu', component: MenuComponent, title: 'Menu' },
       { path: 'manager/customers', component: CustomersComponent, title: 'Khách hàng' },
       { path: 'manager/staff', component: StaffComponent, title: 'Nhân sự' },
+      { path: 'manager/accounts', component: AccountsComponent, title: 'Tài khoản' },
+      { path: 'manager/receipts', component: ReceiptsComponent, title: 'Hóa đơn'}
     ]
   }
+
 ];
 
 @NgModule({

@@ -1,6 +1,6 @@
 import { Injectable } from '@angular/core';
 import { BehaviorSubject } from 'rxjs';
-import { ReservationDetail } from '../models/reservation-detail';
+import { ReservationDetail } from '../models/ReservationDetail';
 import { environment } from 'src/environments/environment';
 import { HttpClient, HttpHeaders } from '@angular/common/http';
 import { Room } from '../models/Room';
@@ -35,11 +35,11 @@ export class ReservationDetailService {
 
   convert(data: ReservationDetail[]) {
     data.forEach(item => {
-      item.checkInAt = new Date(item.checkInAt);
-      if(item.checkOutAt)
-        item.checkOutAt = new Date(item.checkOutAt);
+      item.checkedInAt = new Date(item.checkedInAt);
+      if(item.checkedOutAt)
+        item.checkedOutAt = new Date(item.checkedOutAt);
       else
-        item.checkOutAt = null;
+        item.checkedOutAt = null;
     })
   }
 
@@ -65,36 +65,36 @@ export class ReservationDetailService {
     return this.httpClient.delete<ReservationDetail>(this.reservationDetailAPI + `/${_id}`);
   }
 
-  daysIn(checkIn: Date, checkOut: Date) {
-    var t2 = new Date(checkOut);
+  daysIn(checkedIn: Date, checkedOut: Date) {
+    var t2 = new Date(checkedOut);
     t2.setHours(12);
     t2.setMinutes(0);
-    var t1 = new Date(checkIn);
+    var t1 = new Date(checkedIn);
     t1.setHours(12);
     t1.setMinutes(0);
     return Math.floor((t2.getTime() - t1.getTime()) / (24*60*60*1000));
   }
 
-  roomPriceDay(reservationdetail: ReservationDetail, checkIn: Date, checkOut: Date): number {
-    return reservationdetail.roomPricePerDay * this.daysIn(checkIn, checkOut);
+  getTotalRoomPrice(reservationDetail: ReservationDetail, checkedIn: Date, checkedOut: Date): number {
+    return reservationDetail.roomPricePerDay * this.daysIn(checkedIn, checkedOut);
   }
 
-  roomSurcharge(reservationdetail: ReservationDetail, room: Room, checkIn: Date, checkOut: Date): number {
-    let p = reservationdetail.roomPricePerDay;
-    return p * this.surchargeCheckIn(checkIn) + p * this.surchargeCheckOut(checkOut) + 200000 * this.adultsExceed(reservationdetail, room) + 100000 * this.childrenExceed(reservationdetail, room);
+  getRoomSurcharge(reservationDetail: ReservationDetail, room: Room, checkedIn: Date, checkedOut: Date): number {
+    let p = reservationDetail.roomPricePerDay;
+    return p * this.surchargeCheckedIn(checkedIn) + p * this.surchargeCheckedOut(checkedOut) + 200000 * this.adultsExceed(reservationDetail, room) + 100000 * this.childrenExceed(reservationDetail, room);
   }
 
-  surchargeCheckIn(checkIn: Date): number {
-    var h = checkIn.getHours();
-    if(h >= 12)
+  surchargeCheckedIn(checkedIn: Date): number {
+    var h = checkedIn.getHours();
+    if(h >= 14)
       return 0;
     if(h >= 9)
       return 0.3;
     return  0.5;
   }
 
-  surchargeCheckOut(checkOut: Date): number {
-    var t = checkOut.getHours();
+  surchargeCheckedOut(checkedOut: Date): number {
+    var t = checkedOut.getHours();
     if(t >= 18)
       return 1;
     if(t >= 15)

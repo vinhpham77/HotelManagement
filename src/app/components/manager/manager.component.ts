@@ -14,7 +14,7 @@ export class ManagerComponent {
     { title: 'Menu', link: './menu', icon: 'fastfood' },
     { title: 'Khách hàng', link: './customers', icon: 'badge' },
     { title: 'Nhân sự', link: './staff', icon: 'contacts' },
-    { title: 'Thống kê', link: './reports', icon: 'analytics' },
+    { title: 'Tài khoản', link: './accounts', icon: 'account_box' },
     { title: 'Hóa đơn', link: './receipts', icon: 'receipt' },
     { title: 'Thiết lập khác', link: './configs', icon: 'room_preferences' }
   ];

@@ -34,6 +34,7 @@ export class RoomTypesComponent implements OnInit, OnDestroy, AfterViewInit {
 
     this.subscription = this.roomTypesService.roomTypes$.subscribe(data => {
       this.dataSource = data;
+      this.selections.clear();
     });
   }
 

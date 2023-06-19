@@ -2,7 +2,7 @@ import { Component, EventEmitter, Input, OnChanges, OnInit, Output, SimpleChange
 import { MatSnackBar } from '@angular/material/snack-bar';
 import { Room } from 'src/app/models/Room';
 import { RoomType } from 'src/app/models/RoomType';
-import { ReservationDetail } from 'src/app/models/reservation-detail';
+import { ReservationDetail } from 'src/app/models/ReservationDetail';
 import { ReservationDetailService } from 'src/app/services/reservation-detail.service';
 import { RoomTypesService } from 'src/app/services/room-types.service';
 import { RoomsService } from 'src/app/services/rooms.service';
@@ -53,8 +53,8 @@ export class RentChangeRoomComponent implements OnInit, OnChanges {
 
     this.reservationDetailService.getReservationDetail(this.roomId).subscribe({
       next: next => {this.reservationdetail = next.items[0];
-        this.reservationdetail.checkInAt = new Date(this.reservationdetail.checkInAt);
-        this.reservationdetail.checkOutAt = null;
+        this.reservationdetail.checkedInAt = new Date(this.reservationdetail.checkedInAt);
+        this.reservationdetail.checkedOutAt = null;
       },
       error: err => {}
     })

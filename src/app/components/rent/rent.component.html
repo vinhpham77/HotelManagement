@@ -102,7 +102,7 @@
                             <div class="d_flex flex-wrap">
                                 <div *ngFor="let room of rooms;">
                                     <div *ngIf="!room.isEmpty && room.roomTypeId == roomType.id">
-                                        <app-card-room-received [room]="room" [dateCheck]="checkOut" (open)="openPanel($event, room)" (clean)="onCleanRoom(room)"></app-card-room-received>
+                                        <app-card-room-received [room]="room" [dateCheck]="checkedOut" (open)="openPanel($event, room)" (clean)="onCleanRoom(room)"></app-card-room-received>
                                     </div>
                                 </div>
                             </div>
@@ -173,7 +173,7 @@
                         </mat-expansion-panel-header>
                         <div class="d_flex flex-wrap">
                             <div *ngFor="let receipt of receipts;">
-                                <app-card-history [receipt]="receipt" [dateCheck]="checkOut" (open)="openPanelChangeReceipt($event, receipt)"></app-card-history>
+                                <app-card-history [receipt]="receipt" [dateCheck]="checkedOut" (open)="openPanelChangeReceipt($event, receipt)"></app-card-history>
                             </div>
                         </div>
                     </mat-expansion-panel>
@@ -181,14 +181,14 @@
               </mat-tab-group>
         </div>
     </div>
-    
+
     <div class="right-panel">
         <!-- update rent -->
 
         <app-rent-update *ngIf="namePanel == 'edit'" (updateRoom)="reload($event)" [roomId]="roomId"></app-rent-update>
         <app-rent-menu *ngIf="namePanel == 'fastfood'" (orderSave)="reload($event)" [roomId]="roomId"></app-rent-menu>
         <app-rent-change-room *ngIf="namePanel == 'sync'" (change)="reload($event)" [roomId]="roomId"></app-rent-change-room>
-        <app-rent-check-out *ngIf="namePanel == 'undo'" (checkRoom)="reload($event)" [roomId]="roomId" [checkOut]="checkOut"></app-rent-check-out>
+        <app-rent-check-out *ngIf="namePanel == 'undo'" (checkRoom)="reload($event)" [roomId]="roomId" [checkedOut]="checkedOut"></app-rent-check-out>
         <app-rent-history-update *ngIf="namePanel == 'edit-h'" (changeHistory)="reload($event)" [receiptId]="receiptId" ></app-rent-history-update>
     </div>
 </div>
