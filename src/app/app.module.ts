@@ -71,6 +71,11 @@ import { ReceiptsComponent } from './components/manager/receipts/receipts.compon
 import { UpdateReceiptComponent } from './components/manager/update-receipt/update-receipt.component';
 import { RentAddComponent } from './components/rent/rent-add/rent-add.component';
 import {MatRadioModule} from '@angular/material/radio';
+import { BookRoomComponent } from './components/book-room/book-room.component';
+import { PersonComponent } from './components/book-room/person/person.component';
+import { MatChipsModule } from '@angular/material/chips';
+
+
 
 @NgModule({
   declarations: [
@@ -108,6 +113,8 @@ import {MatRadioModule} from '@angular/material/radio';
     ReceiptsComponent,
     UpdateReceiptComponent,
     RentAddComponent,
+    BookRoomComponent,
+    PersonComponent,
   ],
   imports: [
     BrowserModule,
@@ -145,6 +152,8 @@ import {MatRadioModule} from '@angular/material/radio';
     MatTooltipModule,
     MatSlideToggleModule,
     MatRadioModule,
+    MatChipsModule,
+    MatToolbarModule,
   ],
   providers: [
     { provide: MatPaginatorIntl, useClass: CustomMatPaginatorIntlService },

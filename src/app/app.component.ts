@@ -15,7 +15,7 @@ export class AppComponent {
   title = 'HotelManagement';
 
   sidenavItems: NavigationItem[] = [
-    {title: 'Đặt phòng', link: '/reservation', icon: 'calendar_month'},
+    {title: 'Đặt phòng', link: '/booking', icon: 'calendar_month'},
     {title: 'Thuê - trả phòng', link: '/check', icon: 'published_with_changes'},
     {title: 'Quản lý hệ thống', link: '/manager', icon: 'settings'},
     {title: 'Tài khoản', link: '/account', icon: 'account_circle'},
