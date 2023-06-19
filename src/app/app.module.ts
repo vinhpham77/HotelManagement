@@ -69,6 +69,12 @@ import { AccountsComponent } from './components/manager/accounts/accounts.compon
 import { MatSlideToggleModule } from '@angular/material/slide-toggle';
 import { ReceiptsComponent } from './components/manager/receipts/receipts.component';
 import { UpdateReceiptComponent } from './components/manager/update-receipt/update-receipt.component';
+import { BookRoomComponent } from './components/book-room/book-room.component';
+import { PersonComponent } from './components/book-room/person/person.component';
+import { MatChipsModule } from '@angular/material/chips';
+
+
+
 
 @NgModule({
   declarations: [
@@ -105,6 +111,9 @@ import { UpdateReceiptComponent } from './components/manager/update-receipt/upda
     AccountsComponent,
     ReceiptsComponent,
     UpdateReceiptComponent,
+    BookRoomComponent,
+    PersonComponent,
+  
   ],
   imports: [
     BrowserModule,
@@ -141,6 +150,10 @@ import { UpdateReceiptComponent } from './components/manager/update-receipt/upda
     MatBottomSheetModule,
     MatTooltipModule,
     MatSlideToggleModule,
+    MatChipsModule,
+    MatToolbarModule,
+  
+  
   ],
   providers: [
     { provide: MatPaginatorIntl, useClass: CustomMatPaginatorIntlService },
