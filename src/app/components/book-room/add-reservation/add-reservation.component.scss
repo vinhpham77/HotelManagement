@@ -1,105 +1,3 @@
-*{
-    margin: 0;
-    padding: 0;
-    box-sizing: border-box;
-}
-.d-flex{
-    display: flex;
-}
-.w-70{
-    width: 60%;
-}
-.p-12{
-    padding: 12px;
-}
-.w-30{
-    width: 40%;
-}
-.pl-8{
-    padding-left: 8px;
-}
-.ml-8{
-    margin-left: 8px;
-}
-.border-right-100{
-    border-right: 2px solid rgb(199, 190, 190);
-}
-.ml-20{
-    margin-left: 20px ;
-}
-.example-full-width{
-    min-width: 150px;
-    max-width: 500px;
-    width: 100%;
-}
-.justify-content-center{
-    justify-content: center;
-}
-.align-item-center{
-    align-items: center;
-}
-.st-booking{
-    background-color: #42a5f5;;
-}
-.st-checkin{
-    background-color: #26a69a;;
-}
-.hw-16{
-height: 16px;
-width: 16px;
-}
-.toggle_table{
-    overflow: hidden;
-}
-.table-border,td{
-    border: 1px solid rgba(0, 0, 0, .06);
-    margin-bottom: 4px;
-}
-.table-border,td{
-    border: 1px solid rgba(0, 0, 0, .06);
-    margin-bottom: 4px;
-}
-.fc-cell {
-    min-width: 107px;
-}
-.text-center {
-    text-align: center;
-}
-.header-room {
-    color: #009688;
-}
-.fc-row{
-    position: relative;
-}
-.max-w-200{
-    max-width: 300px;
-}
-.text-warning {
-    color: #ff5722 !important;
-}
-.mat-icon {
-    margin: 0 12px;
-}
-.calendar-control {
-    margin-top: 16px;
-    display: flex;
-    /* justify-content: center; */
-    align-items: center;
-
-}
-.btn-icon-arrow {
-    cursor: pointer;
-    background-color: #fff;
-    border: none;
-}
-
-.btn {
-    cursor: pointer;
-}
-.p-16{
-    padding: 16px;
-}
-// right panel
 .right-panel {
     min-width: 450px;
     width: 450px;
@@ -222,6 +120,12 @@ max-width: 520px;
 .ml-145{
     margin-left: 145px;
 }
+.p-12{
+    padding: 12px;
+}
+.d-flex{
+    display: flex;
+}
 // choice phòng
 .choicephong{
     width: 650px;
@@ -269,35 +173,4 @@ max-width: 520px;
     right: 50px;
     position: absolute;
     top: 13px;
-}
-//card
-.card{
-    width: 240px;
-    height: 160px;
-    display: flex;
-    justify-content: center;
-    align-items: center;
-}
-.btn-check{
-    align-items: center;
-    display: flex;
-    border: none;
-    background: #fff;
-}  
-//card
-///addperson
-.align-center{
-    align-items: center;
-}
-.w-50{
-    width: 50%;
-}
-.mr-12{
-margin-right: 12px;
-}
-.color-xam{
-    color: rgba(0, 0, 0, 0.6);
-}
-.left-80{
-    left: 80px;
 }

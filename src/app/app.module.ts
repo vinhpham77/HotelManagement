@@ -72,6 +72,10 @@ import { UpdateReceiptComponent } from './components/manager/update-receipt/upda
 import { BookRoomComponent } from './components/book-room/book-room.component';
 import { PersonComponent } from './components/book-room/person/person.component';
 import { MatChipsModule } from '@angular/material/chips';
+import { AddReservationComponent } from './components/book-room/add-reservation/add-reservation.component';
+import { EditReservationComponent } from './components/book-room/edit-reservation/edit-reservation.component';
+import {MatBottomSheet, MatBottomSheetRef} from '@angular/material/bottom-sheet';
+import { AddPersonComponent } from './components/book-room/add-person/add-person.component';
 
 
 
@@ -113,6 +117,11 @@ import { MatChipsModule } from '@angular/material/chips';
     UpdateReceiptComponent,
     BookRoomComponent,
     PersonComponent,
+    AddReservationComponent,
+    EditReservationComponent,
+    AddPersonComponent,
+   
+ 
   
   ],
   imports: [
@@ -152,6 +161,11 @@ import { MatChipsModule } from '@angular/material/chips';
     MatSlideToggleModule,
     MatChipsModule,
     MatToolbarModule,
+    MatBottomSheetModule,
+   
+   
+
+  
   
   
   ],

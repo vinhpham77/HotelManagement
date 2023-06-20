@@ -184,7 +184,6 @@
 
     <div class="right-panel">
         <!-- update rent -->
-
         <app-rent-update *ngIf="namePanel == 'edit'" (updateRoom)="reload($event)" [roomId]="roomId"></app-rent-update>
         <app-rent-menu *ngIf="namePanel == 'fastfood'" (orderSave)="reload($event)" [roomId]="roomId"></app-rent-menu>
         <app-rent-change-room *ngIf="namePanel == 'sync'" (change)="reload($event)" [roomId]="roomId"></app-rent-change-room>

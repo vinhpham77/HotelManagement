@@ -1,4 +1,4 @@
-import { Component } from '@angular/core';
+import { Component, Input } from '@angular/core';
 
 @Component({
   selector: 'app-person',
@@ -6,5 +6,8 @@ import { Component } from '@angular/core';
   styleUrls: ['./person.component.scss']
 })
 export class PersonComponent {
-
+  @Input() showComponentEdit: any;
+  showComponenEdit(){
+    this.showComponentEdit=true;
+  }
 }

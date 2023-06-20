@@ -107,7 +107,6 @@ export class RentComponent implements OnDestroy{
     this.namePanel = name;
     this.roomId = roomSelect.id;
   }
-
   openPanelChangeReceipt(name: string, receiptSelect: Receipt): void {
     this.namePanel = name;
     this.receiptId = receiptSelect.id;

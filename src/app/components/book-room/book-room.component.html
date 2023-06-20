@@ -1,6 +1,8 @@
 <div class="d-flex">
     <div class="w-70 border-right-100">
-        <div> <button mat-button color="primary">Primary</button></div>
+        <div class="p-16 d-flex justify-content-space-betweent"> <button mat-button color="primary" (click)="componentAddReservation()">Thêm mới</button>
+          <button  mat-button class="btn-check btn text-primary" (click)="openAddPerson()"><mat-icon>add_box</mat-icon>Add</button></div>
+       
     <div>
         <mat-tab-group>
             <mat-tab label="First">  
@@ -9,22 +11,154 @@
                     <label for="">Lịch theo phòng</label>
                   </ng-template>
 
-                  <div>
-                    <mat-form-field appearance="fill" class="item-form-field">
+                  <div class="d-flex">
+                    <mat-form-field appearance="fill" class="item-form-field p-12 max-w-200">                    
                         <label>Từ ngày</label>
-                        <input matInput #myInputFrom [matDatepicker]="datepicker12"
-                          (dateChange)="onDateTabFirstFrom($event.target)" [(ngModel)]="selectedDateFirstTab">
+                        <input matInput #myInputFrom [matDatepicker]="datepicker12" (dateChange)="onDateTabFirstFrom($event.target)"
+                          [(ngModel)]="selectedDateFirstTab">
                         <mat-datepicker-toggle matIconSuffix [for]="datepicker12"></mat-datepicker-toggle>
                         <mat-datepicker #datepicker12></mat-datepicker>
                       </mat-form-field>
+                      <mat-form-field class="example-full-width ml-20 p-12 max-w-200">
+                        <mat-label>Tìm kiếm</mat-label>
+                        <input matInput placeholder="Nhập thông tin" value="">
+                    </mat-form-field>
                   </div>
+                  <!-- trangthai -->
+                  <div class="d-flex">                 
+                        <div class="d-flex justify-content-center">
+                          <div class="st-booking hw-16 "></div>
+                          <div class="st-text pl-8">Chưa nhận phòng</div>
+                        </div>
+                        <div class="d-flex ml-8">
+                          <div class="st-checkin hw-16 "></div>
+                          <div class="st-text pl-8">Đã nhận phòng</div>
+                        </div>
+                  </div>
+               <!-- bảng đặt phòng -->
+               <table class="toggle_table">
+                <div class="table">
+                  <table class="table-border">
+                    <tr>
+                      <td class="fc-cell text-center">Phòng</td>
+                      <ng-container *ngFor="let day of getNextSixDays(selectedDateFirstTab)">
+                        <td class="fc-cell text-center">{{ day | date:'dd/MM' }}</td>
+                      </ng-container>
+                    </tr>
+                  </table>
+
+                  <div class="bt fc-row">
+                    <div>
+                      <table class="table-border" >
+                        <tr>
+                          <td class="fc-cell text-center header-room">Phòng 1</td>
+                          <td class="fc-cell text-center" ></td>
+                          <td class="fc-cell text-center" ></td>
+                          <td class="fc-cell text-center" ></td>
+                          <td class="fc-cell text-center" ></td>
+                          <td class="fc-cell text-center" ></td>
+                          <td class="fc-cell text-center" ></td>
+
+                        </tr>
+                      </table>
+                     <app-person></app-person>
+                    </div>
+                  </div>
+                </div>
+              </table>
+                 
+                  
 
             </mat-tab>
-            <mat-tab label="Second"> Content 2 </mat-tab>
-            <mat-tab label="Third"> Content 3 </mat-tab>
+            <mat-tab label="Second"> 
+
+                <ng-template mat-tab-label>
+                    <mat-icon class="text-warning mat-icon">today</mat-icon>
+                    <label for="">Xem theo ngày</label>
+                  </ng-template>
+
+
+                  <div class="calendar-control">
+                    <div class="direction d-flex">
+                      <button class="btn-icon-arrow btn"  (click)="decreaseDate()">                       
+                        <mat-icon>arrow_back</mat-icon>
+                      </button>
+                      <button class="btn-icon-arrow btn"  (click)="increaseDate()" >
+                        <mat-icon>arrow_forward</mat-icon></button>
+                    </div>
+                    <div class="mat-form-field">
+                      <input  type="date"  [value]="today">  
+                    </div>       
+                  </div>
+                  <mat-card class="mw-400 m-20 card">
+                    <button mat-button [matMenuTriggerFor]="menu" class="left-80"><mat-icon>more_vert</mat-icon></button>
+                    <mat-menu #menu="matMenu">
+                      <button mat-menu-item><mat-icon>edit</mat-icon>Chỉnh
+                        sửa</button>
+                      <button mat-menu-item><mat-icon>vpn_key</mat-icon>Nhận
+                        phòng</button>
+                       <button mat-menu-item><mat-icon>cancel</mat-icon>Hủy đặt phòng</button> 
+                       <button mat-menu-item><mat-icon>delete</mat-icon>Xóa</button> 
+                    </mat-menu>
+                    <mat-card-content>
+                      <div>
+
+                        <div class="d-flex"> 
+                          <div><mat-icon>face</mat-icon></div>
+                          <div>Quốc</div>
+                        </div> 
+                        <div class="d-flex">
+                          <div><mat-icon>swap_horiz</mat-icon></div>
+                          <div>Chưa nhân phòng</div>
+                        </div> 
+                        <div class="d-flex">
+                          <div><mat-icon>timer</mat-icon></div>
+                          <div>20/06 - 21/06</div>
+                        </div> 
+
+                        <div class="d-flex">
+                            <div class="d-flex">
+                              <div><mat-icon>meeting_room</mat-icon></div>
+                              <div>2</div>
+                            </div>
+                            <div class="d-flex">
+                              <div><mat-icon>phone</mat-icon></div>
+                              <div>0394778011</div>
+                            </div>
+                        </div> 
+
+                        <div class="d-flex">
+                          <div><mat-icon>local_hotel</mat-icon></div>
+                          <div>VIP 1</div>&nbsp; <div>VIP 2</div>&nbsp;
+                        </div> 
+
+
+                      </div>  
+                    </mat-card-content>
+                  </mat-card>
+            </mat-tab>
           </mat-tab-group>
     </div>
     </div>
 
-    <div class="w-30"></div>
+    <div class="w-30">
+
+      <!-- form thêm đặt phòng -->
+      <div *ngIf="showComponentAddReservation">     
+       <app-add-reservation></app-add-reservation>
+      </div>
+
+      <div *ngIf="showComponentAddPerson">
+       <app-add-person></app-add-person>
+      </div>
+
+      <div *ngIf="showComponentEditReservation">
+      <app-edit-reservation ></app-edit-reservation>
+      </div>
+      <!-- form thêm đặt phòng -->
+        <!-- edit -->
+
+ <!-- form add -->
+    
+    </div>
 </div>

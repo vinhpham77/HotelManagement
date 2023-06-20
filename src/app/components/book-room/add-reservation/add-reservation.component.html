@@ -1,0 +1,115 @@
+<div class="right-panel rigth-add">
+  <div class="sub-panel">
+    <div class="topbar-sub">
+      <div class="sub-content justify-content-space-betweent">
+        <div class="uppercase">Thêm mới</div>
+      
+      </div>
+    </div>
+<!--  isAddPerson=false; -->
+<div *ngIf="isAddPerson">
+  <!-- form adđperson -->
+ 
+   <!-- form adđperson -->
+
+</div>
+    <!-- form sub -->
+    <div class="form-sub">
+      <div class="sub-form-sub">
+        
+        <mat-form-field appearance="fill" class="mat-form-field">
+          <input matInput placeholder="CMT/CCCD" class="input" (input)="validateIdNoAdd($event)">
+          <mat-hint *ngIf="isIdNoA">CCCD/CMT không hợp lệ</mat-hint>  
+        </mat-form-field>
+        <mat-form-field appearance="fill" class="mat-form-field">
+          <input matInput placeholder="Họ tên khách hàng" class="input" readonly >
+        </mat-form-field>
+        <mat-form-field appearance="fill" class="mat-form-field">
+          <input matInput placeholder="Số điện thoại" class="input" (input)="validatePhoneNumberAdd($event)">
+        </mat-form-field>
+        <div >
+          <div>
+            <mat-form-field appearance="fill">
+              <mat-label>Ngày nhận phòng</mat-label>
+              <input matInput #startDatePicker [matDatepicker]="picker10" (dateChange)="checkDateRange()">
+              <mat-hint *ngIf="isDateRange">Ngày nhận không thể nhỏ hơn ngày trả</mat-hint>  
+              <mat-datepicker-toggle matIconSuffix [for]="picker10"></mat-datepicker-toggle>
+              <mat-datepicker #picker10></mat-datepicker>
+            </mat-form-field>
+          </div>
+
+          <div class="">
+            <mat-form-field appearance="fill">
+              <mat-label>Ngày trả phòng</mat-label>
+              <input matInput #endDatePicker [matDatepicker]="picker11" (dateChange)="checkDateRange()">
+              <mat-hint *ngIf="isDateRange">Ngày nhận không thể nhỏ hơn ngày trả</mat-hint> 
+              <mat-datepicker-toggle matIconSuffix [for]="picker11"></mat-datepicker-toggle>
+              <mat-datepicker #picker11></mat-datepicker>
+            </mat-form-field>
+          </div>
+        </div>
+
+        <mat-form-field appearance="fill" class="mat-form-field">
+          <label>Tiền trả trước</label>
+          <input matInput placeholder="" class="input" (input)="validateDepositInput($event)">
+          <mat-hint *ngIf="isDateRange">Tiền cọc không đúng</mat-hint>
+        </mat-form-field>
+
+        <div class="item sub-content">         
+            <div class="sub-content">
+              <div class="">Phòng đặt</div>
+              <div class="ml-145"><button mat-button class=" text-warning btnAdd" (click)="openChoicePhong()"><mat-icon>add_box</mat-icon>Thêm phòng</button></div>
+            </div>   
+        </div>
+        <div class="item">
+          Chưa chỉ định phòng
+        </div>  
+        <div class="item">
+          <div class="d-flex">
+            <div class="p-12 d-flex">
+              <mat-chip class="">Phòng 1</mat-chip>
+            </div>
+            <div class="p-12 d-flex">
+              <mat-chip class="">Phòng 2</mat-chip>
+            </div>
+            <div class="p-12 d-flex">
+              <mat-chip class="">Phòng 3</mat-chip>
+            </div>
+          </div>
+        </div>
+        <button mat-button class="primary btnTao btnAdd"><mat-icon>check</mat-icon>Lưu</button>    
+        <!-- form chọn phòng -->
+        <div *ngIf="isChoicePhongHidden" id="choicePhong" class="choicephong">
+          <div>
+            <ul class="unlist-Style tab-list">
+              <li class="active-tab" id="tab1">
+                Tất cả
+              </li>
+            </ul>           
+
+        <button mat-button class="btnClose" (click)="hideChoicePhong()"><mat-icon>close</mat-icon>Close</button>
+          </div>
+          <div id="box-tab1" class="show d-flex">
+            <div class="d-flex">
+              <div class="p-12 d-flex">
+                <mat-chip class="">Phòng 1</mat-chip>
+              </div>
+              <div class="p-12 d-flex">
+                <mat-chip class="">Phòng 2</mat-chip>
+              </div>
+              <div class="p-12 d-flex">
+                <mat-chip class="">Phòng 3</mat-chip>
+              </div>
+            </div>   
+           
+          </div>
+      
+        </div>
+        <!-- form chon phong -->
+      </div>
+    </div>
+   <!-- form sub -->
+    <!-- form add -->
+
+  </div>  
+</div>
