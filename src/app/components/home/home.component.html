@@ -1,1 +1,44 @@
-<p>home works!</p>
+<div class='wrapper'>
+  <div class='items'>
+    <mat-card class='card p-0'>
+      <div class='card-body'>
+        <div class='icon-section'>
+          <mat-icon class='orange'>pinch</mat-icon>
+        </div>
+        <div class='description'>
+          <div><p>Thuê trong tuần</p> {{rentCountThisWeek}} lượt</div>
+        </div>
+      </div>
+    </mat-card>
+    <mat-card class='card p-0 mat-card'>
+      <div class='card-body'>
+        <div class='icon-section'>
+          <mat-icon class='teal'>meeting_room</mat-icon>
+        </div>
+        <div class='description'>
+          <div><p>Phòng rảnh</p> {{emptyCount}} lượt</div>
+        </div>
+      </div>
+    </mat-card>
+    <mat-card class='card p-0 mat-card'>
+      <div class='card-body'>
+        <div class='icon-section'>
+          <mat-icon class='red'>hotel</mat-icon>
+        </div>
+        <div class='description'>
+          <div><p>Phòng đang thuê</p> {{filledCount}} lượt</div>
+        </div>
+      </div>
+    </mat-card>
+    <mat-card class='card p-0 mat-card'>
+      <div class='card-body'>
+        <div class='icon-section'>
+          <mat-icon class='cyan'>cleaning_services</mat-icon>
+        </div>
+        <div class='description'>
+          <div><p>Phòng cần dọn</p> {{notCleanedCount}} lượt</div>
+        </div>
+      </div>
+    </mat-card>
+  </div>
+</div>

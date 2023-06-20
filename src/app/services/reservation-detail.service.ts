@@ -119,4 +119,11 @@ export class ReservationDetailService {
       return reservationdetail.totalChildren - room.maxChild;
     return 0;
   }
+
+  getReservationDetailCount(startDate: Date, endDate: Date) {
+    const start = startDate.toISOString();
+    const end = endDate.toISOString();
+    let url = `${this.reservationDetailAPI}/count?startDate=${start}&endDate=${end}`;
+    return this.httpClient.get<any>(url);
+  }
 }

@@ -1,0 +1,62 @@
+@use '@angular/material' as mat;
+@use '/src/assets/styles/variables' as *;
+@use '/src/assets/styles/mixins' as *;
+@use '/src/assets/styles/palettes' as *;
+
+.wrapper {
+  padding: 2.4rem;
+}
+
+.items {
+  display: flex;
+  flex-direction: row;
+  gap: 2.4rem;
+}
+
+.card {
+  flex-grow: 1;
+}
+
+.card-body {
+  padding: 3rem;
+  display: flex;
+}
+
+.icon-section {
+  flex: 0 0 41.66667%;
+  max-width: 41.66667%;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+
+  & mat-icon {
+    @include set-icon-size(5rem);
+  }
+}
+
+.description {
+  flex-grow: 1;
+  font-size: 2rem;
+  text-align: right;
+
+  & p {
+    margin-bottom: 1rem;
+    font-size: 1.5rem;
+  }
+}
+
+.orange {
+  color: mat.get-color-from-palette(mat.$orange-palette, 500);
+}
+
+.teal {
+  color: mat.get-color-from-palette(mat.$teal-palette, 500);
+}
+
+.red {
+  color: mat.get-color-from-palette(mat.$red-palette, 500);
+}
+
+.cyan {
+  color: mat.get-color-from-palette(mat.$cyan-palette, 500);
+}
