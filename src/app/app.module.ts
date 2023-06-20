@@ -119,15 +119,14 @@ import { AddPersonComponent } from './components/book-room/add-person/add-person
     RentAddComponent,
     BookRoomComponent,
     PersonComponent,
-<<<<<<< HEAD
+
     AddReservationComponent,
     EditReservationComponent,
     AddPersonComponent,
    
  
   
-=======
->>>>>>> cd2ec293b4099dc8cb1db7000cfa30598aa16d97
+
   ],
   imports: [
     BrowserModule,
@@ -167,16 +166,8 @@ import { AddPersonComponent } from './components/book-room/add-person/add-person
     MatRadioModule,
     MatChipsModule,
     MatToolbarModule,
-<<<<<<< HEAD
-    MatBottomSheetModule,
-   
-   
 
-  
-  
-  
-=======
->>>>>>> cd2ec293b4099dc8cb1db7000cfa30598aa16d97
+
   ],
   providers: [
     { provide: MatPaginatorIntl, useClass: CustomMatPaginatorIntlService },
