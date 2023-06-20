@@ -3,6 +3,7 @@ import { environment } from '../../environments/environment';
 import { HttpClient } from '@angular/common/http';
 import { catchError, map, Observable, of } from 'rxjs';
 import { AccountDto } from '../models/AccountDto';
+import jwt_decode from 'jwt-decode';
 
 @Injectable({
   providedIn: 'root'
@@ -13,6 +14,7 @@ export class AuthService {
   private username = 'username';
   private role = 'role';
   private fullName = 'fullName';
+  private exp = 'exp';
   private authApiUrl = environment.apiUrl + '/Auth';
 
   constructor(private http: HttpClient) {
@@ -28,12 +30,29 @@ export class AuthService {
 
     return this.http.post<any>(`${this.authApiUrl}/login`, { username, password }).pipe(
       map((response) => {
-        const accountDto: AccountDto = response.data;
+        const token = response.token;
+        let username = '';
+        let role = '';
+        let fullName = '';
+
+        try {
+          const payload: any = jwt_decode(token);
+
+          const nameClaim = "http://schemas.xmlsoap.org/ws/2005/05/identity/claims/name";
+          const roleClaim = "http://schemas.microsoft.com/ws/2008/06/identity/claims/role";
+
+          username = payload[nameClaim];
+          role = payload[roleClaim];
+          fullName = payload.fullName;
+
+        } catch (error) {
+          console.error('Error decoding JWT:', error);
+        }
 
         localStorage.setItem(this.token, response.token);
-        localStorage.setItem(this.username, accountDto.username);
-        localStorage.setItem(this.role, accountDto.role);
-        localStorage.setItem(this.fullName, accountDto.personnel.fullName);
+        localStorage.setItem(this.username, username);
+        localStorage.setItem(this.role, role);
+        localStorage.setItem(this.fullName, fullName);
 
         this.isAuthenticating = false;
         return { success: true, message: 'Đăng nhập thành công!' };
@@ -66,9 +85,10 @@ export class AuthService {
     localStorage.removeItem(this.username);
     localStorage.removeItem(this.fullName);
     localStorage.removeItem(this.role);
+    localStorage.removeItem(this.exp);
   }
 
-  get isLoggedIn(): boolean {
+  get IsLoggedIn(): boolean {
     return !!localStorage.getItem(this.token);
   }
 
