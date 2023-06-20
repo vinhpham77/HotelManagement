@@ -1,6 +1,6 @@
 export interface ReservationDetail {
     id: string;
-    reservevationId: string | null;
+    reservationId: string | null;
     roomId: string;
     checkInAt: Date;
     checkOutAt: Date | null;

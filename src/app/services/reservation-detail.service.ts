@@ -69,10 +69,14 @@ export class ReservationDetailService {
     var t2 = new Date(checkedOut);
     t2.setHours(12);
     t2.setMinutes(0);
+    t2.setSeconds(0);
+    t2.setMilliseconds(0);
     var t1 = new Date(checkedIn);
     t1.setHours(12);
     t1.setMinutes(0);
-    return Math.floor((t2.getTime() - t1.getTime()) / (24*60*60*1000));
+    t1.setSeconds(0);
+    t1.setMilliseconds(0);
+    return Math.floor((t2.getTime() - t1.getTime()) / (24*60*60*1000)) + 1;
   }
 
   getTotalRoomPrice(reservationDetail: ReservationDetail, checkedIn: Date, checkedOut: Date): number {
@@ -81,12 +85,12 @@ export class ReservationDetailService {
 
   getRoomSurcharge(reservationDetail: ReservationDetail, room: Room, checkedIn: Date, checkedOut: Date): number {
     let p = reservationDetail.roomPricePerDay;
-    return p * this.surchargeCheckedIn(checkedIn) + p * this.surchargeCheckedOut(checkedOut) + 200000 * this.adultsExceed(reservationDetail, room) + 100000 * this.childrenExceed(reservationDetail, room);
+    return p * this.surchargeCheckedIn(checkedIn) + p * this.surchargeCheckedOut(checkedOut) + p * 0.2 * this.adultsExceed(reservationDetail, room) + p * 0.1 * this.childrenExceed(reservationDetail, room);
   }
 
   surchargeCheckedIn(checkedIn: Date): number {
     var h = checkedIn.getHours();
-    if(h >= 14)
+    if(h >= 12)
       return 0;
     if(h >= 9)
       return 0.3;

@@ -25,7 +25,7 @@ export class RentUpdateComponent implements OnChanges{
   public order!: Order;
   public menus: MenuItem[] = [];
   public rentChangeForm!: FormGroup;
-  displayedColumns: string[] = ['nameItem', 'quantity', 'orderAt', 'operation'];
+  displayedColumns: string[] = ['nameItem', 'quantity', 'orderedAt', 'operation'];
   dataSource: OrderDetail[] = [];
   public total = 0;
   public isFormatTime: boolean = true;

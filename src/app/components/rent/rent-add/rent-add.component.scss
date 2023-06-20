@@ -71,6 +71,7 @@ input[type=number] {
 }
 
 .container-fix {
+    z-index: 1200;
     position: fixed;
     top: 0;
     bottom: 0;
@@ -85,6 +86,8 @@ input[type=number] {
 .context-customer {
     border-radius: 20px;
     padding: 25px;
+    width: 450px;
+    background-color: #ffffff;
 }
 
 .btnAdd {

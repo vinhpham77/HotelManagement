@@ -1,9 +1,11 @@
-import { Component, Input, OnChanges, SimpleChanges } from '@angular/core';
+import { OrderDetail } from 'src/app/models/order-detail';
+import { Component, EventEmitter, Input, OnChanges, Output, SimpleChanges } from '@angular/core';
 import { FormBuilder, FormGroup, Validators } from '@angular/forms';
 import { MatSnackBar } from '@angular/material/snack-bar';
 import { Customer } from 'src/app/models/Customer';
 import { ReservationDetail } from 'src/app/models/ReservationDetail';
 import { Room } from 'src/app/models/Room';
+import { Order } from 'src/app/models/order';
 import { CustomersService } from 'src/app/services/customers.service';
 import { MenuService } from 'src/app/services/menu.service';
 import { OrderService } from 'src/app/services/order.service';
@@ -22,6 +24,8 @@ export class RentAddComponent implements OnChanges {
   public bookRoomForm!: FormGroup;
   public formCustomer = false;
   public isCreateCustomer= false;
+  public isIdNo = false;
+  @Output() created = new EventEmitter();
 
   constructor(private roomService: RoomsService,
     private fb: FormBuilder,
@@ -34,7 +38,7 @@ export class RentAddComponent implements OnChanges {
         fullName: [null, Validators.required],
         totalAdults: [null, [Validators.required, Validators.min(0)]],
         totalChildren: [null, [Validators.required, Validators.min(0)]],
-        deposit: [null, [Validators.required, Validators.min(0)]],
+        deposit: [0, [Validators.required, Validators.min(0)]],
         firstName: [null, Validators.required],
         lastName: [null, Validators.required],
         fullName2: [null, Validators.required],
@@ -50,31 +54,101 @@ export class RentAddComponent implements OnChanges {
     this.roomService.getRoomById(this.roomId).subscribe({
       next: next => {
         this.room = next;
+        this.room.lastCleanedAt = new Date(this.room.lastCleanedAt);
       }
     })
   }
 
   save()
   {
-    console.log(this.customer)
     if(this.FullName?.valid && this.TotalAdults?.valid && this.TotalChildren?.valid)
     {
       var reservationDetail: ReservationDetail = <ReservationDetail>{
-        reservevationId: null,
-        
+        reservationId: null,
+        roomId: this.roomId,
+        checkedInAt: new Date(),
+        checkedOutAt: null,
+        deposit: this.Deposit?.value*1000,
+        totalAdults: this.TotalAdults?.value,
+        totalChildren: this.TotalChildren?.value,
+        roomPricePerDay: this.room.pricePerDay
       }
+      this.room.isEmpty = false;
       if(this.isCreateCustomer)
       {
-
+        this.customerService.create(this.customer).subscribe({
+          next: next => {
+            this.customerService.getCustomersByNoId(this.customer.idNo).subscribe({
+              next: next => {
+                reservationDetail.customerId = next.items[0].id;
+                this.reservationdetailService.create(reservationDetail).subscribe({
+                  next: next=> {
+                    this.reservationdetailService.getReservationDetail(this.room.id).subscribe({
+                      next: next => {
+                        var order: Order = <Order><unknown>{
+                          reservationDetailId: next.items[0].id,
+                          details: []
+                        };
+                        this.orderService.create(order).subscribe({
+                          next: next => {
+                            this.roomService.update(this.room).subscribe({
+                              next: next => {
+                                this._snackBar.open("Đặt phòng thành cồng", "",{
+                                  duration: 1000,
+                                  horizontalPosition: 'right',
+                                  verticalPosition: 'top',
+                                });
+                                this.created.emit();
+                              }
+                            })
+                          }
+                        })
+                        
+                      }
+                    })
+                  }
+                })
+              }
+            })
+          }
+        })
       }
       else{
-
+        reservationDetail.customerId = this.customer.id;
+        this.reservationdetailService.create(reservationDetail).subscribe({
+          next: next=> {
+            this.reservationdetailService.getReservationDetail(this.room.id).subscribe({
+              next: next => {
+                var order: Order = <Order><unknown>{
+                  reservationDetailId: next.items[0].id,
+                  details: []
+                };
+                this.orderService.create(order).subscribe({
+                  next: next => {
+                    this.roomService.update(this.room).subscribe({
+                      next: next => {
+                        this._snackBar.open("Đặt phòng thành cồng", "",{
+                          duration: 1000,
+                          horizontalPosition: 'right',
+                          verticalPosition: 'top',
+                        });
+                        this.created.emit();
+                      }
+                    })
+                  }
+                })
+                
+              }
+            })
+          }
+        })
       }
     }
   }
 
   findIdNo()
   {
+
     var idNo = this.IdNo?.value;
     if(idNo)
     {
@@ -104,16 +178,28 @@ export class RentAddComponent implements OnChanges {
       && this.FullName2?.valid && this.PhoneNumber?.valid
       && this.IdNo2?.valid && this.Nationality?.valid)
       {
-        this.isCreateCustomer = true;
-        this.FullName?.setValue(this.FullName2?.value);
-        this.customer.firstName = this.FirstName?.value;
-        this.customer.lastName = this.LastName?.value;
-        this.customer.fullName = this.FullName2?.value;
-        this.customer.phoneNumber = this.PhoneNumber?.value;
-        this.customer.idNo = this.IdNo2?.value;
-        this.customer.birthdate = this.Birthday?.value;
-        this.customer.nationality = this.Nationality.value;
-        this.customer.sex = this.Sex?.value;
+        this.customerService.getCustomersByNoId(this.IdNo2?.value).subscribe({
+          next: next => {
+            if(next.items.length > 0)
+            {
+              this.isIdNo = false;
+            }
+            else {
+              this.formCustomer = false;
+              this.isIdNo = true;
+              this.isCreateCustomer = true;
+              this.FullName?.setValue(this.FullName2?.value);
+              this.customer.firstName = this.FirstName?.value;
+              this.customer.lastName = this.LastName?.value;
+              this.customer.fullName = this.FullName2?.value;
+              this.customer.phoneNumber = this.PhoneNumber?.value;
+              this.customer.idNo = this.IdNo2?.value;
+              this.customer.birthdate = this.Birthday?.value;
+              this.customer.nationality = this.Nationality?.value;
+              this.customer.sex = this.Sex?.value;
+            }
+          }
+        })
       }
   }
 

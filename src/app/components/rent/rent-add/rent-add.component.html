@@ -5,7 +5,7 @@
                 <mat-icon class="mat-list-icon text-warning icon-bar-sub">vpn_key</mat-icon>
                 <div class="topbar-sub-title">{{room.name}}</div>
                 <div class="flex-grow-1"></div>
-                <button mat-button class="text-primary" (click)="save()">
+                <button mat-button class="text-primary" type="button" (click)="save()">
                     <i class="fas fa-save"></i>Nhận phòng
                 </button>
             </div>
@@ -14,17 +14,17 @@
     <div class="form-sub">
         <form [formGroup]="bookRoomForm">
             <div class="w-100 d-inline-block">
-                <mat-form-field appearance="fill" class="formField w-100 pl-2">
+                <mat-form-field appearance="fill" class="formField w-100">
                     <mat-label>Nhập mã idNo</mat-label>
                     <input (change)="findIdNo()" matInput formControlName="idNo">
                 </mat-form-field>
             </div>
             <div class="w-100 d_flex-center">
-                <mat-form-field appearance="fill" class="formField w-100 pl-2">
+                <mat-form-field appearance="fill" class="formField w-100">
                     <mat-label>Họ và tên</mat-label>
-                    <input matInput formControlName="fullName">
+                    <input matInput formControlName="fullName" readonly>
                 </mat-form-field>
-                <button mat-raised-button (click)="showFormCustomer()">Add</button>
+                <button mat-raised-button type="button" (click)="showFormCustomer()">Add</button>
             </div>
             <div class="w-50 d-inline-block">
                 <mat-form-field appearance="fill" class="formField w-100 pr-2">
@@ -50,8 +50,9 @@
             </div>
             <div class="container-fix" *ngIf="formCustomer">
                 <div class="context-customer">
+                    <mat-error *ngIf="!isIdNo">idNo đã tồn tại</mat-error>
                     <div class="w-50 d-inline-block">
-                        <mat-form-field appearance="fill" class="formField w-100 pl-2">
+                        <mat-form-field appearance="fill" class="formField w-100 pr-2">
                             <mat-label>Tên</mat-label>
                             <input matInput type="text" class="text-right" formControlName="firstName">
                         </mat-form-field>
@@ -63,13 +64,13 @@
                         </mat-form-field>
                     </div>
                     <div class="w-100 d-inline-block">
-                        <mat-form-field appearance="fill" class="formField w-100 pl-2">
+                        <mat-form-field appearance="fill" class="formField w-100">
                             <mat-label>Họ và tên</mat-label>
                             <input matInput type="text" class="text-right" formControlName="fullName2">
                         </mat-form-field>
                     </div>
                     <div class="w-50 d-inline-block">
-                        <mat-form-field appearance="fill" class="formField w-100 pl-2">
+                        <mat-form-field appearance="fill" class="formField w-100 pr-2">
                             <mat-label>Số điện thoại</mat-label>
                             <input matInput type="number" class="text-right" formControlName="phoneNumber">
                         </mat-form-field>
@@ -81,13 +82,13 @@
                         </mat-form-field>
                     </div>
                     <div class="w-50 d-inline-block">
-                        <mat-form-field appearance="fill" class="formField w-100 pl-2">
+                        <mat-form-field appearance="fill" class="formField w-100 pr-2">
                             <mat-label>Quốc tịch</mat-label>
                             <input matInput type="text" class="text-right" formControlName="nationality">
                         </mat-form-field>
                     </div>
                     <div class="w-50 d-inline-block">
-                        <mat-form-field appearance="fill" class="formField w-100 pr-2">
+                        <mat-form-field appearance="fill" class="formField w-100 pl-2">
                             <mat-label>Ngày sinh</mat-label>
                             <input formControlName="birthday" matInput [matDatepicker]="birthday" readonly>
                             <mat-datepicker-toggle matIconSuffix [for]="birthday"></mat-datepicker-toggle>
@@ -96,7 +97,7 @@
                     </div>
                     <div class="w-100 d-inline-block">
                         <section class="example-section">
-                            <label class="example-margin">Align:</label>
+                            <label class="example-margin">Giới tính:</label>
                             <mat-radio-group formControlName="sex">
                               <mat-radio-button class="example-margin" value="true">Nam</mat-radio-button>
                               <mat-radio-button class="example-margin" value="false">Nữ</mat-radio-button>
@@ -105,7 +106,7 @@
                     </div>
                     <div class="w-100 btnAdd">
                         <button mat-raised-button (click)="hideFormCustomer()">Hủy</button>
-                        <button mat-raised-button color="primary" (click)="createCustomer()">Lưu</button>
+                        <button mat-raised-button color="primary" type="button" (click)="createCustomer()">Lưu</button>
                     </div>
                 </div>
             </div>

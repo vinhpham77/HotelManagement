@@ -38,6 +38,7 @@ export class CardHistoryComponent {
   setDate() {
     this.reservationDetailService.getReservationDetailById(this.receipt.reservationDetailId).subscribe({
       next: next => {
+        this.reservationDetail = next;
         this.roomsService.getRoomById(next.roomId).subscribe({
           next: next => {this.room = next},
           error: err => {}

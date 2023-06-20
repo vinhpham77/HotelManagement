@@ -29,7 +29,7 @@ export class RentHistoryUpdateComponent implements OnInit, OnChanges {
   public order!: Order;
   public room: Room = <Room>{};
   public menus: MenuItem[] = [];
-  displayedColumns: string[] = ['nameItem', 'quantity', 'price', 'operation'];
+  displayedColumns: string[] = ['nameItem', 'quantity', 'orderedAt', 'operation'];
   dataSource: OrderDetail[] = [];
   public total: number = 0;
   public isFormatTime: boolean = true;
@@ -92,6 +92,7 @@ export class RentHistoryUpdateComponent implements OnInit, OnChanges {
                 this.room = next;
                 this.orderService.getOrderByReservationDetail(this.reservationdetail).subscribe(data => {
                   this.order = data[0];
+                  this.convert(this.order);
                   let checkedOut = this.reservationdetail.checkedOutAt? this.reservationdetail.checkedOutAt:new Date();
                   this.DayCheckedIn?.setValue(this.reservationdetail.checkedInAt);
                   this.HourCheckedIn?.setValue(this.getHour(this.reservationdetail.checkedInAt));
@@ -111,6 +112,13 @@ export class RentHistoryUpdateComponent implements OnInit, OnChanges {
         this.menus = data.items;
       }
     });
+  }
+
+  convert(order: Order)
+  {
+    order.details.forEach(item => {
+      item.orderedAt = new Date(item.orderedAt);
+    })
   }
 
   changeDay() {
