@@ -28,7 +28,7 @@ export class RentCheckedOutComponent implements OnInit, OnChanges {
   public order: Order = <Order>{};
   public room: Room = <Room>{};
   public menus: MenuItem[] = [];
-  displayedColumns: string[] = ['nameItem', 'quantity', 'price', 'operation'];
+  displayedColumns: string[] = ['nameItem', 'quantity', 'orderedAt', 'operation'];
   dataSource: OrderDetail[] = [];
   public total: number = 0;
   @Input() checkedOut!: Date;
@@ -39,7 +39,6 @@ export class RentCheckedOutComponent implements OnInit, OnChanges {
   constructor(private orderService: OrderService,
     private fb: FormBuilder,
     public menuService: MenuService,
-    private _bottomSheet: MatBottomSheet,
     private roomService: RoomsService,
     private receiptSerice: ReceiptService,
     private _snackBar: MatSnackBar,
@@ -47,9 +46,9 @@ export class RentCheckedOutComponent implements OnInit, OnChanges {
     ){
       this.formCheckedIn = this.fb.group({
         dayCheckedIn: [new Date(), Validators.required],
-        hourCheckedIn: ["", Validators.required],
+        hourseCheckedIn: ["", Validators.required],
         dayCheckedOut: [new Date(), Validators.required],
-        hourCheckedOut: ["", Validators.required],
+        hourseCheckedOut: ["", Validators.required],
         roomPrice: [0, Validators.required],
         roomExceed: [0, Validators.required],
         prepayment: [0, Validators.required],
@@ -72,13 +71,16 @@ export class RentCheckedOutComponent implements OnInit, OnChanges {
     this.roomService.getRoomById(this.roomId).subscribe({
       next: next => {
         this.room = next;
+        this.room.lastCleanedAt = new Date(this.room.lastCleanedAt);
         this.reservationDetailService.getReservationDetail(this.roomId).subscribe({
           next: next => {
             this.reservationdetail = next.items[0];
             this.reservationdetail.checkedInAt = new Date(this.reservationdetail.checkedInAt);
             this.reservationdetail.checkedOutAt = null;
             this.orderService.getOrderByReservationDetail(this.reservationdetail).subscribe({next: data => {
-              this.order = data;
+              this.convert(data[0]);
+              this.order = data[0];
+              this.dataSource = this.order.details;
               this.configuration();
             },
             error: err => {}
@@ -95,6 +97,13 @@ export class RentCheckedOutComponent implements OnInit, OnChanges {
         this.menus = data.items;
       }
     });
+  }
+
+  convert(order: Order)
+  {
+    order.details.forEach(item => {
+      item.orderedAt = new Date(item.orderedAt);
+    })
   }
 
   configuration(){
@@ -114,7 +123,7 @@ export class RentCheckedOutComponent implements OnInit, OnChanges {
   check() {
     if(this.formCheckedIn.valid) {
       let receipt: Receipt = <Receipt>{
-        personnelId: "luong",
+        personnelId: "647c8084b32de94163752bb4",
         reservationDetailId: this.reservationdetail.id,
         createdAt: this.checkedOut,
         orderPrice: this.total,
@@ -155,26 +164,16 @@ export class RentCheckedOutComponent implements OnInit, OnChanges {
     return date.getHours() + ':' + date.getMinutes();
   }
 
-  openBottomSheet(): void {
-    this._bottomSheet.open(MenuBottomComponent,{
-      data: this.order,
-    }).afterDismissed().subscribe(result => {
-      let t = new Date();
-      this.dataSource.push(<OrderDetail>{
-        itemId: result.id,
-        quantity: 1,
-        price: result.price,
-        orderedAt: t,
-      })
-      this.table.renderRows();
-      this.totalPrice();
-    })
-  }
-
   getNameMenu(id: string)
   {
     let item = this.menus.find(item => item.id = id);
     return item? item.name : "";
+  }
+
+  deleteOrderDetailAll() {
+    this.dataSource.splice(0, this.dataSource.length);
+    this.table.renderRows();
+    this.totalPrice();
   }
 
   deleteOrderDetail(item: OrderDetail) {

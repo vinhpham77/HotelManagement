@@ -61,7 +61,7 @@ export class RentMenuComponent implements OnInit, OnChanges {
     this.reservationdetailService.getReservationDetail(this.roomId).subscribe({
       next: next => {
         this.orderService.getOrderByReservationDetail(next.items[0]).subscribe({
-          next: next => {this.order = next},
+          next: next => {this.order = next[0]},
           error: err => {}
         })
       }

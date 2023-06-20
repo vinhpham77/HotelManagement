@@ -69,6 +69,8 @@ import { AccountsComponent } from './components/manager/accounts/accounts.compon
 import { MatSlideToggleModule } from '@angular/material/slide-toggle';
 import { ReceiptsComponent } from './components/manager/receipts/receipts.component';
 import { UpdateReceiptComponent } from './components/manager/update-receipt/update-receipt.component';
+import { RentAddComponent } from './components/rent/rent-add/rent-add.component';
+import {MatRadioModule} from '@angular/material/radio';
 import { BookRoomComponent } from './components/book-room/book-room.component';
 import { PersonComponent } from './components/book-room/person/person.component';
 import { MatChipsModule } from '@angular/material/chips';
@@ -76,7 +78,6 @@ import { AddReservationComponent } from './components/book-room/add-reservation/
 import { EditReservationComponent } from './components/book-room/edit-reservation/edit-reservation.component';
 import {MatBottomSheet, MatBottomSheetRef} from '@angular/material/bottom-sheet';
 import { AddPersonComponent } from './components/book-room/add-person/add-person.component';
-
 
 
 
@@ -115,14 +116,18 @@ import { AddPersonComponent } from './components/book-room/add-person/add-person
     AccountsComponent,
     ReceiptsComponent,
     UpdateReceiptComponent,
+    RentAddComponent,
     BookRoomComponent,
     PersonComponent,
+<<<<<<< HEAD
     AddReservationComponent,
     EditReservationComponent,
     AddPersonComponent,
    
  
   
+=======
+>>>>>>> cd2ec293b4099dc8cb1db7000cfa30598aa16d97
   ],
   imports: [
     BrowserModule,
@@ -159,8 +164,10 @@ import { AddPersonComponent } from './components/book-room/add-person/add-person
     MatBottomSheetModule,
     MatTooltipModule,
     MatSlideToggleModule,
+    MatRadioModule,
     MatChipsModule,
     MatToolbarModule,
+<<<<<<< HEAD
     MatBottomSheetModule,
    
    
@@ -168,6 +175,8 @@ import { AddPersonComponent } from './components/book-room/add-person/add-person
   
   
   
+=======
+>>>>>>> cd2ec293b4099dc8cb1db7000cfa30598aa16d97
   ],
   providers: [
     { provide: MatPaginatorIntl, useClass: CustomMatPaginatorIntlService },

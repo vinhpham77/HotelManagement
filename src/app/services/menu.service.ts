@@ -1,5 +1,5 @@
 import { Injectable } from '@angular/core';
-import { BehaviorSubject } from 'rxjs';
+import { BehaviorSubject, merge } from 'rxjs';
 import { MenuItem } from '../models/MenuItem';
 import { environment } from '../../environments/environment';
 import { HttpClient, HttpHeaders } from '@angular/common/http';
@@ -57,6 +57,11 @@ export class MenuService {
   getMenuAll() {
     let url = `${this.menuAPI}`;
     return this.httpClient.get<any>(url);
+  }
+
+  getMenuById(id: string) {
+    let url = `${this.menuAPI}/${id}`;
+    return this.httpClient.get<MenuItem>(url);
   }
 
   create(menuItem: MenuItem) {

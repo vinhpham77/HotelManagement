@@ -35,6 +35,11 @@ export class OrderService {
 
   getOrderByReservationDetail(reservationDetail: ReservationDetail) {
     let url = `${this.orderAPI}?reservationDetailId=${reservationDetail.id}`;
+    return this.httpClient.get<any>(url, this.httpOptions);
+  }
+
+  getOrderById(id: string) {
+    let url = `${this.orderAPI}/${id}`;
     return this.httpClient.get<Order>(url, this.httpOptions);
   }
 

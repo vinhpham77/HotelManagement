@@ -11,7 +11,6 @@ import { MenuService } from 'src/app/services/menu.service';
 import { OrderService } from 'src/app/services/order.service';
 import { ReservationDetailService } from 'src/app/services/reservation-detail.service';
 import { RoomsService } from 'src/app/services/rooms.service';
-import { MenuBottomComponent } from '../menu-bottom/menu-bottom.component';
 import { MenuItem } from 'src/app/models/MenuItem';
 
 @Component({
@@ -19,14 +18,14 @@ import { MenuItem } from 'src/app/models/MenuItem';
   templateUrl: './rent-update.component.html',
   styleUrls: ['./rent-update.component.scss']
 })
-export class RentUpdateComponent implements OnInit, OnChanges{
+export class RentUpdateComponent implements OnChanges{
   @Input() roomId!: string;
   public room: Room = <Room>{};
   public reservationdetail!: ReservationDetail;
   public order!: Order;
   public menus: MenuItem[] = [];
   public rentChangeForm!: FormGroup;
-  displayedColumns: string[] = ['nameItem', 'quantity', 'price', 'operation'];
+  displayedColumns: string[] = ['nameItem', 'quantity', 'orderedAt', 'operation'];
   dataSource: OrderDetail[] = [];
   public total = 0;
   public isFormatTime: boolean = true;
@@ -38,7 +37,6 @@ export class RentUpdateComponent implements OnInit, OnChanges{
     private fb: FormBuilder,
     private orderService: OrderService,
     public menuService: MenuService,
-    private _bottomSheet: MatBottomSheet,
     private reservationdetailService: ReservationDetailService,
     private _snackBar: MatSnackBar) {
       this.rentChangeForm = this.fb.group({
@@ -46,10 +44,6 @@ export class RentUpdateComponent implements OnInit, OnChanges{
         hourCheckedIn: [null, Validators.required],
         deposit: [null, [Validators.required, Validators.min(0)]],
       })
-  }
-
-  ngOnInit(): void {
-    this.setForm()
   }
 
   ngOnChanges(changes: SimpleChanges): void {
@@ -72,8 +66,9 @@ export class RentUpdateComponent implements OnInit, OnChanges{
         this.HourCheckedIn?.setValue(this.getHourse(this.reservationdetail.checkedInAt));
         this.Deposit?.setValue(this.reservationdetail.deposit/1000);
         this.orderService.getOrderByReservationDetail(this.reservationdetail).subscribe(data => {
-          this.order = data;
-          this.dataSource = data.details;
+          this.convert(data[0]);
+          this.order = data[0];
+          this.dataSource = this.order.details;
           this.totalPrice();
         });
       },
@@ -81,11 +76,17 @@ export class RentUpdateComponent implements OnInit, OnChanges{
     })
     this.menuService.getMenuAll().subscribe({
       next: data => {
-        console.log(data.items)
         this.menus = data.items;
       }
     });
     // this.roomTypeService.roomTypesSource$.subscribe(data => this.rob
+  }
+
+  convert(order: Order)
+  {
+    order.details.forEach(item => {
+      item.orderedAt = new Date(item.orderedAt);
+    })
   }
 
   save() {
@@ -99,7 +100,7 @@ export class RentUpdateComponent implements OnInit, OnChanges{
         next: next => {
           this.orderService.update(this.order).subscribe({
             next: next => {
-              this._snackBar.open("Chỉnh sủa thành cồng", "",{
+              this._snackBar.open("Chỉnh sửa thành cồng", "",{
                 duration: 1000,
                 horizontalPosition: 'right',
                 verticalPosition: 'top',
@@ -133,21 +134,10 @@ export class RentUpdateComponent implements OnInit, OnChanges{
     return date.getHours() + ':' + date.getMinutes();
   }
 
-  openBottomSheet(): void {
-    this._bottomSheet.open(MenuBottomComponent,{
-      data: this.order,
-    }).afterDismissed().subscribe(result => {
-      let t = new Date();
-      console.log(result);
-      this.dataSource.push(<OrderDetail>{
-        itemId: result.id,
-        quantity: 1,
-        price: result.exportPrice,
-        orderedAt: t,
-      })
-      this.table.renderRows();
-      this.totalPrice();
-    })
+  deleteOrderDetailAll() {
+    this.dataSource.splice(0, this.dataSource.length);
+    this.table.renderRows();
+    this.totalPrice();
   }
 
   deleteOrderDetail(item: OrderDetail) {
@@ -194,8 +184,17 @@ export class RentUpdateComponent implements OnInit, OnChanges{
   }
   getNameMenu(id: string)
   {
-    let item = this.menus.find(item => item.id = id);
-    return item? item.name : "";
+    var name = "Không còn";
+    this.menus.forEach(item => 
+      {
+        if(item.id == id)
+        {
+          name=item.name;
+          return;
+        }
+      }
+    )
+    return name;
   }
 
   get DayCheckedIn(){ return this.rentChangeForm.get('dayCheckedIn')}

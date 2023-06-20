@@ -24,6 +24,7 @@ export class RentroomService {
     let url = `${this.rentRoomAPI}`;
     this.httpClient.get<any>(url).subscribe({
       next: data => {
+        this.convert(data);
         this.rentRoomSource.next(data);
       }
     });
@@ -33,8 +34,18 @@ export class RentroomService {
     let url = `${this.rentRoomAPI}?${query}`;
     this.httpClient.get<any>(url).subscribe({
       next: data => {
+        this.convert(data);
         this.rentRoomSource.next(data);
       }
+    });
+  }
+
+  convert(data: RentRoom[]) {
+    data.forEach(rentRoom => {
+      rentRoom.rooms.forEach(room => {
+        if(room)
+          room.lastCleanedAt = new Date(room.lastCleanedAt);
+      })
     });
   }
 }
