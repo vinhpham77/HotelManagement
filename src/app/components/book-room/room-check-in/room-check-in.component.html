@@ -1,0 +1,83 @@
+<div class="rent-update">
+    <div class="topbar-sub">
+        <div class="container d_flex-center">
+            <div class="d_flex-center w-100">
+                <mat-icon class="mat-list-icon text-warning icon-bar-sub">vpn_key</mat-icon>
+                <div class="topbar-sub-title">Chọn phòng</div>
+                <div class="flex-grow-1"></div>
+            </div>
+        </div>
+    </div>
+    <div class="form-sub">
+        <mat-expansion-panel [expanded]="true" class="box-s-none" *ngFor="let roomType of roomTypes;">
+            <mat-expansion-panel-header>
+              <mat-panel-title>
+                {{roomType.name}}
+              </mat-panel-title>
+            </mat-expansion-panel-header>
+            <div class="d_flex flex-wrap">
+                <div *ngFor="let room of rooms;">
+                    <mat-card class="magin-card" *ngIf="room.isEmpty && room.roomTypeId == roomType.id">
+                        <div class="d_flex flex-row border-bottom ">
+                            <div class="flex-grow-1 room-name text-primary ellipsis title-card">{{room.name}}</div>
+                            <div>
+                                <button mat-icon-button [matMenuTriggerFor]="menuWaitingMoom">
+                                    <mat-icon class="mat-list-icon">more_vert</mat-icon>
+                                </button>
+                                <mat-menu #menuWaitingMoom="matMenu">
+                                    <button mat-menu-item (click)="showFormCheckIn(room)">
+                                        <mat-icon class="mat-list-icon">check_circle</mat-icon>
+                                        <span></span>
+                                    </button>
+                                </mat-menu>
+                            </div>
+                        </div>
+                        <div class="px-2 py-2 d_flex flex-row" *ngIf="room.isCleaned">
+                            <div><mat-icon class="mat-list-icon text-success">check</mat-icon></div>
+                            <div class="flex-grow-1 icon-text align-self-center">
+                                <span class="pl-2">Đã dọn</span>
+                            </div>
+                        </div>
+                        <div class="px-2 py-2 d_flex flex-row" *ngIf="!room.isCleaned">
+                            <div><mat-icon class="mat-list-icon text-danger">close</mat-icon></div>
+                            <div class="flex-grow-1 icon-text text-danger align-self-center">
+                                <span class="pl-2">Chưa dọn</span>
+                            </div>
+                        </div>
+                    </mat-card>
+                </div>
+            </div>
+        </mat-expansion-panel>
+    </div>
+</div>
+
+<form [formGroup]="checkInForm" class="container-fix" *ngIf="formCheckIn">
+    <div class="context-customer">
+        <div class="w-50 d-inline-block">
+            <mat-form-field appearance="fill" class="formField w-100 pr-2">
+                <mat-label>Số người lớn</mat-label>
+                <input matInput type="number" class="text-right" formControlName="totalAdults">
+            </mat-form-field>
+        </div>
+        <div class="w-50 d-inline-block">
+            <mat-form-field appearance="fill" class="formField w-100 pl-2">
+                <mat-label>Số trẻ nhỏ</mat-label>
+                <input matInput type="number" class="text-right" formControlName="totalChildren">
+            </mat-form-field>
+        </div>
+        <div class="w-50 d-inline-block">
+            <mat-form-field appearance="fill" class="formField w-100">
+                <mat-label>Tiền trả trước</mat-label>
+                <div class="d_flex-center">
+                    <span>
+                    <input matInput type="number" class="text-right" formControlName="deposit"></span>
+                    <div matsuffix>.000&nbsp;₫</div>
+                </div>
+            </mat-form-field>
+        </div>
+        <div class="w-100 btnAdd">
+            <button mat-raised-button (click)="hideFormChechIn()">Hủy</button>
+            <button mat-raised-button color="primary" type="button" (click)="createReservationDetail()">Lưu</button>
+        </div>
+    </div>
+</form>

@@ -1,0 +1,36 @@
+.topbar-sub {
+    height: 63px;
+    border-bottom: 1px solid rgba(1,1,1,.1);
+}
+
+.topbar-sub .container {
+    padding: 0 1rem!important;
+    height: 100%;
+}
+
+.icon-bar-sub {
+    margin-right: 1rem;
+}
+
+.topbar-sub-title {
+    font-size: 15px;
+    margin-right: 1rem;
+    text-transform: uppercase;
+    display: flex;
+    align-items: center;
+}
+
+.box-s-none {
+    box-shadow: none;
+}
+
+
+/* form sub */
+
+.form-sub {
+    padding: 1rem;
+}
+
+.magin-card {
+    margin: 12px 4px 0 4px;
+}

@@ -78,6 +78,7 @@ import { AddReservationComponent } from './components/book-room/add-reservation/
 import { EditReservationComponent } from './components/book-room/edit-reservation/edit-reservation.component';
 import {MatBottomSheet, MatBottomSheetRef} from '@angular/material/bottom-sheet';
 import { AddPersonComponent } from './components/book-room/add-person/add-person.component';
+import { RoomCheckInComponent } from './components/book-room/room-check-in/room-check-in.component';
 
 
 
@@ -123,10 +124,7 @@ import { AddPersonComponent } from './components/book-room/add-person/add-person
     AddReservationComponent,
     EditReservationComponent,
     AddPersonComponent,
-   
- 
-  
-
+    RoomCheckInComponent
   ],
   imports: [
     BrowserModule,

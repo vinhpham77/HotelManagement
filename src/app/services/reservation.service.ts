@@ -32,6 +32,11 @@ export class ReservationService {
     });
   }
 
+  getReservationById(_id: string) {
+    let url = `${this.reservationAPI}/${_id}`;
+    return this.httpClient.get<any>(url, this.httpOptions);
+  }
+
   convert(data: Reservation[]) {
     data.forEach(item => {
       item.reservedAt = new Date(item.reservedAt);
