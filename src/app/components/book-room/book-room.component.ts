@@ -1,5 +1,11 @@
 import { Component, ViewChild } from '@angular/core';
 import { MatBottomSheet } from '@angular/material/bottom-sheet';
+import { Room } from 'src/app/models/Room';
+import { BookRoomDTO } from 'src/app/models/book-room-dto';
+import { MergeCD } from 'src/app/models/merge-cd';
+import { BookRoomDTOService } from 'src/app/services/book-room-dto.service';
+import { MergeCDService } from 'src/app/services/merge-cd.service';
+import { RoomsService } from 'src/app/services/rooms.service';
 
 
 
@@ -26,16 +32,52 @@ today!:string
   checkStatusReservation(a:any){} ;
   dateThird:Date=new Date();
   remove(room:any){}
-  rooms:any;
+
   openBottomSheet() {
     // this._bottomSheet.open(BottomSheetOverviewExampleSheetComponent);
   }
   selectedDateFirstTab:Date=new Date();
-  
-// hienj 6 ngày
+  dateEnd: Date = new Date(this.selectedDateFirstTab.getTime() + 6 * 24 * 60 * 60 * 1000);
+  public bookRoomDtos: BookRoomDTO[] = [];
+  public mergeCDs: MergeCD[] = [];
+  public rooms: Room[] = []
 
-onDateTabFirstFrom(event: any) {
-  this.selectedDateFirstTab = event.value;
+  
+  constructor(
+    private bookRoomDtosService: BookRoomDTOService,
+    private mergeCDService: MergeCDService,
+    private roomService: RoomsService
+  ){
+    this.today = this.getTodayDateString();
+
+    roomService.rooms$.subscribe({
+      next: next=>{
+        this.rooms=next;
+        bookRoomDtosService.getBookRoomDtos(this.selectedDateFirstTab.toISOString(), this.dateEnd.toISOString(),true, undefined).subscribe({
+          next: next => {
+            console.log(next)
+            this.bookRoomDtos = next;
+          
+            mergeCDService.getMergeCD(this.selectedDateFirstTab.toISOString(), this.dateEnd.toISOString()).subscribe({
+              next: next => {
+                this.mergeCDs = next;
+              }
+            });
+          }
+        })
+      }
+    })
+    roomService.uploadRoomAll();
+
+   
+    
+  }
+  ngOnInit() {
+    this.today = new Date().toISOString().split('T')[0];
+  }
+
+onDateTabFirstFrom() {
+  this.dateEnd.setTime(this.selectedDateFirstTab.getTime() + 6 * 24 * 60 * 60 * 1000);
 }
 getNextSixDays(startDate: Date): Date[] {
   const nextSixDays: Date[] = [];
@@ -45,15 +87,7 @@ getNextSixDays(startDate: Date): Date[] {
   }
   return nextSixDays;
 }
-  constructor( ){
-    this.today = this.getTodayDateString();
-
-    console.log(this.today)
-    
-  }
-  ngOnInit() {
-    this.today = new Date().toISOString().split('T')[0];
-  }
+  
 
   //xử lí tang giam ngay
   getTodayDateString(): string {
@@ -72,6 +106,17 @@ getNextSixDays(startDate: Date): Date[] {
     this.today = currentDate.toISOString().split('T')[0];
   }
 
+  countleft(date: Date) {
+    if(date < this.selectedDateFirstTab) return '110px';
+    let t = ((date.getTime() - this.selectedDateFirstTab.getTime()) / (1000 * 60 * 60 * 24)) * 110 + 110 + 110 / 2;
+    return t + "px";
+  }
+  countWidth(reservedAt: Date, reservedOut: Date) {
+    if(reservedAt < this.selectedDateFirstTab) reservedAt = this.selectedDateFirstTab;
+    if(reservedOut >= this.selectedDateFirstTab) reservedOut = this.dateEnd;
+    let t = (Math.floor((reservedOut.getTime() - reservedAt.getTime()) / (1000 * 60 * 60 * 24)) + 1) * 110 - 55;
+    return t + "px";
+  }
 ///show component
 showComponentAddReservation:boolean=false; 
 componentAddReservation(){

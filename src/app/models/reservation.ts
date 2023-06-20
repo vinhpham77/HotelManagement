@@ -4,5 +4,6 @@ export interface Reservation {
     customerId: string;
     personnelId: string;
     reservedAt: Date;
+    reservedOut:Date;
     deposit: number;
 }

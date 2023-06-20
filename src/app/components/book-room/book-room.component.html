@@ -1,7 +1,7 @@
 <div class="d-flex">
     <div class="w-70 border-right-100">
-        <div class="p-16 d-flex justify-content-space-betweent"> <button mat-button color="primary" (click)="componentAddReservation()">Thêm mới</button>
-          <button  mat-button class="btn-check btn text-primary" (click)="openAddPerson()"><mat-icon>add_box</mat-icon>Add</button></div>
+        <div class="p-16 d-flex justify-content-space-betweent"> <button type="button" mat-button color="primary" (click)="componentAddReservation()">Thêm mới</button>
+          <button type="button" mat-button class="btn-check btn text-primary" (click)="openAddPerson()"><mat-icon>add_box</mat-icon>Add</button></div>
        
     <div>
         <mat-tab-group>
@@ -14,7 +14,7 @@
                   <div class="d-flex">
                     <mat-form-field appearance="fill" class="item-form-field p-12 max-w-200">                    
                         <label>Từ ngày</label>
-                        <input matInput #myInputFrom [matDatepicker]="datepicker12" (dateChange)="onDateTabFirstFrom($event.target)"
+                        <input matInput #myInputFrom [matDatepicker]="datepicker12" (dateChange)="onDateTabFirstFrom()"
                           [(ngModel)]="selectedDateFirstTab">
                         <mat-datepicker-toggle matIconSuffix [for]="datepicker12"></mat-datepicker-toggle>
                         <mat-datepicker #datepicker12></mat-datepicker>
@@ -47,7 +47,8 @@
                     </tr>
                   </table>
 
-                  <div class="bt fc-row">
+                  
+                  <div *ngFor="let room of rooms" class="bt fc-row" >
                     <div>
                       <table class="table-border" >
                         <tr>
@@ -61,9 +62,60 @@
 
                         </tr>
                       </table>
-                     <app-person></app-person>
+                    <!-- person -->
+                    
+                    <div>
+                      <div class="fc-content">
+                        <div *ngFor="let bookroom of bookRoomDtos">
+                          <div *ngIf="bookroom.Reservation">
+                            <div *ngFor="let roomId of bookroom.Reservation.roomIds">
+                              <div *ngIf="roomId == room.id">
+                                <div class="fc-event st-booking ">
+                                  <div class="d-flex align-item">
+                                    <div class="alight" [matMenuTriggerFor]="menu" [style.left]="countleft(bookroom.Reservation.reservedAt)"
+                                    [style.width]="countWidth(bookroom.Reservation.reservedAt, bookroom.Reservation.reservedOut)"><mat-icon>person</mat-icon>Quốc</div>
+                                  </div>
+                                  <mat-menu #menu="matMenu">
+                                    <div class="submenu">
+                                      <button type="button" mat-menu-item><mat-icon>edit</mat-icon>Chỉnh
+                                        sửa</button>
+                                      <button type="button" mat-menu-item ><mat-icon>vpn_key</mat-icon>Nhận
+                                        phòng</button>
+                                      <button  type="button" mat-menu-item><mat-icon>cancel</mat-icon>Hủy đặt phòng</button>
+                                      <button type="button" mat-menu-item><mat-icon>delete</mat-icon>Xóa</button>
+                                    </div>
+                                  </mat-menu>
+                                </div>
+                              </div>
+                            </div>                         
+                          </div>
+                        </div>                      
+                        <div *ngFor="let merge in mergeCDs">
+                          <div *ngIf="merge.reservationDetail.roomId == room.id">
+                            <div class="fc-event st-booking ">
+                              <div class="d-flex align-item">
+                                <div class="alight" [matMenuTriggerFor]="menu" [style.left]="countleft(merge.reservationDetail.checkInAt)"
+                                [style.width]="countWidth(merge.reservationDetail.reserAt, merge.reservationDetail.checkInOut)"><mat-icon>person</mat-icon>Quốc</div>
+                              </div>
+                              <mat-menu #menu="matMenu">
+                                <div class="submenu">
+                                  <button type="button" mat-menu-item><mat-icon>edit</mat-icon>Chỉnh
+                                    sửa</button>
+                                  <button type="button" mat-menu-item ><mat-icon>vpn_key</mat-icon>Nhận
+                                    phòng</button>
+                                  <button  type="button" mat-menu-item><mat-icon>cancel</mat-icon>Hủy đặt phòng</button>
+                                  <button type="button" mat-menu-item><mat-icon>delete</mat-icon>Xóa</button>
+                                </div>
+                              </mat-menu>
+                            </div>
+                          </div>
+                        </div>
+                      </div>
                     </div>
-                  </div>
+                    <!-- person -->
+                    </div>
+                
+                </div>
                 </div>
               </table>
                  
@@ -80,10 +132,10 @@
 
                   <div class="calendar-control">
                     <div class="direction d-flex">
-                      <button class="btn-icon-arrow btn"  (click)="decreaseDate()">                       
+                      <button type="button" class="btn-icon-arrow btn"  (click)="decreaseDate()">                       
                         <mat-icon>arrow_back</mat-icon>
                       </button>
-                      <button class="btn-icon-arrow btn"  (click)="increaseDate()" >
+                      <button type="button" class="btn-icon-arrow btn"  (click)="increaseDate()" >
                         <mat-icon>arrow_forward</mat-icon></button>
                     </div>
                     <div class="mat-form-field">
@@ -91,14 +143,14 @@
                     </div>       
                   </div>
                   <mat-card class="mw-400 m-20 card">
-                    <button mat-button [matMenuTriggerFor]="menu" class="left-80"><mat-icon>more_vert</mat-icon></button>
+                    <button type="button" mat-button [matMenuTriggerFor]="menu" class="left-80"><mat-icon>more_vert</mat-icon></button>
                     <mat-menu #menu="matMenu">
-                      <button mat-menu-item><mat-icon>edit</mat-icon>Chỉnh
+                      <button type="button" mat-menu-item><mat-icon>edit</mat-icon>Chỉnh
                         sửa</button>
-                      <button mat-menu-item><mat-icon>vpn_key</mat-icon>Nhận
+                      <button type="button" mat-menu-item><mat-icon>vpn_key</mat-icon>Nhận
                         phòng</button>
-                       <button mat-menu-item><mat-icon>cancel</mat-icon>Hủy đặt phòng</button> 
-                       <button mat-menu-item><mat-icon>delete</mat-icon>Xóa</button> 
+                       <button type="button" mat-menu-item><mat-icon>cancel</mat-icon>Hủy đặt phòng</button> 
+                       <button type="button" mat-menu-item><mat-icon>delete</mat-icon>Xóa</button> 
                     </mat-menu>
                     <mat-card-content>
                       <div>
