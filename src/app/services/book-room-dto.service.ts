@@ -26,7 +26,7 @@ export class BookRoomDTOService {
   getBookRoomDtos(startDate:string | null | undefined, endDate:string | null | undefined, temp:boolean |null|undefined,  onlyReservedAt:boolean| null| undefined) {
 
 let url = `${this.bookRoomDtoAPI}?startDate=${startDate}&endDate=${endDate}&temp=${temp}&onlyReservedAt=${onlyReservedAt}`;
-console.log(url)
+
 
 return this.httpClient.get<any>(url, this.httpOptions);
 }
@@ -42,7 +42,7 @@ uploadBookRoomAll() {
 
 convert(data: BookRoomDTO[]) {
   data.forEach(bookroom => {
-    bookroom.Reservation.reservedAt= new Date(bookroom.Reservation.reservedAt);
+    bookroom.reservation.reservedAt= new Date(bookroom.reservation.reservedAt);
   });
 }
 }

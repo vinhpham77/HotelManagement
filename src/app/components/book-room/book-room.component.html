@@ -52,7 +52,7 @@
                     <div>
                       <table class="table-border" >
                         <tr>
-                          <td class="fc-cell text-center header-room">Phòng 1</td>
+                          <td class="fc-cell text-center header-room">{{room.name}}</td>
                           <td class="fc-cell text-center" ></td>
                           <td class="fc-cell text-center" ></td>
                           <td class="fc-cell text-center" ></td>
@@ -67,13 +67,13 @@
                     <div>
                       <div class="fc-content">
                         <div *ngFor="let bookroom of bookRoomDtos">
-                          <div *ngIf="bookroom.Reservation">
-                            <div *ngFor="let roomId of bookroom.Reservation.roomIds">
+                          <div *ngIf="bookroom.reservation">
+                            <div *ngFor="let roomId of bookroom.reservation.roomIds">
                               <div *ngIf="roomId == room.id">
                                 <div class="fc-event st-booking ">
                                   <div class="d-flex align-item">
-                                    <div class="alight" [matMenuTriggerFor]="menu" [style.left]="countleft(bookroom.Reservation.reservedAt)"
-                                    [style.width]="countWidth(bookroom.Reservation.reservedAt, bookroom.Reservation.reservedOut)"><mat-icon>person</mat-icon>Quốc</div>
+                                    <div class="alight" [matMenuTriggerFor]="menu" [style.left]="countleft(bookroom.reservation.reservedAt)"
+                                    [style.width]="countWidth(bookroom.reservation.reservedAt, bookroom.reservation.checkedOut)"><mat-icon>person</mat-icon>Quốc</div>
                                   </div>
                                   <mat-menu #menu="matMenu">
                                     <div class="submenu">
@@ -90,12 +90,12 @@
                             </div>                         
                           </div>
                         </div>                      
-                        <div *ngFor="let merge in mergeCDs">
-                          <div *ngIf="merge.reservationDetail.roomId == room.id">
+                        <div *ngFor="let merge of mergeCDs">
+                          <div *ngIf="merge.ReservationDetail.roomId == room.id">
                             <div class="fc-event st-booking ">
                               <div class="d-flex align-item">
-                                <div class="alight" [matMenuTriggerFor]="menu" [style.left]="countleft(merge.reservationDetail.checkInAt)"
-                                [style.width]="countWidth(merge.reservationDetail.reserAt, merge.reservationDetail.checkInOut)"><mat-icon>person</mat-icon>Quốc</div>
+                                <div class="alight" [matMenuTriggerFor]="menu" [style.left]="countleft(merge.ReservationDetail.checkedInAt)"
+                                [style.width]="countWidth(merge.ReservationDetail.checkedInAt, merge.ReservationDetail.checkedOutAt!)"><mat-icon>person</mat-icon>Quốc</div>
                               </div>
                               <mat-menu #menu="matMenu">
                                 <div class="submenu">

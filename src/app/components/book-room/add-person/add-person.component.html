@@ -1,74 +1,74 @@
-
-<div class="p-20" >
-    <div class="mw-500 p-12">
-    <div class="d-flex">
-      <div class="w-50 mr-12">
-        <mat-form-field class="example-full-width">
-          <mat-label>Họ</mat-label>
-          <input matInput (input)="validateFnamePerson($event)">
-          <mat-hint *ngIf="isFNamep">Họ không hợp lệ.</mat-hint>
-          </mat-form-field>
-      </div>
-       
-      <div class="w-50">
-        <mat-form-field class="example-full-width">
-        <mat-label>Tên</mat-label>
-        <input matInput (input)="validateNamePerson($event) ">
-        <mat-hint *ngIf="isNamep">Họ không hợp lệ.</mat-hint>
-      </mat-form-field>  
-      </div>
-           
+<div class='form-wrapper'>
+  <header class='form-header'>
+    <p class='form-heading'>Thêm</p>
+    <div class='form-actions'>
+      <button mat-button class='secondary' (click)='onSave()'>
+        <mat-icon>save</mat-icon>Lưu
+      </button>
+      <button mat-button (click)='onCancel()'>
+        <mat-icon>close</mat-icon>Huỷ
+      </button>
     </div>
-    <div>
-        <mat-form-field class="example-full-width">
-            <mat-label>Họ tên khách hàng</mat-label>
-            <input matInput  (input)="validateFullNamePerson($event)" >
-            <mat-hint *ngIf="isFullNameP">Tên khách hàng không hợp lệ.</mat-hint>
-          </mat-form-field>   
-    </div>
-    <div>
-        <mat-form-field class="example-full-width">
-            <mat-label>Số điện thoại</mat-label>
-            <input matInput (input)="validatePhoneNumberPerson($event)">
-            <mat-hint *ngIf="isPhoneNumberP">Số điện thoại không hợp lệ.</mat-hint>
-          </mat-form-field>   
-    </div>
-    <div>
-        <mat-form-field class="example-full-width">
-            <mat-label>CMND/CCCD</mat-label>
-            <input matInput (input)="validateIdNoPerson($event)">
-            <mat-hint *ngIf="isIdNoP">IdNo không hợp lệ.</mat-hint>
-          </mat-form-field>   
-    </div>
-    <div>
-        <mat-form-field class="example-full-width">
-            <mat-label>Quốc gia</mat-label>
-            <input matInput (input)="validateCountryPerson($event)">
-            <mat-hint *ngIf="isCountryP">Quốc gia  không hợp lệ.</mat-hint>
-          </mat-form-field>   
-    </div>
-    <div class="">
-      <mat-form-field appearance="fill">
-        <mat-label>Ngày sinh</mat-label>
-        <input matInput [matDatepicker]="pickerPerson">
-        <mat-datepicker-toggle matIconSuffix [for]="pickerPerson"></mat-datepicker-toggle>
-        <mat-datepicker #pickerPerson></mat-datepicker>
+  </header>
+  <mat-divider></mat-divider>
+  <form class='form-content' [formGroup]='customerForm'>
+    <div class='half-form-field'>
+      <mat-form-field appearance='fill'>
+        <mat-label>Họ</mat-label>
+        <input matInput formControlName='lastName' required>
+        <mat-error *ngIf='LastName?.invalid'>Bạn phải nhập họ</mat-error>
       </mat-form-field>
     </div>
-    
-    <div class="d-flex color-xam">
-     <label class="mr-12 fs-16" > Giới tính</label>
-        <div class="mr-12 d-flex ">
-          <label class="mr-12">Nam</label>
-          <input type="radio" name="gender"  value="male">
-        </div>
-      <div class="d-flex">
-        <label class="mr-12">Nữ</label>
-        <input type="radio" name="gender"value="female">
-      </div>
-      
-      </div>
-      <button mat-button class="primary btnTao">Tạo</button>
+    <div class='half-form-field'>
+      <mat-form-field appearance='fill'>
+        <mat-label>Tên</mat-label>
+        <input matInput formControlName='firstName' required>
+        <mat-error *ngIf='FirstName?.invalid'>Bạn phải nhập tên</mat-error>
+      </mat-form-field>
     </div>
-      
+
+    <div class='half-form-field'>
+      <mat-form-field>
+        <mat-label>Ngày sinh</mat-label>
+        <input matInput [matDatepicker]='birthdateDP'
+               formControlName='birthdate'>
+        <mat-datepicker-toggle matIconSuffix [for]='birthdateDP'></mat-datepicker-toggle>
+        <mat-datepicker #birthdateDP></mat-datepicker>
+      </mat-form-field>
     </div>
+
+    <div class='half-form-field'>
+      <mat-button-toggle-group formControlName='sex'>
+        <mat-button-toggle [value]='true'>
+          <mat-icon>man</mat-icon>Nam
+        </mat-button-toggle>
+        <mat-button-toggle [value]='false'>
+          <mat-icon>woman</mat-icon>Nữ
+        </mat-button-toggle>
+      </mat-button-toggle-group>
+      <mat-error *ngIf='Sex?.invalid'>Bạn phải chọn giới tính</mat-error>
+    </div>
+
+    <div class='half-form-field'>
+      <mat-form-field appearance='fill'>
+        <mat-label>CMT/Hộ chiếu</mat-label>
+        <input matInput formControlName='idNo' required>
+        <mat-error *ngIf='IdNo?.invalid'>Bạn phải nhập CMT/Hộ chiếu</mat-error>
+      </mat-form-field>
+    </div>
+
+    <div class='half-form-field'>
+      <mat-form-field appearance='fill'>
+        <mat-label>Quốc tịch</mat-label>
+        <input matInput formControlName='nationality' required>
+        <mat-error *ngIf='Nationality?.invalid'>Bạn phải nhập quốc tịch</mat-error>
+      </mat-form-field>
+    </div>
+
+    <mat-form-field appearance='fill'>
+      <mat-label>Số điện thoại</mat-label>
+      <input matInput formControlName='phoneNumber'>
+      <mat-error *ngIf='PhoneNumber?.errors?.["pattern"]'>Số điện thoại gồm 10 chữ số</mat-error>
+    </mat-form-field>
+  </form>
+</div>
