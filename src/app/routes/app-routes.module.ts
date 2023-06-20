@@ -13,7 +13,13 @@ import { RentComponent } from '../components/rent/rent.component';
 import { AccountsComponent } from '../components/manager/accounts/accounts.component';
 import { ReceiptsComponent } from '../components/manager/receipts/receipts.component';
 import { BookRoomComponent } from '../components/book-room/book-room.component';
-
+import { LoginComponent } from '../components/auth/login/login.component';
+import { LogoutComponent } from '../components/auth/logout/logout.component';
+import { HomeComponent } from '../components/home/home.component';
+import { NotFoundComponent } from '../components/auth/not-found/not-found.component';
+import { ForbiddenComponent } from '../components/auth/forbidden/forbidden.component';
+import { AuthGuard } from '../guards/auth.guard';
+import { RoleGuard } from '../guards/role.guard';
 
 const appRoutes: Routes = [
 
@@ -22,9 +28,29 @@ const appRoutes: Routes = [
     path: '',
     component: TwoColsLayoutComponent,
     children: [
-      { path: 'manager', component: ManagerComponent, title: 'Quản lý hệ thống' },
-      { path: 'check', component: RentComponent, title: 'Thuê - Trả phòng'},
-      { path: 'booking', component: BookRoomComponent, title: 'Đặt phòng'}
+      { path: '', redirectTo: '/home', pathMatch: 'full' },
+      { path: 'home', component: HomeComponent, title: 'Trang chủ', canActivate: [AuthGuard] },
+      {
+        path: 'manager',
+        component: ManagerComponent,
+        title: 'Quản lý hệ thống',
+        canActivate: [AuthGuard, RoleGuard],
+        data: { expectedRoles: ['admin'] }
+      },
+      {
+        path: 'check',
+        component: RentComponent,
+        title: 'Thuê - Trả phòng',
+        canActivate: [AuthGuard, RoleGuard],
+        data: { expectedRoles: ['admin', 'personnel'] }
+      },
+      {
+        path: 'booking',
+        component: BookRoomComponent,
+        title: 'Đặt phòng',
+        canActivate: [AuthGuard, RoleGuard],
+        data: { expectedRoles: ['admin', 'personnel'] }
+      }
     ]
   },
 
@@ -33,14 +59,83 @@ const appRoutes: Routes = [
     path: '',
     component: ThreeColsLayoutComponent,
     children: [
-      { path: 'manager/roomtypes', component: RoomTypesComponent, title: 'Loại phòng' },
-      { path: 'manager/rooms', component: RoomsComponent, title: 'Phòng' },
-      { path: 'manager/menu', component: MenuComponent, title: 'Menu' },
-      { path: 'manager/customers', component: CustomersComponent, title: 'Khách hàng' },
-      { path: 'manager/staff', component: StaffComponent, title: 'Nhân sự' },
-      { path: 'manager/accounts', component: AccountsComponent, title: 'Tài khoản' },
-      { path: 'manager/receipts', component: ReceiptsComponent, title: 'Hóa đơn'}
+      {
+        path: 'manager/roomtypes',
+        component: RoomTypesComponent,
+        title: 'Loại phòng',
+        canActivate: [AuthGuard, RoleGuard],
+        data: { expectedRoles: ['admin'] }
+      },
+      {
+        path: 'manager/rooms',
+        component: RoomsComponent,
+        title: 'Phòng',
+        canActivate: [AuthGuard, RoleGuard],
+        data: { expectedRoles: ['admin'] }
+      },
+      {
+        path: 'manager/menu',
+        component: MenuComponent,
+        title: 'Menu',
+        canActivate: [AuthGuard, RoleGuard],
+        data: { expectedRoles: ['admin'] }
+      },
+      {
+        path: 'manager/customers',
+        component: CustomersComponent,
+        title: 'Khách hàng',
+        canActivate: [AuthGuard, RoleGuard],
+        data: { expectedRoles: ['admin'] }
+      },
+      {
+        path: 'manager/staff',
+        component: StaffComponent,
+        title: 'Nhân sự',
+        canActivate: [AuthGuard, RoleGuard],
+        data: { expectedRoles: ['admin'] }
+      },
+      {
+        path: 'manager/accounts',
+        component: AccountsComponent,
+        title: 'Tài khoản',
+        canActivate: [AuthGuard, RoleGuard],
+        data: { expectedRoles: ['admin'] }
+      },
+      {
+        path: 'manager/receipts',
+        component: ReceiptsComponent,
+        title: 'Hóa đơn',
+        canActivate: [AuthGuard, RoleGuard],
+        data: { expectedRoles: ['admin'] }
+      }
     ]
+  },
+
+  // No layout routes
+  {
+    path: 'auth/login',
+    component: LoginComponent,
+    title: 'Đăng nhập'
+  },
+  {
+    path: 'auth/logout',
+    component: LogoutComponent,
+    title: 'Đăng xuất'
+  },
+  {
+    path: 'auth/not-found',
+    component: NotFoundComponent,
+    title: 'Không tìm thấy trang'
+  },
+  {
+    path: 'auth/forbidden',
+    component: ForbiddenComponent,
+    title: 'Không có quyền truy cập'
+  },
+  {
+    path: '**',
+    redirectTo: '/auth/not-found',
+    pathMatch: 'full'
   }
 ];
 

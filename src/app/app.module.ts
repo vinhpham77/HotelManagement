@@ -25,7 +25,7 @@ import { MatCheckboxModule } from '@angular/material/checkbox';
 import { MatPaginatorIntl, MatPaginatorModule } from '@angular/material/paginator';
 import { CustomMatPaginatorIntlService } from './services/custom-mat-paginator-intl.service';
 import { DialogComponent } from './components/dialog/dialog.component';
-import { HttpClientModule } from '@angular/common/http';
+import { HTTP_INTERCEPTORS, HttpClientModule } from '@angular/common/http';
 import { MatSortModule } from '@angular/material/sort';
 import { MatProgressSpinnerModule } from '@angular/material/progress-spinner';
 import { CuRoomTypeComponent } from './components/manager/cu-room-type/cu-room-type.component';
@@ -44,16 +44,16 @@ import { MenuItemNamePipe } from './pipes/menu-item-name.pipe';
 import { CuCustomerComponent } from './components/manager/cu-customer/cu-customer.component';
 import { CustomersComponent } from './components/manager/customers/customers.component';
 import { RentComponent } from './components/rent/rent.component';
-import {MatTabsModule} from '@angular/material/tabs';
+import { MatTabsModule } from '@angular/material/tabs';
 import { CardHistoryComponent } from './components/rent/card-history/card-history.component';
-import {MatMenuModule} from '@angular/material/menu';
+import { MatMenuModule } from '@angular/material/menu';
 import { CardRoomReceivedComponent } from './components/rent/card-room-received/card-room-received.component';
 import { RentChangeRoomComponent } from './components/rent/rent-change-room/rent-change-room.component';
-import {MatExpansionModule} from '@angular/material/expansion';
+import { MatExpansionModule } from '@angular/material/expansion';
 import { RentCheckedOutComponent } from './components/rent/rent-check-out/rent-check-out.component';
 import { RentHistoryUpdateComponent } from './components/rent/rent-history-update/rent-history-update.component';
 import { RentMenuComponent } from './components/rent/rent-menu/rent-menu.component';
-import {MatBadgeModule} from '@angular/material/badge';
+import { MatBadgeModule } from '@angular/material/badge';
 import { RentUpdateComponent } from './components/rent/rent-update/rent-update.component';
 import { FullNamePipe } from './pipes/full-name.pipe';
 import { MatDatepicker, MatDatepickerModule } from '@angular/material/datepicker';
@@ -62,24 +62,29 @@ import { MatButtonToggleModule } from '@angular/material/button-toggle';
 import { MenuBottomComponent } from './components/rent/menu-bottom/menu-bottom.component';
 import { StaffComponent } from './components/manager/staff/staff.component';
 import { CuPersonnelComponent } from './components/manager/cu-personnel/cu-personnel.component';
-import {MatBottomSheetModule} from '@angular/material/bottom-sheet';
-import {MatTooltipModule} from '@angular/material/tooltip';
+import { MatBottomSheetModule } from '@angular/material/bottom-sheet';
+import { MatTooltipModule } from '@angular/material/tooltip';
 import { CuAccountComponent } from './components/manager/cu-account/cu-account.component';
 import { AccountsComponent } from './components/manager/accounts/accounts.component';
 import { MatSlideToggleModule } from '@angular/material/slide-toggle';
 import { ReceiptsComponent } from './components/manager/receipts/receipts.component';
 import { UpdateReceiptComponent } from './components/manager/update-receipt/update-receipt.component';
 import { RentAddComponent } from './components/rent/rent-add/rent-add.component';
-import {MatRadioModule} from '@angular/material/radio';
+import { MatRadioModule } from '@angular/material/radio';
 import { BookRoomComponent } from './components/book-room/book-room.component';
 import { PersonComponent } from './components/book-room/person/person.component';
 import { MatChipsModule } from '@angular/material/chips';
+import { LoginComponent } from './components/auth/login/login.component';
 import { AddReservationComponent } from './components/book-room/add-reservation/add-reservation.component';
 import { EditReservationComponent } from './components/book-room/edit-reservation/edit-reservation.component';
-import {MatBottomSheet, MatBottomSheetRef} from '@angular/material/bottom-sheet';
+import { MatBottomSheet, MatBottomSheetRef } from '@angular/material/bottom-sheet';
 import { AddPersonComponent } from './components/book-room/add-person/add-person.component';
 import { RoomCheckInComponent } from './components/book-room/room-check-in/room-check-in.component';
-
+import { TokenInterceptor } from './intercepters/token.interceptor';
+import { LogoutComponent } from './components/auth/logout/logout.component';
+import { HomeComponent } from './components/home/home.component';
+import { NotFoundComponent } from './components/auth/not-found/not-found.component';
+import { ForbiddenComponent } from './components/auth/forbidden/forbidden.component';
 
 
 @NgModule({
@@ -120,11 +125,15 @@ import { RoomCheckInComponent } from './components/book-room/room-check-in/room-
     RentAddComponent,
     BookRoomComponent,
     PersonComponent,
-
+    LoginComponent,
     AddReservationComponent,
     EditReservationComponent,
     AddPersonComponent,
-    RoomCheckInComponent
+    RoomCheckInComponent,
+    LogoutComponent,
+    HomeComponent,
+    NotFoundComponent,
+    ForbiddenComponent
   ],
   imports: [
     BrowserModule,
@@ -163,18 +172,17 @@ import { RoomCheckInComponent } from './components/book-room/room-check-in/room-
     MatSlideToggleModule,
     MatRadioModule,
     MatChipsModule,
-    MatToolbarModule,
-
-
+    MatToolbarModule
   ],
   providers: [
     { provide: MatPaginatorIntl, useClass: CustomMatPaginatorIntlService },
     { provide: TitleStrategy, useExisting: CustomTitleService },
     { provide: MAT_DATE_LOCALE, useValue: 'vi-VN' },
+    { provide: HTTP_INTERCEPTORS, useClass: TokenInterceptor, multi: true },
     MatSnackBar,
     CommonService,
     CurrencyPipe,
-    MatDatepicker,
+    MatDatepicker
   ],
   bootstrap: [AppComponent]
 })

@@ -1,7 +1,7 @@
 <mat-sidenav-container class='example-container' [hasBackdrop]='false'>
   <mat-sidenav mode='side' [(opened)]='opened'>
     <header class='sidenav-header'>
-      <a routerLink='/' class='logo-link'>
+      <a routerLink='/home' class='logo-link'>
         <mat-icon class='logo-icon'>apartment</mat-icon>
         <h1 class='logo-text'>Starfruit</h1>
       </a>
@@ -23,6 +23,10 @@
           <mat-icon class='menu-icon'>menu</mat-icon>
         </button>
         <h2 class='heading'>{{title}}</h2>
+      </div>
+      <div class='user'>
+        <span class='user-name'>{{fullName}}</span>
+        <mat-icon class='user-icon'>person</mat-icon>
       </div>
     </mat-toolbar>
     <mat-divider></mat-divider>

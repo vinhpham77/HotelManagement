@@ -1,0 +1,28 @@
+<div class='auth-wrapper'>
+  <div class='login'>
+    <div class='form-background'></div>
+    <div class='content'>
+      <div class='content-header'>
+        <div class='brand'><span class='logo'></span>
+          <h1 class='heading'>StarFruit</h1><span class='logo'></span></div>
+        <p class='title'>Chào mừng bạn quay lại!</p>
+      </div>
+      <form class='login-form' [formGroup]='loginForm'>
+        <mat-form-field class='input' appearance='fill'>
+          <mat-label>Tên đăng nhập</mat-label>
+          <input matInput formControlName='username' />
+          <mat-error *ngIf='Username?.hasError("required")'>Tên đăng nhập không được để trống
+          </mat-error>
+        </mat-form-field>
+
+        <mat-form-field class='input' appearance='fill'>
+          <mat-label>Mật khẩu</mat-label>
+          <input matInput type='password' formControlName='password' />
+          <mat-error *ngIf='Password?.hasError("required")'>Mật khẩu không được để trống</mat-error>
+        </mat-form-field>
+
+        <button mat-raised-button class='submit-button' type='submit' color='primary' (click)='login()'>Đăng nhập</button>
+      </form>
+    </div>
+  </div>
+</div>

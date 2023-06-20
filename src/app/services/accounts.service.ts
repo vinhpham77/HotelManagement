@@ -5,6 +5,7 @@ import { BehaviorSubject } from 'rxjs';
 import { CommonService } from './common.service';
 import { SortDirection } from '@angular/material/sort';
 import { Account } from '../models/Account';
+import { AccountDto } from '../models/AccountDto';
 
 @Injectable({
   providedIn: 'root'

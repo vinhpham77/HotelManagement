@@ -1,0 +1,84 @@
+.auth-wrapper {
+  background-image: linear-gradient(to right bottom, #f7f7f7, #ebedee, #e3e6e8, #d9dce0, #d0d3d8);
+}
+
+.login {
+  width: 48%;
+  height: 42rem;
+  margin-bottom: 8rem;
+  display: flex;
+  background: white;
+  border-radius: 0.6rem;
+  box-shadow: 0 0.5rem 1rem rgba(0, 0, 0, 0.15);
+}
+
+.form-background {
+  border-top-left-radius: inherit;
+  border-bottom-left-radius: inherit;
+  height: inherit;
+  width: 50%;
+  flex-shrink: 0;
+  background-origin: border-box;
+  background: url("../../../../assets/img/login-background.jpg") no-repeat center;
+  background-size: cover;
+  border-right: 0.1rem solid #e5e5e5;
+}
+
+.content {
+  flex-grow: 1;
+  padding: 4.8rem;
+}
+
+.content-header {
+  text-align: center;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  flex-direction: column;
+}
+
+.title {
+  font-size: 2rem;
+  font-weight: 400;
+  line-height: 1.2;
+  color: #3a3b45;
+  margin-bottom: 1.5rem;
+}
+
+.login-form {
+  margin-top: 2rem;
+  margin-bottom: 2rem;
+}
+
+.brand {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  margin-bottom: 1rem;
+
+  & .logo {
+    width: 2.4rem;
+    height: 2.4rem;
+    background: url("../../../../assets/img/logo.svg") no-repeat center;
+    background-size: cover;
+  }
+
+  & .heading {
+    margin: 0 1rem;
+    font-size: 2.2rem;
+    font-weight: 400;
+  }
+}
+
+.submit-button {
+  width: 100%;
+  margin-top: 2.8rem;
+}
+
+.input {
+  font-size: 1.8rem;
+}
+
+.submit-button {
+  font-size: 1.6rem;
+}

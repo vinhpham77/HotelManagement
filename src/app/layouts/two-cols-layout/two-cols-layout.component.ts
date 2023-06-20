@@ -3,6 +3,8 @@ import { CommonService } from '../../services/common.service';
 import { NavigationItem } from '../../models/NavigationItem';
 import { CustomTitleService } from '../../services/custom-title.service';
 import { Subscription } from 'rxjs';
+import { SidenavService } from '../../services/sidenav.service';
+import { AuthService } from '../../services/auth.service';
 
 @Component({
   selector: 'app-two-cols-layout',
@@ -12,16 +14,11 @@ import { Subscription } from 'rxjs';
 export class TwoColsLayoutComponent implements OnDestroy {
   subscriptions: Subscription[] = [];
   title!: string;
+  fullName: string = '';
   opened: boolean = true;
-  sidenavItems: NavigationItem[] = [
-    { title: 'Đặt phòng', link: '/booking', icon: 'calendar_month' },
-    { title: 'Thuê - trả phòng', link: '/check', icon: 'published_with_changes' },
-    { title: 'Quản lý hệ thống', link: '/manager', icon: 'settings' },
-    { title: 'Tài khoản', link: '/account', icon: 'account_circle' },
-    { title: 'Đăng xuất', link: '/logout', icon: 'logout' }
-  ];
+  sidenavItems: NavigationItem[] = [];
 
-  constructor(private commonService: CommonService, private customTitleService: CustomTitleService) {
+  constructor(private commonService: CommonService, private customTitleService: CustomTitleService, private sidenavService: SidenavService, private AuthService: AuthService) {
     // Subscribe to services
     const titleSubscription = this.customTitleService.title$.subscribe(title => {
       this.title = title;
@@ -29,10 +26,16 @@ export class TwoColsLayoutComponent implements OnDestroy {
     const sideNavSubscription = this.commonService.sidenavOpened$.subscribe(opened => {
       this.opened = opened;
     });
+    const sidenavItemsSubscription = this.sidenavService.sidenavItems$.subscribe(items => {
+      this.sidenavItems = items;
+    });
 
-    // Push to subscriptions
-    this.subscriptions.push(titleSubscription);
+    this.fullName = this.AuthService.FullName;
+
+      // Push to subscriptions
+      this.subscriptions.push(titleSubscription);
     this.subscriptions.push(sideNavSubscription);
+    this.subscriptions.push(sidenavItemsSubscription);
   }
 
   toggle() {

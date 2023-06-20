@@ -4,6 +4,8 @@ import { CommonService } from '../../services/common.service';
 import { FormDirective } from '../../directives/form.directive';
 import { CustomTitleService } from '../../services/custom-title.service';
 import { Subscription } from 'rxjs';
+import { SidenavService } from '../../services/sidenav.service';
+import { AuthService } from '../../services/auth.service';
 
 @Component({
   selector: 'app-three-cols-layout',
@@ -14,16 +16,11 @@ export class ThreeColsLayoutComponent implements OnDestroy {
   @ViewChild(FormDirective, { static: true }) formHost!: FormDirective;
   subscriptions: Subscription[] = [];
   title: string = '';
+  fullName: string = '';
   opened: boolean = true;
-  sidenavItems: NavigationItem[] = [
-    { title: 'Đặt phòng', link: '/reservation', icon: 'calendar_month' },
-    { title: 'Thuê - trả phòng', link: '/check', icon: 'published_with_changes' },
-    { title: 'Quản lý hệ thống', link: '/manager', icon: 'settings' },
-    { title: 'Tài khoản', link: '/account', icon: 'account_circle' },
-    { title: 'Đăng xuất', link: '/logout', icon: 'logout' }
-  ];
+  sidenavItems: NavigationItem[] = [];
 
-  constructor(private customTitleService: CustomTitleService, private commonService: CommonService) {
+  constructor(private customTitleService: CustomTitleService, private commonService: CommonService, private sidenavService: SidenavService, private AuthService: AuthService) {
     // Subscribe to services
     const titleSubscription = this.customTitleService.title$.subscribe(title => {
       this.title = title;
@@ -34,11 +31,17 @@ export class ThreeColsLayoutComponent implements OnDestroy {
     const sidenavOpenedSubscription = this.commonService.sidenavOpened$.subscribe(opened => {
       this.opened = opened;
     });
+    const sidenavItemsSubscription = this.sidenavService.sidenavItems$.subscribe(items => {
+      this.sidenavItems = items;
+    });
+
+    this.fullName = this.AuthService.FullName;
 
     // Push to subscriptions
     this.subscriptions.push(titleSubscription);
     this.subscriptions.push(formSubscription);
     this.subscriptions.push(sidenavOpenedSubscription);
+    this.subscriptions.push(sidenavItemsSubscription);
   }
 
   toggle() {
