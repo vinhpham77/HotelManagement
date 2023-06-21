@@ -114,6 +114,7 @@ export class RentComponent implements OnDestroy{
 
   days(date: Date) {
     let t = Math.floor((this.checkedOut.getTime() - date.getTime()) / (24*60*60*1000));
+    if( t < 0) t = 0;
     return t;
   }
 
