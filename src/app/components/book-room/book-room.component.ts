@@ -124,11 +124,12 @@ export class BookRoomComponent {
       ((date.getTime() - this.selectedDateFirstTab.getTime()) /
         (1000 * 60 * 60 * 24)) *
         110 +
-      110 +
       110 / 2;
     return t + 'px';
   }
   countWidth(reservedAt: Date, reservedOut: Date) {
+    console.log
+    if(!reservedOut) reservedOut = new Date;
     reservedAt = new Date(reservedAt);
     reservedOut = new Date(reservedOut);
     if (reservedAt < this.selectedDateFirstTab)
@@ -141,6 +142,7 @@ export class BookRoomComponent {
         1) *
         110 -
       55;
+      if(t < 0) t = 110;
     return t + 'px';
   }
   ///show component

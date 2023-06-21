@@ -49,7 +49,7 @@
 
                   
                   <div *ngFor="let room of rooms" class="bt fc-row" >
-                    <div>
+                    <div class="conteiner-table">
                       <table class="table-border" >
                         <tr>
                           <td class="fc-cell text-center header-room">{{room.name}}</td>
@@ -64,16 +64,16 @@
                       </table>
                     <!-- person -->
                     
-                    <div>
+                    <div class="posit">
                       <div class="fc-content">
                         <div *ngFor="let bookroom of bookRoomDtos">
                           <div *ngIf="bookroom.reservation">
                             <div *ngFor="let roomId of bookroom.reservation.roomIds">
                               <div *ngIf="roomId == room.id">
-                                <div class="fc-event st-booking ">
+                                <div class="fc-event personitem st-booking posit" [style.left]="countleft(bookroom.reservation.reservedAt)"
+                                [style.width]="countWidth(bookroom.reservation.reservedAt, bookroom.reservation.checkedOut)">
                                   <div class="d-flex align-item">
-                                    <div class="alight" [matMenuTriggerFor]="menu" [style.left]="countleft(bookroom.reservation.reservedAt)"
-                                    [style.width]="countWidth(bookroom.reservation.reservedAt, bookroom.reservation.checkedOut)"><mat-icon>person</mat-icon>Quốc</div>
+                                    <div class="alight" [matMenuTriggerFor]="menu"><mat-icon>person</mat-icon>{{bookroom.customer.fullName}}</div>
                                   </div>
                                   <mat-menu #menu="matMenu">
                                     <div class="submenu">

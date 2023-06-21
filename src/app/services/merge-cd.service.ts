@@ -26,7 +26,6 @@ export class MergeCDService {
   getMergeCD(startDate:string | null | undefined, endDate:string | null | undefined ) {
 
 let url = `${this.mergeCDAPI}?startDate=${startDate}&endDate=${endDate}`;
-
 return this.httpClient.get<any>(url, this.httpOptions);
 }
 uploadMergeCDAll() {
